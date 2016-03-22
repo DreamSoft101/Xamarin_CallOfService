@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ui:BasePage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ui="clr-namespace:CallOfService.Technician.Mobile.UI;assembly=CallOfService.Technician.Mobile"
+             x:Class="CallOfService.Technician.Mobile.Features.Login.LoginPage">
+  <StackLayout Padding="20">
+    <Label Text="Login" VerticalOptions="Center" HorizontalOptions="Center" />  
+    <Entry Text="{Binding Username}" Placeholder="Email"></Entry>
+    <Entry Text="{Binding Password}" IsPassword="True" Placeholder="Password"></Entry>
+    <Button Text="Login" Command="{Binding LoginCommand}"></Button>
+  </StackLayout>
+</ui:BasePage>

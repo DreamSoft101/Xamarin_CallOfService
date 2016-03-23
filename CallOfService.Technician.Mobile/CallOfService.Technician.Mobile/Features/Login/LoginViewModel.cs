@@ -32,8 +32,11 @@ namespace CallOfService.Technician.Mobile.Features.Login
             {
                 return new Command(async () =>
                 {
-                    var userProfile = await _loginService.Login(Username, Password);
-                    UserDialogs.Instance.Alert(userProfile.FirstName);
+                    var loginResult = await _loginService.Login(Username, Password);
+                    if(loginResult.IsSuccessful)
+                        UserDialogs.Instance.Alert($"Welcome {loginResult.UserProfile.FirstName}");
+                    else
+                        UserDialogs.Instance.Alert("User name or password is incorrect");
                 });
             }
         }

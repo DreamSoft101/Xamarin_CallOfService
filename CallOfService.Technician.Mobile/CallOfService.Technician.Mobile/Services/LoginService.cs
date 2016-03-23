@@ -14,10 +14,26 @@ namespace CallOfService.Technician.Mobile.Services
             _loginProxy = loginProxy;
         }
 
-        public async Task<UserProfile> Login(string userName, string password)
+        public async Task<UserLoginResult> Login(string userName, string password)
         {
             UserToken userToken = await _loginProxy.Login(userName, password);
-            return userToken.UserProfile;
+            if (userToken != null && userToken.UserProfile != null && userToken.Token != null)
+            {
+                return new UserLoginResult(true, userToken.UserProfile);
+            }
+            return new UserLoginResult(false, null);
         }
+    }
+
+    public class UserLoginResult
+    {
+        public UserLoginResult(bool isSuccessful, UserProfile userProfile)
+        {
+            IsSuccessful = isSuccessful;
+            UserProfile = userProfile;
+        }
+
+        public UserProfile UserProfile { get; set; }
+        public bool IsSuccessful { get; set; }
     }
 }

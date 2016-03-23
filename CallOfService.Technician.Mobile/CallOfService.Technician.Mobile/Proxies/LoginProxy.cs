@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System;
+using System.Linq.Expressions;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,10 +20,20 @@ namespace CallOfService.Technician.Mobile.Proxies
 
         public async Task<UserToken> Login(string userName, string password)
         {
-            var stringContent = new StringContent(JsonConvert.SerializeObject(new {Username = userName, Password = password}), Encoding.UTF8, "application/json");
-            HttpResponseMessage responseMessage = await Client.PostAsync(UrlConstants.LoginUrl, stringContent);
-            var responseString = await responseMessage.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<UserToken>(responseString);
+            try
+            {
+                var stringContent = new StringContent(JsonConvert.SerializeObject(new {username = userName, password = password}), Encoding.UTF8, "application/json");
+                Client.DefaultRequestHeaders.Add("Accept", "application/json");
+                //Client.DefaultRequestHeaders.Add("Content-Type", "application/json");
+                HttpResponseMessage responseMessage = await Client.PostAsync(UrlConstants.LoginUrl, stringContent);
+                var responseString = await responseMessage.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<UserToken>(responseString);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.ToString());
+                return null;
+            }
         }
 
     }

@@ -5,6 +5,6 @@ namespace CallOfService.Technician.Mobile.Services.Abstracts
 {
     public interface ILoginService
     {
-        Task<UserProfile> Login(string userName, string password);
+        Task<UserLoginResult> Login(string userName, string password);
     }
 }

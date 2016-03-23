@@ -9,7 +9,6 @@ namespace CallOfService.Technician.Mobile.Core.Networking
     {
         protected readonly ILogger Logger;
         protected HttpClient Client;
-        private const string BaseUrl = "https://dashboard.callofservice.com/api/";
 
         public BaseProxy(ILogger logger)
         {
@@ -19,7 +18,7 @@ namespace CallOfService.Technician.Mobile.Core.Networking
 
         private HttpClient CreateHttpClient()
         {
-            var serverUri = new Uri(BaseUrl);
+            var serverUri = new Uri(UrlConstants.BaseUrl);
 
             return new HttpClient
             {

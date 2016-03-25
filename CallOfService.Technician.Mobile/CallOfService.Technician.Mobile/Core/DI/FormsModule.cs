@@ -4,7 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac;
+using CallOfService.Technician.Mobile.Core.Security;
 using CallOfService.Technician.Mobile.Core.SystemServices;
+using CallOfService.Technician.Mobile.Database;
+using CallOfService.Technician.Mobile.Database.Repos;
+using CallOfService.Technician.Mobile.Database.Repos.Abstracts;
+using CallOfService.Technician.Mobile.Domain;
 using CallOfService.Technician.Mobile.Features.Login;
 using CallOfService.Technician.Mobile.Proxies;
 using CallOfService.Technician.Mobile.Proxies.Abstratcs;
@@ -17,16 +22,37 @@ namespace CallOfService.Technician.Mobile.Core.DI
     {
         protected override void Load(ContainerBuilder builder)
         {
-            //View Models
-            builder.RegisterType<LoginViewModel>().AsSelf();
+            RegisterViewModels(builder);
+            RegisterServces(builder);
+            RegisterDatabaseDbSets(builder);
+            RegisterRepos(builder);
+            RegisterProxies(builder);
+        }
 
-            //Services
+        private void RegisterProxies(ContainerBuilder builder)
+        {
+            builder.RegisterType<LoginProxy>().As<ILoginProxy>().SingleInstance();
+        }
+
+        private void RegisterRepos(ContainerBuilder builder)
+        {
+            builder.RegisterType<UserRepo>().As<IUserRepo>().SingleInstance();
+        }
+
+        private void RegisterDatabaseDbSets(ContainerBuilder builder)
+        {
+            builder.RegisterType<DbSet<UserProfile>>().As<IDbSet<UserProfile>>().SingleInstance();
+        }
+
+        private void RegisterServces(ContainerBuilder builder)
+        {
             builder.RegisterType<LoginService>().As<ILoginService>().SingleInstance();
             builder.RegisterType<Logger>().As<ILogger>().SingleInstance();
+        }
 
-            //Proxies
-            builder.RegisterType<LoginProxy>().As<ILoginProxy>().SingleInstance();
-            
+        private void RegisterViewModels(ContainerBuilder builder)
+        {
+            builder.RegisterType<LoginViewModel>().AsSelf();
         }
     }
 }

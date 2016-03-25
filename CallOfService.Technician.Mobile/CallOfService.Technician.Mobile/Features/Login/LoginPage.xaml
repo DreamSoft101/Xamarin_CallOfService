@@ -2,9 +2,11 @@
 <ui:BasePage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:ui="clr-namespace:CallOfService.Technician.Mobile.UI;assembly=CallOfService.Technician.Mobile"
+             xmlns:controls="clr-namespace:CallOfService.Technician.Mobile.Controls;assembly=CallOfService.Technician.Mobile"
              x:Class="CallOfService.Technician.Mobile.Features.Login.LoginPage">
   <StackLayout Padding="20">
-    <Label Text="Login" VerticalOptions="Center" HorizontalOptions="Center" />  
+    <Label Text="Login" VerticalOptions="Center" HorizontalOptions="Center" />
+    <controls:SvgImage FileName="login-page-logo"></controls:SvgImage>
     <Entry Text="{Binding Username}" Placeholder="Email"></Entry>
     <Entry Text="{Binding Password}" IsPassword="True" Placeholder="Password"></Entry>
     <Button Text="Login" Command="{Binding LoginCommand}"></Button>

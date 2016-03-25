@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using Autofac;
+using CallOfService.Technician.Mobile.Core.Security;
+using CallOfService.Technician.Mobile.Database;
+using CallOfService.Technician.Mobile.iOS.Core.Security;
+using CallOfService.Technician.Mobile.iOS.Database;
 
 namespace CallOfService.Technician.Mobile.iOS.Core.DI
 {
@@ -9,6 +13,8 @@ namespace CallOfService.Technician.Mobile.iOS.Core.DI
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<CredentialManager>().As<ICredentialManager>().SingleInstance();
+            builder.RegisterType<SqliteNet>().As<ISqLiteNet>().SingleInstance();
 
         }
     }

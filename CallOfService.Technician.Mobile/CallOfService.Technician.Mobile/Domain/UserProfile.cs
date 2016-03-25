@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SQLite.Net.Attributes;
 
 namespace CallOfService.Technician.Mobile.Domain
 {
+    [Table("UserProfile")]
     public class UserProfile
     {
+        [PrimaryKey]
         public int UserId { get; set; }
         public string TenantId { get; set; }
         public string CompanyName { get; set; }

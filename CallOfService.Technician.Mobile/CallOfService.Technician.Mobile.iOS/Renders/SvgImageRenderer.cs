@@ -17,7 +17,7 @@ namespace CallOfService.Technician.Mobile.iOS.Renders
 
 
         private readonly Assembly _assemblyContainingImages = Assembly.Load(new AssemblyName("CallOfServiceTechnicianMobileiOS"));
-        private readonly string _filePathsPrefix = "LabourCosting.iOS.Resources.Images.";
+		private readonly string _filePathsPrefix = "CallOfService.Technician.Mobile.iOS.Resources.Images.";
         private readonly string _filePathsSufix = ".svg";
 
         private SvgImage FormsControl => Element as SvgImage;
@@ -35,7 +35,7 @@ namespace CallOfService.Technician.Mobile.iOS.Renders
 
         void DrawImage()
         {
-            if (FormsControl != null && _assemblyContainingImages != null && FormsControl.Source != null)
+			if (FormsControl != null && _assemblyContainingImages != null && FormsControl.FileName != null)
             {
                 var svgStream =
                     _assemblyContainingImages.GetManifestResourceStream($"{_filePathsPrefix}{FormsControl.FileName}{_filePathsSufix}");

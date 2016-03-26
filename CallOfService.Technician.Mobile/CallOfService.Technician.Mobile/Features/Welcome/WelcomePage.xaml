@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CallOfService.Technician.Mobile.Features.Welcome.WelcomePage" BackgroundColor="#44b6ae">
   <StackLayout VerticalOptions="Center">
-    <Label Text="{Binding Message1}"></Label>
-    <Label Text="{Binding Message2}"></Label>
+    <Label Text="{Binding Message1}" TextColor="White"></Label>
+    <Label Text="{Binding Message2}" TextColor="White"></Label>
     <Button Text="Let's Start" IsVisible="{Binding ShowStartButton}" TextColor="White" BorderColor="White" BorderRadius="20" BorderWidth="2"></Button>
   </StackLayout>
 </ContentPage>

@@ -13,6 +13,7 @@ namespace CallOfService.Technician.Mobile.Features.Welcome
         public WelcomePage()
         {
             InitializeComponent();
+			NavigationPage.SetHasNavigationBar (this, false);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CallOfService.Technician.Mobile.UI;
+using Xamarin.Forms;
 
 namespace CallOfService.Technician.Mobile.Features.Login
 {
@@ -12,6 +13,7 @@ namespace CallOfService.Technician.Mobile.Features.Login
         public LoginPage()
         {
             InitializeComponent();
+			NavigationPage.SetHasNavigationBar (this, false);
         }
     }
 }

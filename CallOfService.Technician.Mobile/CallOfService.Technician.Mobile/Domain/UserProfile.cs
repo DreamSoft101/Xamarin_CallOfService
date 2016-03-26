@@ -19,6 +19,7 @@ namespace CallOfService.Technician.Mobile.Domain
         public string Email { get; set; }
         public string Phone { get; set; }
         public string PhotoUrl { get; set; }
+		[Ignore]
         public string[] Roles { get; set; }
         public bool IsMainAdmin { get; set; }
         public bool PasswordReset { get; set; }

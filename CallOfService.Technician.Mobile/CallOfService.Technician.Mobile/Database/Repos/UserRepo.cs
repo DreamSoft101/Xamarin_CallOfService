@@ -15,9 +15,10 @@ namespace CallOfService.Technician.Mobile.Database.Repos
             _userProfileDbSet = userProfileDbSet;
         }
 
-        public Task<int> SaveUserProfile(UserProfile userProfile)
+		public async Task<int> SaveUserProfile(UserProfile userProfile)
         {
-            return _userProfileDbSet.Add(userProfile);
+			await _userProfileDbSet.DeleteAll ();
+			return await  _userProfileDbSet.Add(userProfile);
         }
 
         public async Task<UserProfile> GetCurrentUserProfile()

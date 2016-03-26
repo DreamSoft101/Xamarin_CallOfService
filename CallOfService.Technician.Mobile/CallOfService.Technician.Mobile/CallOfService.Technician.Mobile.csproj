@@ -44,6 +44,7 @@
     <Compile Include="Core\Security\Credential.cs" />
     <Compile Include="Core\Security\ICredentialManager.cs" />
     <Compile Include="Core\SystemServices\Logger.cs" />
+    <Compile Include="Database\DbInitializer.cs" />
     <Compile Include="Database\DbSet.cs" />
     <Compile Include="Database\Repos\Abstracts\IUserRepo.cs" />
     <Compile Include="Database\Repos\UserRepo.cs" />

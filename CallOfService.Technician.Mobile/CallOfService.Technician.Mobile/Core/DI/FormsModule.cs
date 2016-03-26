@@ -43,6 +43,7 @@ namespace CallOfService.Technician.Mobile.Core.DI
 
         private void RegisterDatabaseDbSets(ContainerBuilder builder)
         {
+            builder.RegisterType<DbInitializer>().AsSelf().SingleInstance();
             builder.RegisterType<DbSet<UserProfile>>().As<IDbSet<UserProfile>>().SingleInstance();
         }
 

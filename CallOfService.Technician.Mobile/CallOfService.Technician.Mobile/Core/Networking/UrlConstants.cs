@@ -4,5 +4,7 @@
     {
         public const string BaseUrl = "https://dashboard.callofservice.com/";
         public const string LoginUrl = "api/auth/login";
+        public const string AppointmentsUrl = "api/appointments";
+        
     }
 }

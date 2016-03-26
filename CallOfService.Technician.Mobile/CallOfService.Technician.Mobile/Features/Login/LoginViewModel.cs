@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Acr.UserDialogs;
+using CallOfService.Technician.Mobile.Core.SystemServices;
 using CallOfService.Technician.Mobile.Domain;
 using CallOfService.Technician.Mobile.Services.Abstracts;
 using CallOfService.Technician.Mobile.UI;
@@ -26,6 +27,8 @@ namespace CallOfService.Technician.Mobile.Features.Login
         public string Username { get; set; }
         public string Password { get; set; }
 
+        public bool ShowErrorMessage { get; set; }
+
         public ICommand LoginCommand
         {
             get
@@ -33,10 +36,10 @@ namespace CallOfService.Technician.Mobile.Features.Login
                 return new Command(async () =>
                 {
                     var loginResult = await _loginService.Login(Username, Password);
-                    if(loginResult.IsSuccessful)
-                        UserDialogs.Instance.Alert($"Welcome {loginResult.UserProfile.FirstName}");
+                    if (loginResult.IsSuccessful)
+                        await NavigationService.NavigateToWelcomeScreen();
                     else
-                        UserDialogs.Instance.Alert("User name or password is incorrect");
+                        ShowErrorMessage = true;
                 });
             }
         }

@@ -10,5 +10,6 @@ namespace CallOfService.Technician.Mobile.Database.Repos.Abstracts
     public interface IUserRepo
     {
         Task<int> SaveUserProfile(UserProfile userProfile);
+        Task<UserProfile> GetCurrentUserProfile();
     }
 }

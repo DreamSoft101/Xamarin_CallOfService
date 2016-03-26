@@ -11,6 +11,7 @@ using CallOfService.Technician.Mobile.Database.Repos;
 using CallOfService.Technician.Mobile.Database.Repos.Abstracts;
 using CallOfService.Technician.Mobile.Domain;
 using CallOfService.Technician.Mobile.Features.Login;
+using CallOfService.Technician.Mobile.Features.Welcome;
 using CallOfService.Technician.Mobile.Proxies;
 using CallOfService.Technician.Mobile.Proxies.Abstratcs;
 using CallOfService.Technician.Mobile.Services;
@@ -32,6 +33,7 @@ namespace CallOfService.Technician.Mobile.Core.DI
         private void RegisterProxies(ContainerBuilder builder)
         {
             builder.RegisterType<LoginProxy>().As<ILoginProxy>().SingleInstance();
+            builder.RegisterType<AppointmentProxy>().As<IAppointmentProxy>().SingleInstance();
         }
 
         private void RegisterRepos(ContainerBuilder builder)
@@ -48,11 +50,13 @@ namespace CallOfService.Technician.Mobile.Core.DI
         {
             builder.RegisterType<LoginService>().As<ILoginService>().SingleInstance();
             builder.RegisterType<Logger>().As<ILogger>().SingleInstance();
+            builder.RegisterType<AppointmentService>().As<IAppointmentService>().SingleInstance();
         }
 
         private void RegisterViewModels(ContainerBuilder builder)
         {
             builder.RegisterType<LoginViewModel>().AsSelf();
+            builder.RegisterType<WelcomeViewModel>().AsSelf();
         }
     }
 }

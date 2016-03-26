@@ -8,7 +8,7 @@
     <controls:SvgImage WidthRequest="130" HeightRequest="152" FileName="login-page-logo"></controls:SvgImage>
     <Label Text="Call of Service" TextColor="White" HorizontalOptions="Center" FontSize="20" />
 
-    <Label Text="Eliminate the Paper" TextColor="White" HorizontalOptions="Center" />
+    <Label Text="Eliminate the Paper" TextColor="White" FontSize="10" HorizontalOptions="Center" />
 
     <Entry Text="{Binding Username}" Placeholder="Email" BackgroundColor="#44b6ae" HeightRequest="50" TextColor="White" PlaceholderColor="White"/>
 

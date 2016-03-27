@@ -31,6 +31,10 @@ namespace CallOfService.Technician.Mobile.Features.Welcome
             });
         }
 
+		public async Task<string> GetUserName(){
+			return (await _userService.GetCurrentUser ()).FirstName;
+		}
+
         public bool FinishedLoadingAppointments { get; set; }
         public bool FinishedShowingMessages { get; set; }
         public bool ShowStartButton { get; set; }
@@ -42,24 +46,9 @@ namespace CallOfService.Technician.Mobile.Features.Welcome
             
         }
 
-        public async void OnAppearing()
+        public void OnAppearing()
         {
-            var startNew = Task.Factory.StartNew(StartDownLoadingUserData);
-
-            var userProfile = await _userService.GetCurrentUser();
-            Message1 = "HI";
-            Message2 = userProfile.FirstName;
-            await Task.Delay(3000);
-            Message1 = "Welcome to";
-            Message2 = "Call Of Service";
-            await Task.Delay(3000);
-            Message1 = "This could take some time !";
-            Message2 = "";
-            if (FinishedLoadingAppointments)
-            {
-                Message1 = "All Done !";
-                ShowStartButton = true;
-            }
+            Task.Factory.StartNew(StartDownLoadingUserData);
         }
 
         private void StartDownLoadingUserData()

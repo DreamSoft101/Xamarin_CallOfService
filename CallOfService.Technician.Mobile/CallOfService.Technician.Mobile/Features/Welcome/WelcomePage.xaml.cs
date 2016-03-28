@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,14 +15,13 @@ namespace CallOfService.Technician.Mobile.Features.Welcome
         public WelcomePage()
         {
             InitializeComponent();
-			
         }
 
 		protected async override void OnAppearing ()
 		{
 			base.OnAppearing ();
-            viewModel = BindingContext as WelcomeViewModel;
-            var username  = await viewModel.GetUserName ();
+			viewModel = BindingContext  as WelcomeViewModel;
+			var username  = await viewModel.GetUserName ();
 
 			Message1.FadeTo (0, 250);
 			await Message2.FadeTo (0, 250);
@@ -30,36 +29,36 @@ namespace CallOfService.Technician.Mobile.Features.Welcome
 			Message1.Text = "HI";
 			Message2.Text = username;
 
-			Message1.FadeTo (100, 250);
-			await Message2.FadeTo (100, 250);
+			Message1.FadeTo (100, 500);
+			await Message2.FadeTo (100, 500);
 
 			await Task.Delay (3000);
 
-			Message1.FadeTo (0, 250);
-			await Message2.FadeTo (0, 250);
+			Message1.FadeTo (0, 500);
+			await Message2.FadeTo (0, 500);
 
 			Message1.Text = "Welcome to";
 			Message2.Text = "Call Of Service";
 
-			Message1.FadeTo (100, 250);
-			await Message2.FadeTo (100, 250);
+			Message1.FadeTo (100, 500);
+			await Message2.FadeTo (100, 500);
 
 			await Task.Delay (3000);
 
-			Message1.FadeTo (0, 250);
-			await Message2.FadeTo (0, 250);
+			Message1.FadeTo (0, 500);
+			await Message2.FadeTo (0, 500);
 
 			Message1.Text = "This could take moment !";
 			Message2.Text = "";
 
-			await Message1.FadeTo (100, 250);
+			await Message1.FadeTo (100, 500);
 
 			viewModel.FinishedShowingMessages = true;
 			if(viewModel.FinishedLoadingAppointments)
 			{
-				await Message1.FadeTo (0, 250);
-			    Message1.Text = "All Done !";
-				await Message1.FadeTo (100, 250);
+				await Message1.FadeTo (0, 500);
+				Message1.Text = "All Done !";
+				await Message1.FadeTo (100, 500);
 				viewModel.ShowStartButton = true;
 			}
 		}

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CallOfService.Technician.Mobile.Core.DI;
+using CallOfService.Technician.Mobile.Features.Dashboard;
 using CallOfService.Technician.Mobile.Features.Welcome;
 using Xamarin.Forms;
 
@@ -15,7 +16,7 @@ namespace CallOfService.Technician.Mobile.Core.SystemServices
             return Navigation.PushAsync(CreateAndBind<WelcomePage>(DependencyResolver.Resolve<WelcomeViewModel>()));
         }
 
-        private static Page CreateAndBind<T>(object obj) where T : Page, new()
+        public static Page CreateAndBind<T>(object obj) where T : Page, new()
         {
             T page;
             var weakReference = new WeakReference<T>(new T { BindingContext = obj });
@@ -23,5 +24,9 @@ namespace CallOfService.Technician.Mobile.Core.SystemServices
             return page;
         }
 
+        public static Task NavigateToDashboardScreen()
+        {
+            return Navigation.PushAsync(CreateAndBind<DashboardPage>(null));
+        }
     }
 }

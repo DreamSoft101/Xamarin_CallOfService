@@ -47,11 +47,24 @@
     <Compile Include="Database\DbInitializer.cs" />
     <Compile Include="Database\DbSet.cs" />
     <Compile Include="Database\Repos\Abstracts\IUserRepo.cs" />
+    <Compile Include="Database\Repos\Abstracts\IAppointmentRepo.cs" />
+    <Compile Include="Database\Repos\AppointmentRepo.cs" />
     <Compile Include="Database\Repos\UserRepo.cs" />
     <Compile Include="Domain\Appointment.cs" />
     <Compile Include="Domain\UserToken.cs" />
     <Compile Include="Domain\Tockn.cs" />
     <Compile Include="Domain\UserProfile.cs" />
+    <Compile Include="Features\Calendar\CalendarPage.xaml.cs">
+      <DependentUpon>CalendarPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Calendar\CalendarViewModel.cs" />
+    <Compile Include="Features\Dashboard\DashboardPage.xaml.cs">
+      <DependentUpon>DashboardPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Jobs\JobsPage.xaml.cs">
+      <DependentUpon>JobsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Jobs\JobsViewModel.cs" />
     <Compile Include="Features\Login\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
@@ -142,6 +155,24 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Features\Login\LoginPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Features\Dashboard\DashboardPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Features\Calendar\CalendarPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Features\Jobs\JobsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

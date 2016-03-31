@@ -3,6 +3,7 @@ using SQLite.Net.Attributes;
 
 namespace CallOfService.Technician.Mobile.Domain
 {
+    [Table("Appointment")]
     public class Appointment
     {
         public int JobId { get; set; }

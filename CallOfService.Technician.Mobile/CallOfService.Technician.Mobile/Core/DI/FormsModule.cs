@@ -39,12 +39,15 @@ namespace CallOfService.Technician.Mobile.Core.DI
         private void RegisterRepos(ContainerBuilder builder)
         {
             builder.RegisterType<UserRepo>().As<IUserRepo>().SingleInstance();
+            builder.RegisterType<AppointmentRepo>().As<IAppointmentRepo>().SingleInstance();
         }
 
         private void RegisterDatabaseDbSets(ContainerBuilder builder)
         {
             builder.RegisterType<DbInitializer>().AsSelf().SingleInstance();
             builder.RegisterType<DbSet<UserProfile>>().As<IDbSet<UserProfile>>().SingleInstance();
+            builder.RegisterType<DbSet<Appointment>>().As<IDbSet<Appointment>>().SingleInstance();
+
         }
 
         private void RegisterServces(ContainerBuilder builder)

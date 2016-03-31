@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using CallOfService.Technician.Mobile.Core.SystemServices;
 using CallOfService.Technician.Mobile.Domain;
 using CallOfService.Technician.Mobile.Messages;
 using CallOfService.Technician.Mobile.Services.Abstracts;
 using CallOfService.Technician.Mobile.UI;
 using PropertyChanged;
 using PubSub;
+using Xamarin.Forms;
 
 namespace CallOfService.Technician.Mobile.Features.Welcome
 {
@@ -41,6 +44,17 @@ namespace CallOfService.Technician.Mobile.Features.Welcome
         public string Message1 { get; set; }
         public string Message2 { get; set; }
 
+        public ICommand NavigateToDashboard
+        {
+            get
+            {
+                return new Command(() =>
+                {
+                    NavigationService.NavigateToDashboardScreen();
+                });
+            }
+        }
+
         public void Dispose()
         {
             
@@ -48,13 +62,14 @@ namespace CallOfService.Technician.Mobile.Features.Welcome
 
         public void OnAppearing()
         {
-            Task.Factory.StartNew(StartDownLoadingUserData);
+            Task.Factory.StartNew(async () => await StartDownLoadingUserData());
         }
 
-        private void StartDownLoadingUserData()
+        private async Task StartDownLoadingUserData()
         {
-            var appointments = _appointmentService.GetAppointments();
-            this.Publish(new FinishedLoadingAppointments());
+            var appointmentsLoaded = await _appointmentService.RetrieveAndSaveAppointments();
+            if(appointmentsLoaded)
+                this.Publish(new FinishedLoadingAppointments());
         }
 
         public void OnDisappearing()

@@ -58,7 +58,7 @@ namespace CallOfService.Technician.Mobile.Features.Welcome
 			if(viewModel.FinishedLoadingAppointments)
 			{
 				await Message1.FadeTo (0, 250);
-				Message1.Text = "All Done !"
+			    Message1.Text = "All Done !";
 				await Message1.FadeTo (100, 250);
 				viewModel.ShowStartButton = true;
 			}

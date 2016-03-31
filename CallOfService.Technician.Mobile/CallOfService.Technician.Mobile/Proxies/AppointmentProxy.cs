@@ -16,13 +16,13 @@ namespace CallOfService.Technician.Mobile.Proxies
         {
         }
 
-        public async Task<List<Appointment>> GetAppointments()
+        public async Task<List<Appointment>> GetAppointments(int userId)
         {
             try
             {
                 Client.DefaultRequestHeaders.Add("Accept", "application/json");
                 //Client.DefaultRequestHeaders.Add("Content-Type", "application/json");
-                HttpResponseMessage responseMessage = await Client.GetAsync($"{UrlConstants.AppointmentsUrl}?view=week");
+                HttpResponseMessage responseMessage = await Client.GetAsync($"{UrlConstants.AppointmentsUrl}?view=year&userid={userId}");
                 var responseString = await responseMessage.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<List<Appointment>>(responseString);
             }

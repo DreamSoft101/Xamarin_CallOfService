@@ -26,7 +26,7 @@ namespace CallOfService.Technician.Mobile.Core.SystemServices
 
         public static Task NavigateToDashboardScreen()
         {
-            return Navigation.PushAsync(CreateAndBind<DashboardPage>(null));
+            return Navigation.PushAsync(CreateAndBind<DashboardPage>(new object()));
         }
     }
 }

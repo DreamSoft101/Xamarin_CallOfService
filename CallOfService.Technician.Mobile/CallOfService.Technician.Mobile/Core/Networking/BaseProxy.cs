@@ -1,30 +1,43 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
+using CallOfService.Technician.Mobile.Core.Security;
 using CallOfService.Technician.Mobile.Core.SystemServices;
+using CallOfService.Technician.Mobile.Database.Repos.Abstracts;
+using CallOfService.Technician.Mobile.Services.Abstracts;
 
 namespace CallOfService.Technician.Mobile.Core.Networking
 {
     public class BaseProxy
     {
         protected readonly ILogger Logger;
+        private readonly IUserService _userService;
         protected HttpClient Client;
 
-        public BaseProxy(ILogger logger)
+        public BaseProxy(ILogger logger,IUserService userService)
         {
             Logger = logger;
+            _userService = userService;
             Client = CreateHttpClient();
         }
 
-        private HttpClient CreateHttpClient()
+        protected HttpClient CreateHttpClient()
         {
             var serverUri = new Uri(UrlConstants.BaseUrl);
 
-            return new HttpClient
+            var httpClient = new HttpClient
             {
                 BaseAddress = serverUri,
                 Timeout = new TimeSpan(0, 2, 0)
             };
+
+            var userCredentials = _userService.GetUserCredentials();
+            if (userCredentials != null)
+            {
+                httpClient.DefaultRequestHeaders.Add("Token-Id", userCredentials.Token);
+            }
+
+            return httpClient;
         }
 
         protected void LogResponse(HttpResponseMessage responseMessage, string content,

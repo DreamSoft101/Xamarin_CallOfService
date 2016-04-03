@@ -6,13 +6,15 @@ using CallOfService.Technician.Mobile.Core.Networking;
 using CallOfService.Technician.Mobile.Core.SystemServices;
 using CallOfService.Technician.Mobile.Domain;
 using CallOfService.Technician.Mobile.Proxies.Abstratcs;
+using CallOfService.Technician.Mobile.Services.Abstracts;
 using Newtonsoft.Json;
 
 namespace CallOfService.Technician.Mobile.Proxies
 {
     public class AppointmentProxy : BaseProxy, IAppointmentProxy
     {
-        public AppointmentProxy(ILogger logger) : base(logger)
+
+        public AppointmentProxy(ILogger logger, IUserService userService) : base(logger, userService)
         {
         }
 
@@ -20,9 +22,11 @@ namespace CallOfService.Technician.Mobile.Proxies
         {
             try
             {
+                CreateHttpClient();
                 Client.DefaultRequestHeaders.Add("Accept", "application/json");
                 //Client.DefaultRequestHeaders.Add("Content-Type", "application/json");
-                HttpResponseMessage responseMessage = await Client.GetAsync($"{UrlConstants.AppointmentsUrl}?view=year&userid={userId}");
+                var url = $"{UrlConstants.AppointmentsUrl}?View=year&UserId={userId}&date={DateTime.Now.ToString("yyyy-MM-dd")}";
+                HttpResponseMessage responseMessage = await Client.GetAsync(url);
                 var responseString = await responseMessage.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<List<Appointment>>(responseString);
             }
@@ -32,5 +36,6 @@ namespace CallOfService.Technician.Mobile.Proxies
                 return null;
             }
         }
+
     }
 }

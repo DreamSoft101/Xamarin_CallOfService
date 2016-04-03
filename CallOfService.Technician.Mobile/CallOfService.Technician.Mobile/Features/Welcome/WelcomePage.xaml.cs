@@ -15,14 +15,14 @@ namespace CallOfService.Technician.Mobile.Features.Welcome
         public WelcomePage()
         {
             InitializeComponent();
-			viewModel = BindingContext  as WelcomeViewModel;
+			
         }
 
 		protected async override void OnAppearing ()
 		{
 			base.OnAppearing ();
-
-			var username  = await viewModel.GetUserName ();
+            viewModel = BindingContext as WelcomeViewModel;
+            var username  = await viewModel.GetUserName ();
 
 			Message1.FadeTo (0, 250);
 			await Message2.FadeTo (0, 250);

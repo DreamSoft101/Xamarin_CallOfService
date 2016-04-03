@@ -7,14 +7,14 @@ using CallOfService.Technician.Mobile.Core.Networking;
 using CallOfService.Technician.Mobile.Core.SystemServices;
 using CallOfService.Technician.Mobile.Domain;
 using CallOfService.Technician.Mobile.Proxies.Abstratcs;
+using CallOfService.Technician.Mobile.Services.Abstracts;
 using Newtonsoft.Json;
 
 namespace CallOfService.Technician.Mobile.Proxies
 {
     public class LoginProxy : BaseProxy, ILoginProxy
     {
-
-        public LoginProxy(ILogger logger) : base(logger)
+        public LoginProxy(ILogger logger, IUserService userService) : base(logger, userService)
         {
         }
 

@@ -12,7 +12,7 @@ namespace CallOfService.Technician.Mobile.Features.Dashboard
         public DashboardPage()
         {
             InitializeComponent();
-
+            NavigationPage.SetHasNavigationBar(this, false);
             var jobsPage = NavigationService.CreateAndBind<JobsPage>(DependencyResolver.Resolve<JobsViewModel>());
             jobsPage.Title = "JOBS";
             Children.Add(jobsPage);

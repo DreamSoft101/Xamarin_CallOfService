@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CallOfService.Technician.Mobile.Database.Repos;
@@ -31,6 +32,11 @@ namespace CallOfService.Technician.Mobile.Services
                 return true;
             }
             return false;
+        }
+
+        public Task<List<Appointment>> AppointmentsByDay(DateTime date)
+        {
+            return _appointmentRepo.AppointmentsByDay(date);
         }
     }
 }

@@ -1,6 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<ui:BasePage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:CallOfService.Technician.Mobile.Controls;assembly=CallOfService.Technician.Mobile"
+             xmlns:ui="clr-namespace:CallOfService.Technician.Mobile.UI;assembly=CallOfService.Technician.Mobile"
              x:Class="CallOfService.Technician.Mobile.Features.Jobs.JobsPage">
-  <Label Text="Jobs" VerticalOptions="Center" HorizontalOptions="Center" />
-</ContentPage>
+
+  <StackLayout Spacing="0">
+    <BoxView HeightRequest="20" BackgroundColor="#44b6ae" />
+    <Label Text="{Binding Date,StringFormat='{}{0:dddd} - {0:MMMM} - {0:yyyy}'}"
+           HorizontalTextAlignment="Center" HeightRequest="60" VerticalTextAlignment="Center" BackgroundColor="Silver" FontSize="25" />
+    <StackLayout Padding="20">
+      <ListView HasUnevenRows="True" ItemsSource="{Binding Appointments}">
+        <ListView.ItemTemplate>
+          <DataTemplate>
+            <ViewCell>
+              <StackLayout Orientation="Horizontal">
+                <BoxView WidthRequest="10" BackgroundColor="#44b6ae" />
+                <StackLayout>
+                  <Label Text="{Binding Title}" />
+                  <StackLayout Orientation="Horizontal">
+                    <controls:SvgImage FileName="clock-green" WidthRequest="20" HeightRequest="20" />
+                    <Label Text="{Binding StartTimeAndTimeFormated}" />
+                  </StackLayout>
+                  <StackLayout Orientation="Horizontal">
+                    <controls:SvgImage FileName="location-start" WidthRequest="16" HeightRequest="20" />
+                    <Label Text="{Binding Location}" />
+                  </StackLayout>
+                </StackLayout>
+              </StackLayout>
+            </ViewCell>
+          </DataTemplate>
+        </ListView.ItemTemplate>
+      </ListView>
+    </StackLayout>
+  </StackLayout>
+</ui:BasePage>

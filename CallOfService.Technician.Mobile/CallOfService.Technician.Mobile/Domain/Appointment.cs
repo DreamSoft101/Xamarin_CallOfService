@@ -15,6 +15,8 @@ namespace CallOfService.Technician.Mobile.Domain
         public string JobType { get; set; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
+        public int StartDate { get; set; }
+        public int EndDate { get; set; }
         [Ignore]
         public int[] Workers { get; set; }
         public string WorkersText { get; set; }
@@ -24,5 +26,12 @@ namespace CallOfService.Technician.Mobile.Domain
         public bool IsInProgress { get; set; }
         public string StartString { get; set; }
         public string EndString { get; set; }
+
+
+        public void UpdateDates()
+        {
+            StartDate = Int32.Parse(Start.ToString("yyyyMMdd"));
+            EndDate = Int32.Parse(End.ToString("yyyyMMdd"));
+        }
     }
 }

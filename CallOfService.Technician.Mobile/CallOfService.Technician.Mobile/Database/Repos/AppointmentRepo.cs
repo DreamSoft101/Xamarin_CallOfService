@@ -22,7 +22,13 @@ namespace CallOfService.Technician.Mobile.Database.Repos
 
         public Task<List<Appointment>> AppointmentsByDay(DateTime date)
         {
-            return _appointmentDbset.Get(a => a.Start >= date || a.End <= date);
+            var dateInt = Int32.Parse(date.ToString("yyyyMMdd"));
+            return _appointmentDbset.Get(a => a.StartDate <= dateInt && a.EndDate >= dateInt);
+        }
+
+        public Task DeleteAll()
+        {
+            return _appointmentDbset.DeleteAll();
         }
     }
 }

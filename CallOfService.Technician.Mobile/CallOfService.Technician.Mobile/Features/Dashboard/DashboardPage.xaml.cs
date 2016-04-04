@@ -14,13 +14,6 @@ namespace CallOfService.Technician.Mobile.Features.Dashboard
         {
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
-            var jobsPage = NavigationService.CreateAndBind<JobsPage>(DependencyResolver.Resolve<JobsViewModel>());
-            jobsPage.Title = "JOBS";
-            Children.Add(jobsPage);
-            var calendarPage =
-                NavigationService.CreateAndBind<CalendarPage>(DependencyResolver.Resolve<CalendarViewModel>());
-            calendarPage.Title = "CALENDAR";
-            Children.Add(calendarPage);
         }
 
         protected async override void OnAppearing()
@@ -28,6 +21,13 @@ namespace CallOfService.Technician.Mobile.Features.Dashboard
             var appointmentService = DependencyResolver.Resolve<IAppointmentService>();
             await appointmentService.RetrieveAndSaveAppointments();
             base.OnAppearing();
+            var jobsPage = NavigationService.CreateAndBind<JobsPage>(DependencyResolver.Resolve<JobsViewModel>());
+            jobsPage.Title = "JOBS";
+            Children.Add(jobsPage);
+            var calendarPage =
+                NavigationService.CreateAndBind<CalendarPage>(DependencyResolver.Resolve<CalendarViewModel>());
+            calendarPage.Title = "CALENDAR";
+            Children.Add(calendarPage);
         }
     }
 }

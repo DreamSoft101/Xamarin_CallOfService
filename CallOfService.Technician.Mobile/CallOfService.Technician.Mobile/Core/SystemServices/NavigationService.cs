@@ -28,5 +28,9 @@ namespace CallOfService.Technician.Mobile.Core.SystemServices
         {
             return Navigation.PushAsync(CreateAndBind<DashboardPage>(new object()));
         }
+
+		public static Task NavigateToJobDetails(){
+			return Navigation.PushAsync (CreateAndBind<JobDetailsPage> (DependencyResolver.Resolve<JobDetailsViewModel> ()));
+		}
     }
 }

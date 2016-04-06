@@ -15,6 +15,9 @@
           <DataTemplate>
             <ViewCell>
               <StackLayout Orientation="Horizontal">
+              	<StackLayout.GestureRecognizers>
+              		<TapGestureRecognizer Command="{Binding ViewDetails}" />
+              	</StackLayout.GestureRecognizers>
                 <BoxView WidthRequest="10" BackgroundColor="#44b6ae" />
                 <StackLayout>
                   <Label Text="{Binding Title}" />

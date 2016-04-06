@@ -66,6 +66,7 @@ namespace CallOfService.Technician.Mobile.Core.DI
             builder.RegisterType<WelcomeViewModel>().AsSelf();
             builder.RegisterType<JobsViewModel>().AsSelf().SingleInstance();
             builder.RegisterType<CalendarViewModel>().AsSelf().SingleInstance();
+			builder.RegisterType<JobDetailsViewModel> ().AsSelf ().SingleInstance ();
         }
     }
 }

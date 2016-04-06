@@ -9,6 +9,9 @@ using CallOfService.Technician.Mobile.Domain;
 using CallOfService.Technician.Mobile.Services.Abstracts;
 using CallOfService.Technician.Mobile.UI;
 using PropertyChanged;
+using Xamarin.Forms;
+using PubSub;
+using CallOfService.Technician.Mobile.Core.SystemServices;
 
 namespace CallOfService.Technician.Mobile.Features.Jobs
 {
@@ -21,6 +24,10 @@ namespace CallOfService.Technician.Mobile.Features.Jobs
         {
             _appointmentService = appointmentService;
             Appointments = new ObservableCollection<AppointmentViewModel>();
+			this.Subscribe<JobSelected> (async m => {
+				await NavigationService.NavigateToJobDetails ();
+				this.Publish(new ViewJobDetails(m.Appointment.JobId));
+			});
         }
 
         public ObservableCollection<AppointmentViewModel> Appointments { get; set; }
@@ -43,7 +50,8 @@ namespace CallOfService.Technician.Mobile.Features.Jobs
                 {
                     Title = appointment.Title,
                     Location = appointment.Title,
-                    StartTimeEndTimeFormated =  $"{appointment.StartString} - {appointment.EndString}"
+                    StartTimeEndTimeFormated =  $"{appointment.StartString} - {appointment.EndString}",
+					JobId = appointment.JobId
                 });
             }
         }
@@ -59,6 +67,7 @@ namespace CallOfService.Technician.Mobile.Features.Jobs
         public string Title { get; set; }
         public string StartTimeEndTimeFormated { get; set; }
         public string Location { get; set; }
-        public ICommand ViewDetails { get; set; }
+		public int JobId { get; set;}
+		public ICommand ViewDetails { get { return new Command (() => this.Publish (new JobSelected (this))); } }
     }
 }

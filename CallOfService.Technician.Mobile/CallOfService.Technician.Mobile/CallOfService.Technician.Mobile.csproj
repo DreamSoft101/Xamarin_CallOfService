@@ -89,6 +89,12 @@
     <Compile Include="Services\UserService.cs" />
     <Compile Include="UI\BasePage.cs" />
     <Compile Include="UI\IViewAwareViewModel.cs" />
+    <Compile Include="Features\JobDetails\JobDetailsPage.xaml.cs">
+      <DependentUpon>JobDetailsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\JobDetails\JobDetailsViewModel.cs" />
+    <Compile Include="Messages\JobSelected.cs" />
+    <Compile Include="Messages\ViewJobDetails.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Acr.UserDialogs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -147,6 +153,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Features\JobDetails\JobDetailsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Features\Welcome\WelcomePage.xaml">
@@ -193,4 +202,7 @@
     <Error Condition="!Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
     <Error Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
   </Target>
+  <ItemGroup>
+    <Folder Include="Features\JobDetails\" />
+  </ItemGroup>
 </Project>

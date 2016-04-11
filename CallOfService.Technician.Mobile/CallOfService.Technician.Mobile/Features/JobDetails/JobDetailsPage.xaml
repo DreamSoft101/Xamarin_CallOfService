@@ -1,5 +1,46 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="CallOfService.Technician.Mobile.JobDetailsPage">
-	<ContentPage.Content>
-	</ContentPage.Content>
-</ContentPage>
+<ui:BasePage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                                 xmlns:ui="clr-namespace:CallOfService.Technician.Mobile.UI;assembly=CallOfService.Technician.Mobile"
+                                 xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
+                                 xmlns:controls="clr-namespace:XLabs.Forms.Controls;assembly=XLabs.Forms"
+                                 xmlns:jobDetails="clr-namespace:CallOfService.Technician.Mobile.Features.JobDetails;assembly=CallOfService.Technician.Mobile"
+                                 x:Class="CallOfService.Technician.Mobile.Features.JobDetails.JobDetailsPage">
+  <StackLayout>
+    <BoxView HeightRequest="20" BackgroundColor="#44b6ae" />
+    <Label Text="Job Details"
+             HorizontalTextAlignment="Center" HeightRequest="60" VerticalTextAlignment="Center" BackgroundColor="Silver" FontSize="25" />
+    <ContentView>
+      <maps:Map MapType="Satellite" IsShowingUser="True" HeightRequest="200" />
+    </ContentView>
+    <ScrollView>
+      <StackLayout>
+        <Label Text="{Binding JobDateFormatted}" />
+        <BoxView HeightRequest="1" BackgroundColor="Silver" />
+        <Label Text="{Binding Contact,StringFormat='Contact: {0}'}" />
+        <BoxView HeightRequest="1" BackgroundColor="Silver" />
+        <StackLayout Orientation="Horizontal">
+          <Label Text="{Binding JobNumber,StringFormat='JobNumber: {0}'}" />
+          <Label Text="{Binding Status,StringFormat='Status: {0}'}" />
+        </StackLayout>
+        <controls:RepeaterView x:TypeArguments="jobDetails:NoteViewModel" ItemsSource="{Binding Notes}">
+          <controls:RepeaterView.ItemTemplate>
+            <DataTemplate>
+              <Label Text="{Binding Description}" />
+              <Label Text="{Binding Date}" />
+              <controls:RepeaterView x:TypeArguments="ImageSource" ItemsSource="{Binding ThumbnilImageSources}">
+                <controls:RepeaterView.ItemTemplate>
+                  <DataTemplate>
+                    <Image Source="{Binding}"></Image>
+                  </DataTemplate>
+                </controls:RepeaterView.ItemTemplate>
+              </controls:RepeaterView>
+            </DataTemplate>
+          </controls:RepeaterView.ItemTemplate>
+        </controls:RepeaterView>
+        <Label Text="Add NOTE / IMAGE" />
+        <Editor Text="{Binding NewNoteText}" />
+        <Button Text="Attach Photo" Command="{Binding AddNewNoteImage}"/>
+      </StackLayout>
+    </ScrollView>
+  </StackLayout>
+</ui:BasePage>

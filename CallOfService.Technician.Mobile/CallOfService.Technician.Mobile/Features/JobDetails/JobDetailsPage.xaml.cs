@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CallOfService.Technician.Mobile.UI;
 
-using Xamarin.Forms;
-
-namespace CallOfService.Technician.Mobile
+namespace CallOfService.Technician.Mobile.Features.JobDetails
 {
-	public partial class JobDetailsPage : ContentPage
+	public partial class JobDetailsPage : BasePage
 	{
 		public JobDetailsPage ()
 		{

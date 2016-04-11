@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
-using CallOfService.Technician.Mobile.Core.Security;
 using CallOfService.Technician.Mobile.Core.SystemServices;
-using CallOfService.Technician.Mobile.Database.Repos.Abstracts;
 using CallOfService.Technician.Mobile.Services.Abstracts;
 
 namespace CallOfService.Technician.Mobile.Core.Networking

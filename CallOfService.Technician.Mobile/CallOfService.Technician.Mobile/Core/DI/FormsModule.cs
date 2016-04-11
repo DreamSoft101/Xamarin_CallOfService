@@ -11,6 +11,7 @@ using CallOfService.Technician.Mobile.Database.Repos;
 using CallOfService.Technician.Mobile.Database.Repos.Abstracts;
 using CallOfService.Technician.Mobile.Domain;
 using CallOfService.Technician.Mobile.Features.Calendar;
+using CallOfService.Technician.Mobile.Features.JobDetails;
 using CallOfService.Technician.Mobile.Features.Jobs;
 using CallOfService.Technician.Mobile.Features.Login;
 using CallOfService.Technician.Mobile.Features.Welcome;
@@ -49,6 +50,8 @@ namespace CallOfService.Technician.Mobile.Core.DI
             builder.RegisterType<DbInitializer>().AsSelf().SingleInstance();
             builder.RegisterType<DbSet<UserProfile>>().As<IDbSet<UserProfile>>().SingleInstance();
             builder.RegisterType<DbSet<Appointment>>().As<IDbSet<Appointment>>().SingleInstance();
+            builder.RegisterType<DbSet<JobDetails>>().As<IDbSet<JobDetails>>().SingleInstance();
+
 
         }
 

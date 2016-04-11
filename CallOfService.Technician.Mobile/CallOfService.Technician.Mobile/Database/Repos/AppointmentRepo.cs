@@ -9,10 +9,12 @@ namespace CallOfService.Technician.Mobile.Database.Repos
     public class AppointmentRepo : IAppointmentRepo
     {
         readonly IDbSet<Appointment> _appointmentDbset;
+        private readonly IDbSet<JobDetails> _jobDetailsDbSet;
 
-        public AppointmentRepo(IDbSet<Appointment> appointmentDbset)
+        public AppointmentRepo(IDbSet<Appointment> appointmentDbset,IDbSet<JobDetails> jobDetailsDbSet)
         {
             _appointmentDbset = appointmentDbset;
+            _jobDetailsDbSet = jobDetailsDbSet;
         }
 
         public Task<int> SaveAppointment(List<Appointment> appointments)
@@ -29,6 +31,17 @@ namespace CallOfService.Technician.Mobile.Database.Repos
         public Task DeleteAll()
         {
             return _appointmentDbset.DeleteAll();
+        }
+
+        public Task<Appointment> GetAppointmentByJobId(int jobId)
+        {
+            return _appointmentDbset.GetById(jobId);
+        }
+
+        public Task<int> SaveJob(Job job)
+        {
+            var jobDetails = new JobDetails(job);
+            return _jobDetailsDbSet.Add(jobDetails);
         }
     }
 }

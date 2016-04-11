@@ -25,7 +25,8 @@ namespace CallOfService.Technician.Mobile.Proxies
                 CreateHttpClient();
                 Client.DefaultRequestHeaders.Add("Accept", "application/json");
                 //Client.DefaultRequestHeaders.Add("Content-Type", "application/json");
-                var url = $"{UrlConstants.AppointmentsUrl}?View=year&UserId={userId}&date={DateTime.Now.ToString("yyyy-MM-dd")}";
+                var url =
+                    $"{UrlConstants.AppointmentsUrl}?View=year&UserId={userId}&date={DateTime.Now.ToString("yyyy-MM-dd")}";
                 HttpResponseMessage responseMessage = await Client.GetAsync(url);
                 var responseString = await responseMessage.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<List<Appointment>>(responseString);
@@ -37,5 +38,23 @@ namespace CallOfService.Technician.Mobile.Proxies
             }
         }
 
+        public async Task<Job> GetJobById(int jobId)
+        {
+            try
+            {
+                CreateHttpClient();
+                Client.DefaultRequestHeaders.Add("Accept", "application/json");
+                //Client.DefaultRequestHeaders.Add("Content-Type", "application/json");
+                var url = $"{UrlConstants.JobByIdUrl}/{jobId}";
+                HttpResponseMessage responseMessage = await Client.GetAsync(url);
+                var responseString = await responseMessage.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<Job>(responseString);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.ToString());
+                return null;
+            }
+        }
     }
 }

@@ -6,6 +6,7 @@ namespace CallOfService.Technician.Mobile.Domain
     [Table("Appointment")]
     public class Appointment
     {
+        [PrimaryKey]
         public int JobId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }

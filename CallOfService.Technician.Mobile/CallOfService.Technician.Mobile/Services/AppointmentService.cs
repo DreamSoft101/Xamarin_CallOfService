@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CallOfService.Technician.Mobile.Core;
+using CallOfService.Technician.Mobile.Core.Networking;
+using CallOfService.Technician.Mobile.Core.Security;
 using CallOfService.Technician.Mobile.Database.Repos;
 using CallOfService.Technician.Mobile.Database.Repos.Abstracts;
 using CallOfService.Technician.Mobile.Domain;
@@ -16,7 +18,8 @@ namespace CallOfService.Technician.Mobile.Services
         private readonly IUserService _userService;
         private readonly IAppointmentRepo _appointmentRepo;
 
-        public AppointmentService(IAppointmentProxy appointmentProxy,IUserService userService, IAppointmentRepo appointmentRepo)
+        public AppointmentService(IAppointmentProxy appointmentProxy, IUserService userService,
+            IAppointmentRepo appointmentRepo)
         {
             _appointmentProxy = appointmentProxy;
             _userService = userService;
@@ -40,6 +43,32 @@ namespace CallOfService.Technician.Mobile.Services
         public Task<List<Appointment>> AppointmentsByDay(DateTime date)
         {
             return _appointmentRepo.AppointmentsByDay(date);
+        }
+
+        public Task<Appointment> GetAppointmentByJobId(int jobId)
+        {
+            return _appointmentRepo.GetAppointmentByJobId(jobId);
+        }
+
+        public async Task<Job> GetJobById(int jobId)
+        {
+            var job = await _appointmentProxy.GetJobById(jobId);
+            await _appointmentRepo.SaveJob(job);
+            return job;
+        }
+
+        public Uri GetFileUri(FileReference fileReference, bool isThumbnil)
+        {
+            var userCredentials = _userService.GetUserCredentials();
+
+            var url =
+                $"{UrlConstants.BaseUrl}{UrlConstants.FileUrl}directory={fileReference.Directory}&fileName={fileReference.FileName}";
+
+            if (isThumbnil) url = $"{url}&thumbnail=true";
+
+            url = $"{url}&t={userCredentials.Token}";
+
+            return new Uri(url);
         }
     }
 }

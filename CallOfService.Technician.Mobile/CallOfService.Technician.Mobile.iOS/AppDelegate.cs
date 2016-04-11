@@ -19,7 +19,7 @@ namespace CallOfService.Technician.Mobile.iOS
 		public override bool FinishedLaunching (UIApplication application, NSDictionary launchOptions)
 		{
 			Forms.Init();
-		    DependencyResolver.Initialize(new iOSModule(), new FormsModule());
+		    DependencyResolver.Initialize(new IOsModule(), new FormsModule());
             LoadApplication(new App());
             return base.FinishedLaunching(application, launchOptions);
         }

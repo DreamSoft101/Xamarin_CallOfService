@@ -10,5 +10,6 @@ namespace CallOfService.Technician.Mobile.Proxies.Abstratcs
     public interface IAppointmentProxy
     {
         Task<List<Appointment>> GetAppointments(int userId);
+        Task<Job> GetJobById(int jobId);
     }
 }

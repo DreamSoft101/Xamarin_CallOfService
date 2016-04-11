@@ -10,5 +10,7 @@ namespace CallOfService.Technician.Mobile.Database.Repos.Abstracts
         Task<int> SaveAppointment(List<Appointment> appointments);
         Task<List<Appointment>> AppointmentsByDay(DateTime date);
         Task DeleteAll();
+        Task<Appointment> GetAppointmentByJobId(int jobId);
+        Task<int> SaveJob(Job job);
     }
 }

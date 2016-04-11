@@ -9,5 +9,8 @@ namespace CallOfService.Technician.Mobile.Services.Abstracts
     {
         Task<bool> RetrieveAndSaveAppointments();
         Task<List<Appointment>> AppointmentsByDay(DateTime date);
+        Task<Appointment> GetAppointmentByJobId(int jobId);
+        Task<Job> GetJobById(int jobId);
+        Uri GetFileUri(FileReference fileReference, bool isThumbnil);
     }
 }

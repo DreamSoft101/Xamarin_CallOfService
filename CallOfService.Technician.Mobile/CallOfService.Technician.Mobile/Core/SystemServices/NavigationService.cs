@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using CallOfService.Technician.Mobile.Core.DI;
 using CallOfService.Technician.Mobile.Features.Dashboard;
+using CallOfService.Technician.Mobile.Features.JobDetails;
 using CallOfService.Technician.Mobile.Features.Welcome;
 using Xamarin.Forms;
 

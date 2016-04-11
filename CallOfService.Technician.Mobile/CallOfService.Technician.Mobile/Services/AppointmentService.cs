@@ -30,9 +30,9 @@ namespace CallOfService.Technician.Mobile.Services
         {
             var currentUser = await _userService.GetCurrentUser();
             var appointments = await _appointmentProxy.GetAppointments(currentUser.UserId);
-            appointments.ForEach(a => a.UpdateDates());
             if (appointments != null)
             {
+				appointments.ForEach(a => a.UpdateDates());
                 await _appointmentRepo.DeleteAll();
                 await _appointmentRepo.SaveAppointment(appointments);
                 return true;

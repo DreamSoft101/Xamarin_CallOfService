@@ -2,6 +2,7 @@
 using System.Dynamic;
 using Newtonsoft.Json;
 using SQLite.Net.Attributes;
+using System.Collections.Generic;
 
 namespace CallOfService.Technician.Mobile.Domain
 {
@@ -60,7 +61,7 @@ namespace CallOfService.Technician.Mobile.Domain
         public bool IsDeleted { get; set; }
         public string Status { get; set; }
         public string AutoSchedulePeriod { get; set; }
-        public ExpandoObject CustomFields { get; set; }
+		public Dictionary<string,string> CustomFields { get; set; }
         public string CancellationReason { get; set; }
         public string StatusDescription { get; set; }
     }
@@ -150,10 +151,6 @@ namespace CallOfService.Technician.Mobile.Domain
         public string FileName { get; set; }
         public string ContentType { get; set; }
 
-        public string GetFileUri()
-        {
-            
-        }
     }
 
     public class UtcDate

@@ -24,7 +24,7 @@ namespace CallOfService.Technician.Mobile.Database.Repos
         public async Task<UserProfile> GetCurrentUserProfile()
         {
             var userProfiles = await _userProfileDbSet.GetAllAsync();
-            return userProfiles.First();
+            return userProfiles.FirstOrDefault();
         }
     }
 }

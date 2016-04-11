@@ -24,7 +24,7 @@ namespace CallOfService.Technician.Mobile
         {
             MainPage = new Page();
             await InitDB();
-            if (ShouldLogin())
+            if (await ShouldLogin())
             {
                 var loginPage = new LoginPage { BindingContext = DependencyResolver.Resolve<LoginViewModel>() };
                 MainPage = new NavigationPage(loginPage);
@@ -37,11 +37,11 @@ namespace CallOfService.Technician.Mobile
             NavigationService.Navigation = MainPage.Navigation;
         }
 
-        private bool ShouldLogin()
+        private async Task<bool> ShouldLogin()
         {
             var userService = DependencyResolver.Resolve<IUserService>();
-            var userCredentials = userService.GetUserCredentials();
-            return userCredentials == null;
+			var currentUser = await userService.GetCurrentUser ();
+			return currentUser == null;
         }
 
         private async Task InitDB()

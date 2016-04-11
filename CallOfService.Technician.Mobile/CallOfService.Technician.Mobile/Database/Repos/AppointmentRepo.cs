@@ -38,10 +38,16 @@ namespace CallOfService.Technician.Mobile.Database.Repos
             return _appointmentDbset.GetById(jobId);
         }
 
-        public Task<int> SaveJob(Job job)
+        public async Task<int> SaveJob(Job job)
         {
-            var jobDetails = new JobDetails(job);
-            return _jobDetailsDbSet.Add(jobDetails);
+			var savedJob = await _jobDetailsDbSet.GetById (job.Id);
+			if (savedJob == null) {
+				var jobDetails = new JobDetails (job);
+				return await _jobDetailsDbSet.Add (jobDetails);
+			} else {
+				var jobDetails = new JobDetails (job);
+				return await _jobDetailsDbSet.Update (jobDetails);
+			}
         }
     }
 }

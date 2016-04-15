@@ -42,6 +42,7 @@ namespace CallOfService.Technician.Mobile.Services
 
         public Task<List<Appointment>> AppointmentsByDay(DateTime date)
         {
+            //TODO Needs to get the appointments  from the server
             return _appointmentRepo.AppointmentsByDay(date);
         }
 

@@ -31,13 +31,38 @@ namespace CallOfService.Technician.Mobile.Features.Jobs
 				await NavigationService.NavigateToJobDetails ();
 				this.Publish(new ViewJobDetails(m.Appointment.JobId));
 			});
+            Date = DateTime.Today;
         }
 
         public ObservableCollection<AppointmentViewModel> Appointments { get; set; }
 
         public DateTime Date { get; set; }
-        
-		public bool IsRefreshing { get; set; }
+
+        public ICommand GoToNextDay
+        {
+            get
+            {
+                return new Command(() =>
+                {
+                    Date = Date.AddDays(1);
+                    OnAppearing();
+                });
+            }
+        }
+
+        public ICommand GoToPrevDay
+        {
+            get
+            {
+                return new Command(() =>
+                {
+                    Date = Date.AddDays(-1);
+                    OnAppearing();
+                });
+            }
+        }
+
+        public bool IsRefreshing { get; set; }
 
 		public ICommand RefreshListOfJobsCommand {
 			get { 
@@ -55,7 +80,7 @@ namespace CallOfService.Technician.Mobile.Features.Jobs
         public async void OnAppearing()
         {
 			IsRefreshing = true;
-            Date = DateTime.Today;
+
             var appointments = await _appointmentService.AppointmentsByDay(Date);
             Appointments.Clear();
             foreach (var appointment in appointments)
@@ -68,6 +93,7 @@ namespace CallOfService.Technician.Mobile.Features.Jobs
 					JobId = appointment.JobId
                 });
             }
+
 			IsRefreshing = false;
         }
 

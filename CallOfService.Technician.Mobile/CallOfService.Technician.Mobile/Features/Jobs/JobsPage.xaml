@@ -7,6 +7,20 @@
 
   <StackLayout Spacing="0">
     <BoxView HeightRequest="20" BackgroundColor="#44b6ae" />
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="50"/>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="44"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="44"/>
+      </Grid.ColumnDefinitions>
+      <Button Grid.Row="0" Grid.Column="0" Text="Prev" Command="{Binding GoToPrevDay}" />
+      <Label Grid.Row="0" Grid.Column="1" Text="{Binding Date,StringFormat='{}{0:dddd} - {0:MMMM} - {0:yyyy}'}"
+                 HorizontalTextAlignment="Center" HeightRequest="60" VerticalTextAlignment="Center" BackgroundColor="Silver" FontSize="25" />
+      <Button Grid.Row="0" Grid.Column="2" Text="Next" Command="{Binding GoToNextDay}"/>
+    </Grid>
     <Label Text="{Binding Date,StringFormat='{}{0:dddd} - {0:MMMM} - {0:yyyy}'}"
            HorizontalTextAlignment="Center" HeightRequest="60" VerticalTextAlignment="Center" BackgroundColor="Silver" FontSize="25" />
     <StackLayout Padding="20">
@@ -15,9 +29,9 @@
           <DataTemplate>
             <ViewCell>
               <StackLayout Orientation="Horizontal">
-              	<StackLayout.GestureRecognizers>
-              		<TapGestureRecognizer Command="{Binding ViewDetails}" />
-              	</StackLayout.GestureRecognizers>
+                <StackLayout.GestureRecognizers>
+                  <TapGestureRecognizer Command="{Binding ViewDetails}" />
+                </StackLayout.GestureRecognizers>
                 <BoxView WidthRequest="10" BackgroundColor="#44b6ae" />
                 <StackLayout>
                   <Label Text="{Binding Title}" />

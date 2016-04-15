@@ -1,8 +1,16 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ui:BasePage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:ui="clr-namespace:CallOfService.Technician.Mobile.UI;assembly=CallOfService.Technician.Mobile" xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps" xmlns:controls="clr-namespace:XLabs.Forms.Controls;assembly=XLabs.Forms" xmlns:jobDetails="clr-namespace:CallOfService.Technician.Mobile.Features.JobDetails;assembly=CallOfService.Technician.Mobile" x:Class="CallOfService.Technician.Mobile.Features.JobDetails.JobDetailsPage">
-	<StackLayout>
+<ui:BasePage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:ui="clr-namespace:CallOfService.Technician.Mobile.UI;assembly=CallOfService.Technician.Mobile" xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps" xmlns:controls="clr-namespace:XLabs.Forms.Controls;assembly=XLabs.Forms" xmlns:customcontrols="clr-namespace:CallOfService.Technician.Mobile.Controls;assembly=CallOfService.Technician.Mobile" xmlns:jobDetails="clr-namespace:CallOfService.Technician.Mobile.Features.JobDetails;assembly=CallOfService.Technician.Mobile" x:Class="CallOfService.Technician.Mobile.Features.JobDetails.JobDetailsPage">
+	<StackLayout Spacing="0">
 		<BoxView HeightRequest="20" BackgroundColor="#44b6ae" />
-		<Label Text="Job Details" HorizontalTextAlignment="Center" HeightRequest="60" VerticalTextAlignment="Center" BackgroundColor="Silver" FontSize="25" />
+		<StackLayout Orientation="Horizontal" BackgroundColor="Silver">
+			<ContentView HeightRequest="44" WidthRequest="44" HorizontalOptions="Start">
+				<ContentView.GestureRecognizers>
+					<TapGestureRecognizer Command="{Binding NavigateBack}" />
+				</ContentView.GestureRecognizers>
+				<customcontrols:SvgImage FileName="navigate-back" WidthRequest="12" HeightRequest="20" />
+			</ContentView>
+			<Label Text="Job Details" HorizontalOptions="Center" HorizontalTextAlignment="Center" HeightRequest="60" VerticalTextAlignment="Center" FontSize="25" />
+		</StackLayout>
 		<ContentView>
 			<maps:Map MapType="Street" IsShowingUser="True" HeightRequest="200" />
 		</ContentView>
@@ -16,7 +24,7 @@
 					<Label Text="{Binding JobNumber,StringFormat='JobNumber: {0}'}" />
 					<Label Text="{Binding Status,StringFormat='Status: {0}'}" />
 				</StackLayout>
-<!--				<controls:RepeaterView x:TypeArguments="jobDetails:NoteViewModel" ItemsSource="{Binding Notes}">
+				<!--				<controls:RepeaterView x:TypeArguments="jobDetails:NoteViewModel" ItemsSource="{Binding Notes}">
 					<controls:RepeaterView.ItemTemplate>
 						<DataTemplate>
 							<Label Text="{Binding Description}" />

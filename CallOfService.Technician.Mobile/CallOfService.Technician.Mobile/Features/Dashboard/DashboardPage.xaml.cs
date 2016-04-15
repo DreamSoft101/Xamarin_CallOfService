@@ -10,14 +10,19 @@ namespace CallOfService.Technician.Mobile.Features.Dashboard
 {
     public partial class DashboardPage : TabbedPage
     {
-        public DashboardPage()
+		private bool _shouldInit;
+
+		public DashboardPage()
         {
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
+			_shouldInit = true;
         }
 
         protected async override void OnAppearing()
         {
+			if (!_shouldInit)
+				return;
             var appointmentService = DependencyResolver.Resolve<IAppointmentService>();
             await appointmentService.RetrieveAndSaveAppointments();
             base.OnAppearing();
@@ -28,6 +33,7 @@ namespace CallOfService.Technician.Mobile.Features.Dashboard
                 NavigationService.CreateAndBind<CalendarPage>(DependencyResolver.Resolve<CalendarViewModel>());
             calendarPage.Title = "CALENDAR";
             Children.Add(calendarPage);
+			_shouldInit = false;
         }
     }
 }

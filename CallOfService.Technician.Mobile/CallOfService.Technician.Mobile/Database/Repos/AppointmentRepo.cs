@@ -6,48 +6,48 @@ using CallOfService.Technician.Mobile.Domain;
 
 namespace CallOfService.Technician.Mobile.Database.Repos
 {
-    public class AppointmentRepo : IAppointmentRepo
-    {
-        readonly IDbSet<Appointment> _appointmentDbset;
-        private readonly IDbSet<JobDetails> _jobDetailsDbSet;
+	public class AppointmentRepo : IAppointmentRepo
+	{
+		readonly IDbSet<Appointment> _appointmentDbset;
+		private readonly IDbSet<JobDetails> _jobDetailsDbSet;
 
-        public AppointmentRepo(IDbSet<Appointment> appointmentDbset,IDbSet<JobDetails> jobDetailsDbSet)
-        {
-            _appointmentDbset = appointmentDbset;
-            _jobDetailsDbSet = jobDetailsDbSet;
-        }
+		public AppointmentRepo (IDbSet<Appointment> appointmentDbset, IDbSet<JobDetails> jobDetailsDbSet)
+		{
+			_appointmentDbset = appointmentDbset;
+			_jobDetailsDbSet = jobDetailsDbSet;
+		}
 
-        public Task<int> SaveAppointment(List<Appointment> appointments)
-        {
-            return _appointmentDbset.Add(appointments);
-        }
+		public Task<int> SaveAppointment (List<Appointment> appointments)
+		{
+			return _appointmentDbset.Add (appointments);
+		}
 
-        public Task<List<Appointment>> AppointmentsByDay(DateTime date)
-        {
-            var dateInt = Int32.Parse(date.ToString("yyyyMMdd"));
-            return _appointmentDbset.Get(a => a.StartDate <= dateInt && a.EndDate >= dateInt);
-        }
+		public Task<List<Appointment>> AppointmentsByDay (DateTime date)
+		{
+			var dateInt = Int32.Parse (date.ToString ("yyyyMMdd"));
+			return _appointmentDbset.Get (a => a.StartDate <= dateInt && a.EndDate >= dateInt);
+		}
 
-        public Task DeleteAll()
-        {
-            return _appointmentDbset.DeleteAll();
-        }
+		public Task DeleteAll ()
+		{
+			return _appointmentDbset.DeleteAll ();
+		}
 
-        public Task<Appointment> GetAppointmentByJobId(int jobId)
-        {
-            return _appointmentDbset.GetById(jobId);
-        }
+		public Task<Appointment> GetAppointmentByJobId (int jobId)
+		{
+			return _appointmentDbset.GetById (jobId);
+		}
 
-        public async Task<int> SaveJob(Job job)
-        {
-			var savedJob = await _jobDetailsDbSet.GetById (job.Id);
-			if (savedJob == null) {
-				var jobDetails = new JobDetails (job);
-				return await _jobDetailsDbSet.Add (jobDetails);
-			} else {
+		public async Task<int> SaveJob (Job job)
+		{
+			var savedJob = await _jobDetailsDbSet.Get (j => j.Id == job.Id);
+			if (savedJob.Count > 0) {
 				var jobDetails = new JobDetails (job);
 				return await _jobDetailsDbSet.Update (jobDetails);
+			} else {
+				var jobDetails = new JobDetails (job);
+				return await _jobDetailsDbSet.Add (jobDetails);
 			}
-        }
-    }
+		}
+	}
 }

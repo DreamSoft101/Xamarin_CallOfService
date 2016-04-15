@@ -10,7 +10,7 @@
     <Label Text="{Binding Date,StringFormat='{}{0:dddd} - {0:MMMM} - {0:yyyy}'}"
            HorizontalTextAlignment="Center" HeightRequest="60" VerticalTextAlignment="Center" BackgroundColor="Silver" FontSize="25" />
     <StackLayout Padding="20">
-      <ListView HasUnevenRows="True" ItemsSource="{Binding Appointments}">
+      <ListView IsPullToRefreshEnabled="true" RefreshCommand="{Binding RefreshListOfJobsCommand}" IsRefreshing="{Binding IsRefreshing}" HasUnevenRows="True" ItemsSource="{Binding Appointments}">
         <ListView.ItemTemplate>
           <DataTemplate>
             <ViewCell>

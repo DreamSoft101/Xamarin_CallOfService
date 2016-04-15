@@ -9,9 +9,13 @@ using CallOfService.Technician.Mobile.Services.Abstracts;
 using CallOfService.Technician.Mobile.UI;
 using PubSub;
 using Xamarin.Forms;
+using System.Windows.Input;
+using CallOfService.Technician.Mobile.Core.SystemServices;
+using PropertyChanged;
 
 namespace CallOfService.Technician.Mobile.Features.JobDetails
 {
+	[ImplementPropertyChanged]
     public class JobDetailsViewModel : IViewAwareViewModel
     {
         private readonly IAppointmentService _appointmentService;
@@ -24,7 +28,13 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
             Notes = new ObservableCollection<NoteViewModel>();
             this.Subscribe<ViewJobDetails>(async m => await LoadJobeDetails(m.JobId));
         }
-
+		public ICommand NavigateBack {
+			get { 
+				return new Command (async ()=> {
+					await NavigationService.NavigateBack();
+				});
+			}
+		}
         public DateTime Date { get; set; }
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
@@ -77,6 +87,7 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
         }
     }
 
+	[ImplementPropertyChanged]
     public class NoteViewModel
     {
         private readonly IAppointmentService _appointmentService;

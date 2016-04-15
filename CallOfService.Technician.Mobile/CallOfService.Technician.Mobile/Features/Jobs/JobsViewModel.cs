@@ -12,6 +12,7 @@ using PropertyChanged;
 using Xamarin.Forms;
 using PubSub;
 using CallOfService.Technician.Mobile.Core.SystemServices;
+using Acr.UserDialogs;
 
 namespace CallOfService.Technician.Mobile.Features.Jobs
 {
@@ -19,9 +20,11 @@ namespace CallOfService.Technician.Mobile.Features.Jobs
     public class JobsViewModel : IViewAwareViewModel
     {
         private readonly IAppointmentService _appointmentService;
+		private readonly IUserDialogs _userDialogs;
 
-        public JobsViewModel(IAppointmentService appointmentService)
+		public JobsViewModel(IAppointmentService appointmentService,IUserDialogs userDialogs)
         {
+			_userDialogs = userDialogs;
             _appointmentService = appointmentService;
             Appointments = new ObservableCollection<AppointmentViewModel>();
 			this.Subscribe<JobSelected> (async m => {
@@ -34,6 +37,16 @@ namespace CallOfService.Technician.Mobile.Features.Jobs
 
         public DateTime Date { get; set; }
         
+		public bool IsRefreshing { get; set; }
+
+		public ICommand RefreshListOfJobsCommand {
+			get { 
+				return new Command (() => {
+					OnAppearing ();
+				}); 
+			}
+		}
+
         public void Dispose()
         {   
             Appointments.Clear();
@@ -41,6 +54,7 @@ namespace CallOfService.Technician.Mobile.Features.Jobs
 
         public async void OnAppearing()
         {
+			IsRefreshing = true;
             Date = DateTime.Today;
             var appointments = await _appointmentService.AppointmentsByDay(Date);
             Appointments.Clear();
@@ -54,6 +68,7 @@ namespace CallOfService.Technician.Mobile.Features.Jobs
 					JobId = appointment.JobId
                 });
             }
+			IsRefreshing = false;
         }
 
         public void OnDisappearing()

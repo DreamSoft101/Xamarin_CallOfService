@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Acr.UserDialogs;
 using CallOfService.Technician.Mobile.Core.DI;
@@ -26,6 +27,7 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
             _appointmentService = appointmentService;
             _userDialogs = userDialogs;
             Notes = new ObservableCollection<NoteViewModel>();
+            CustomFields = new ObservableCollection<string>();
             this.Subscribe<ViewJobDetails>(async m => await LoadJobeDetails(m.JobId));
         }
 		public ICommand NavigateBack {
@@ -45,6 +47,7 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
         public string Status { get; set; }
         public string Strata { get; set; }
         public ObservableCollection<NoteViewModel> Notes { get; set; }
+	    public ObservableCollection<string> CustomFields  { get; set; }
         public string Custom { get; set; }
 
         private async Task LoadJobeDetails(int jobId)
@@ -67,12 +70,20 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 				Notes.Add (noteViewModel);
 			}
 
+            var strings = job.CustomFields.Select(c => string.Concat(c.Key, " : ", c.Value)).ToList();
+            CustomFields.Clear();
+            foreach (var s in strings)
+            {
+                CustomFields.Add(s);
+            }
+
             _userDialogs.HideLoading();
         }
-
-        public void Dispose()
+        
+	    public void Dispose()
         {
-
+            Notes.Clear();
+            CustomFields.Clear();
         }
 
         public void OnAppearing()
@@ -82,7 +93,8 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 
         public void OnDisappearing()
         {
-
+            Notes.Clear();
+            CustomFields.Clear();
         }
     }
 

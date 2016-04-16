@@ -53,14 +53,14 @@
               </StackLayout>
             </DataTemplate>
           </controls:RepeaterView.ItemTemplate>
-        </controls:RepeaterView
+        </controls:RepeaterView>
         <controls:RepeaterView x:TypeArguments="system:String" ItemsSource="{Binding CustomFields}">
           <controls:RepeaterView.ItemTemplate>
             <DataTemplate>
               <Label Text="{Binding}"/>
             </DataTemplate>
           </controls:RepeaterView.ItemTemplate>
-        </controls:RepeaterView
+        </controls:RepeaterView>
         <Label Text="Add NOTE / IMAGE" />
         <Editor Text="{Binding NewNoteText}" />
         <Button Text="Attach Photo" Command="{Binding AddNewNoteImage}" />

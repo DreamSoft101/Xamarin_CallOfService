@@ -63,7 +63,7 @@ namespace CallOfService.Technician.Mobile.Services
             var userCredentials = _userService.GetUserCredentials();
 
             var url =
-                $"{UrlConstants.BaseUrl}{UrlConstants.FileUrl}directory={fileReference.Directory}&fileName={fileReference.FileName}";
+                $"{UrlConstants.BaseUrl}{UrlConstants.FileUrl}?directory={fileReference.Directory}&fileName={fileReference.FileName}";
 
             if (isThumbnil) url = $"{url}&thumbnail=true";
 

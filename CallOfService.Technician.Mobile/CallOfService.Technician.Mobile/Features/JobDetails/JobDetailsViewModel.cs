@@ -44,7 +44,7 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
         public string JobNumber { get; set; }
         public string Status { get; set; }
         public string Strata { get; set; }
-        private ObservableCollection<NoteViewModel> Notes { get; set; }
+        public ObservableCollection<NoteViewModel> Notes { get; set; }
         public string Custom { get; set; }
 
         private async Task LoadJobeDetails(int jobId)
@@ -61,12 +61,11 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
             JobNumber = job.Id.ToString();
             Status = job.StatusDescription;
             Notes.Clear();
-            foreach (var note in job.Notes)
-            {
-                var noteViewModel = DependencyResolver.Resolve<NoteViewModel>();
-                noteViewModel.LoadNote(note);
-                Notes.Add(noteViewModel);
-            }
+			foreach (var note in job.Notes) {
+				var noteViewModel = DependencyResolver.Resolve<NoteViewModel> ();
+				noteViewModel.LoadNote (note);
+				Notes.Add (noteViewModel);
+			}
 
             _userDialogs.HideLoading();
         }
@@ -95,17 +94,17 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
         public NoteViewModel(IAppointmentService appointmentService)
         {
             _appointmentService = appointmentService;
+			ThumbnilImageSources = new ObservableCollection<ImageSource>();
         }
 
         public string Description { get; set; }
         public DateTime Date { get; set; }
-        private ObservableCollection<ImageSource> ThumbnilImageSources { get; set; }
+        public ObservableCollection<ImageSource> ThumbnilImageSources { get; set; }
 
         public void LoadNote(Note note)
         {
             Description = note.Description;
             Date = note.Timestamp.DateTime;
-            ThumbnilImageSources = new ObservableCollection<ImageSource>();
             foreach (var fileReference in note.Files)
             {
                 ThumbnilImageSources.Add(new UriImageSource

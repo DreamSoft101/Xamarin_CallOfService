@@ -88,7 +88,7 @@ namespace CallOfService.Technician.Mobile.Features.Jobs
                 Appointments.Add(new AppointmentViewModel
                 {
                     Title = appointment.Title,
-                    Location = appointment.Title,
+					Location = appointment.Location,
                     StartTimeEndTimeFormated =  $"{appointment.StartString} - {appointment.EndString}",
 					JobId = appointment.JobId
                 });

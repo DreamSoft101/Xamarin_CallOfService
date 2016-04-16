@@ -29,7 +29,7 @@
 									<Label Text="{Binding Title}" />
 									<StackLayout Orientation="Horizontal">
 										<controls:SvgImage FileName="clock-green" WidthRequest="20" HeightRequest="20" />
-										<Label Text="{Binding StartTimeAndTimeFormated}" />
+										<Label Text="{Binding StartTimeEndTimeFormated}" />
 									</StackLayout>
 									<StackLayout Orientation="Horizontal">
 										<controls:SvgImage FileName="location-start" WidthRequest="16" HeightRequest="20" />

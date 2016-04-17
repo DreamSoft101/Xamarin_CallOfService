@@ -21,7 +21,7 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
                     Address = m.Location
                 });
 
-                var latlongdegrees = 360/(Math.Pow(2, 5));
+                var latlongdegrees = 360/(Math.Pow(2, 15));
                 Map.MoveToRegion(new MapSpan(m.GpsPoint.Position, latlongdegrees, latlongdegrees));
             });
         }

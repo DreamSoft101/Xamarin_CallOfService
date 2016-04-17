@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ui:BasePage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:ui="clr-namespace:CallOfService.Technician.Mobile.UI;assembly=CallOfService.Technician.Mobile" xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps" xmlns:controls="clr-namespace:XLabs.Forms.Controls;assembly=XLabs.Forms" xmlns:customcontrols="clr-namespace:CallOfService.Technician.Mobile.Controls;assembly=CallOfService.Technician.Mobile" xmlns:jobDetails="clr-namespace:CallOfService.Technician.Mobile.Features.JobDetails;assembly=CallOfService.Technician.Mobile" xmlns:system="clr-namespace:System;assembly=System.Runtime" x:Class="CallOfService.Technician.Mobile.Features.JobDetails.JobDetailsPage">
 	<StackLayout Spacing="0">
-		<AbsoluteLayout HeightRequest="300">
+		<AbsoluteLayout HeightRequest="350">
 			<ContentView AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1">
 				<AbsoluteLayout>
 					<maps:Map AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" x:Name="Map" MapType="Street" IsShowingUser="True" HeightRequest="200" />
-					<Grid Padding="5,0,5,0" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 1, 1, 0.15">
+					<Grid Padding="10,0,10,0" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 1, 1, 0.15">
 						<Grid.RowDefinitions>
 							<RowDefinition Height="44" />
 						</Grid.RowDefinitions>
@@ -23,7 +23,7 @@
 					</Grid>
 				</AbsoluteLayout>
 			</ContentView>
-			<BoxView AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 0.22" BackgroundColor="Black" Opacity="0.5" />
+			<BoxView AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 0.28" BackgroundColor="Black" Opacity="0.5" />
 			<Grid AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 0.21" Padding="0,20,0,0">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="36" />
@@ -41,20 +41,24 @@
 				<Label Grid.Row="0" Grid.Column="1" Text="{Binding PageTitle}" TextColor="White" HorizontalOptions="Center" HorizontalTextAlignment="Center" HeightRequest="60" VerticalTextAlignment="Center" FontSize="25" />
 			</Grid>
 		</AbsoluteLayout>
-		<ScrollView>
+		<ScrollView Padding="10,20,10,10">
 			<StackLayout>
-				<Label Text="{Binding JobDateFormatted}" />
+				<Label HorizontalOptions="Center" Text="{Binding Date,StringFormat='{}{0:dddd}/{0:MMMM}/{0:yyyy}'}" />
 				<BoxView HeightRequest="1" BackgroundColor="Silver" />
 				<Label Text="{Binding Contact,StringFormat='Contact: {0}'}" />
 				<BoxView HeightRequest="1" BackgroundColor="Silver" />
-				<StackLayout Orientation="Horizontal">
-					<Label Text="{Binding JobNumber,StringFormat='JobNumber: {0}'}" />
-					<Label Text="{Binding Status,StringFormat='Status: {0}'}" />
+				<StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+					<Label HorizontalOptions="Start" Text="{Binding JobNumber,StringFormat='JobNumber: {0}'}" />
+					<Label HorizontalOptions="EndAndExpand" Text="{Binding Status,StringFormat='Status: {0}'}" />
 				</StackLayout>
+				<BoxView HeightRequest="1" BackgroundColor="Silver" />
 				<controls:RepeaterView x:TypeArguments="system:String" ItemsSource="{Binding CustomFields}">
 					<controls:RepeaterView.ItemTemplate>
 						<DataTemplate>
-							<Label Text="{Binding}" />
+							<StackLayout>
+								<Label Text="{Binding}" />
+								<BoxView HeightRequest="1" BackgroundColor="Silver" />
+							</StackLayout>
 						</DataTemplate>
 					</controls:RepeaterView.ItemTemplate>
 				</controls:RepeaterView>
@@ -62,16 +66,18 @@
 					<controls:RepeaterView.ItemTemplate>
 						<DataTemplate>
 							<StackLayout>
-								<Label Text="{Binding Description}" />
-								<Label Text="{Binding Date,StringFormat='{}{0:dddd} - {0:MMMM} - {0:yyyy}'}" />
-								<controls:RepeaterView Orientation="Horizontal" x:TypeArguments="ImageSource" ItemsSource="{Binding ThumbnilImageSources}">
+								<StackLayout Orientation="Horizontal">
+									<Label HorizontalOptions="Start" Text="{Binding Description}" />
+									<Label HorizontalOptions="EndAndExpand" Text="{Binding Date,StringFormat='{}{0:dd}/{0:MM}/{0:yy}'}" />
+								</StackLayout>
+								<controls:RepeaterView Spacing="10" Orientation="Horizontal" x:TypeArguments="ImageSource" ItemsSource="{Binding ThumbnilImageSources}">
 									<controls:RepeaterView.ItemTemplate>
 										<DataTemplate>
-											<Image Source="{Binding}">
-											</Image>
+											<Image Source="{Binding}" HeightRequest="100" WidthRequest="100"/>
 										</DataTemplate>
 									</controls:RepeaterView.ItemTemplate>
 								</controls:RepeaterView>
+								<BoxView HeightRequest="1" BackgroundColor="Silver" />
 							</StackLayout>
 						</DataTemplate>
 					</controls:RepeaterView.ItemTemplate>

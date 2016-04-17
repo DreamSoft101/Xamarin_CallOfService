@@ -36,13 +36,20 @@
           <Label Text="{Binding JobNumber,StringFormat='JobNumber: {0}'}" />
           <Label Text="{Binding Status,StringFormat='Status: {0}'}" />
         </StackLayout>
+        <controls:RepeaterView x:TypeArguments="system:String" ItemsSource="{Binding CustomFields}">
+          <controls:RepeaterView.ItemTemplate>
+            <DataTemplate>
+              <Label Text="{Binding}"/>
+            </DataTemplate>
+          </controls:RepeaterView.ItemTemplate>
+        </controls:RepeaterView>
         <controls:RepeaterView x:TypeArguments="jobDetails:NoteViewModel" ItemsSource="{Binding Notes}">
           <controls:RepeaterView.ItemTemplate>
             <DataTemplate>
               <StackLayout>
                 <Label Text="{Binding Description}" />
                 <Label Text="{Binding Date,StringFormat='{}{0:dddd} - {0:MMMM} - {0:yyyy}'}" />
-                <controls:RepeaterView x:TypeArguments="ImageSource" ItemsSource="{Binding ThumbnilImageSources}">
+                <controls:RepeaterView Orientation="Horizontal" x:TypeArguments="ImageSource" ItemsSource="{Binding ThumbnilImageSources}">
                   <controls:RepeaterView.ItemTemplate>
                     <DataTemplate>
                       <Image Source="{Binding}">
@@ -51,13 +58,6 @@
                   </controls:RepeaterView.ItemTemplate>
                 </controls:RepeaterView>
               </StackLayout>
-            </DataTemplate>
-          </controls:RepeaterView.ItemTemplate>
-        </controls:RepeaterView>
-        <controls:RepeaterView x:TypeArguments="system:String" ItemsSource="{Binding CustomFields}">
-          <controls:RepeaterView.ItemTemplate>
-            <DataTemplate>
-              <Label Text="{Binding}"/>
             </DataTemplate>
           </controls:RepeaterView.ItemTemplate>
         </controls:RepeaterView>

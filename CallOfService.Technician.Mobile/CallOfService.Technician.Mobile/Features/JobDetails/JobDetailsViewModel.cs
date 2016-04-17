@@ -51,11 +51,14 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 	    public ObservableCollection<string> CustomFields  { get; set; }
         public string Custom { get; set; }
 	    public GpsPoint GpsPoint { get; set; }
+		public string PageTitle { get; set; }
         private async Task LoadJobeDetails(int jobId)
         {
             _userDialogs.ShowLoading("Loading Job Details");
             Appointment appointment = await _appointmentService.GetAppointmentByJobId(jobId);
             var job = await _appointmentService.GetJobById(jobId);
+			if (job == null)
+				return;
             if (job.Date != null) Date = job.Date.Value;
             StartTime = appointment.Start.TimeOfDay;
             EndTime = appointment.End.TimeOfDay;
@@ -82,6 +85,10 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
             if(GpsPoint.IsValid)
                 this.Publish(new ShowPinOnMap(GpsPoint,Location,Contact));
             
+			PageTitle = appointment.Title;
+			if(!string.IsNullOrWhiteSpace(appointment.JobType))
+				PageTitle = PageTitle + $"[{appointment.JobType}]";
+
             _userDialogs.HideLoading();
         }
         

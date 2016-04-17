@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CallOfService.Technician.Mobile.Database.Repos.Abstracts;
 using CallOfService.Technician.Mobile.Domain;
+using System.Linq;
+using Newtonsoft.Json;
 
 namespace CallOfService.Technician.Mobile.Database.Repos
 {
@@ -36,6 +38,17 @@ namespace CallOfService.Technician.Mobile.Database.Repos
 		public Task<Appointment> GetAppointmentByJobId (int jobId)
 		{
 			return _appointmentDbset.GetById (jobId);
+		}
+
+		public async Task<Job> GetJobById(int jobId){
+			var jobs = await _jobDetailsDbSet.Get (j => j.Id == jobId);
+			var job = jobs.FirstOrDefault ();
+			if (job == null) {
+				return null;
+			}
+
+			job.Job = JsonConvert.DeserializeObject<Job> (job.JobsString);
+			return job.Job;
 		}
 
 		public async Task<int> SaveJob (Job job)

@@ -234,6 +234,11 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\Images\login-page-logo.svg" />
     <EmbeddedResource Include="Resources\Images\navigate-back.svg" />
+    <EmbeddedResource Include="Resources\Images\direction.svg" />
+    <EmbeddedResource Include="Resources\Images\call.svg" />
+    <EmbeddedResource Include="Resources\Images\email.svg" />
+    <EmbeddedResource Include="Resources\Images\finish.svg" />
+    <EmbeddedResource Include="Resources\Images\start.svg" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Images\clock-green.svg" />

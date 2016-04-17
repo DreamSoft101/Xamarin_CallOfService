@@ -54,6 +54,8 @@ namespace CallOfService.Technician.Mobile.Services
         public async Task<Job> GetJobById(int jobId)
         {
             var job = await _appointmentProxy.GetJobById(jobId);
+            var point = await _appointmentProxy.GetJobLocation(job.Location);
+            job.Point = point;
             await _appointmentRepo.SaveJob(job);
             return job;
         }

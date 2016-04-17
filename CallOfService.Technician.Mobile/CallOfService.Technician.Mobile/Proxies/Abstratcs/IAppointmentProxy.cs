@@ -11,5 +11,6 @@ namespace CallOfService.Technician.Mobile.Proxies.Abstratcs
     {
         Task<List<Appointment>> GetAppointments(int userId);
         Task<Job> GetJobById(int jobId);
+        Task<GpsPoint> GetJobLocation(AddressInfo location);
     }
 }

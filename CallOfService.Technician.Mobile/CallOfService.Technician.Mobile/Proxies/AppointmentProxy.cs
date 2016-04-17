@@ -56,5 +56,38 @@ namespace CallOfService.Technician.Mobile.Proxies
                 return null;
             }
         }
+
+        private string _googleApiKey = "AIzaSyAhg7GY7slOwawnzamu-uN36_K8mJL8q_E";
+
+        public async Task<GpsPoint> GetJobLocation(AddressInfo location)
+        {
+
+            try
+            {
+                var httpClient = new HttpClient
+                {
+                    BaseAddress = new Uri("https://maps.googleapis.com/"),
+                    Timeout = new TimeSpan(0, 2, 0)
+                };
+                string url = $"maps/api/geocode/json?address={location}&key={_googleApiKey}";
+                httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+                HttpResponseMessage message = await httpClient.GetAsync(url);
+                string responseString = await message.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeAnonymousType(responseString,
+                    new {results = new[] {new {geometry = new {location = new {lat = "", lng = ""}}}}});
+
+                return new GpsPoint
+                {
+                    Lat = result.results[0].geometry.location.lat,
+                    Lng = result.results[0].geometry.location.lng,
+                    IsValid = true
+                };
+            }
+            catch (Exception)
+            {
+                return new GpsPoint {IsValid = false};
+            }
+
+        }
     }
 }

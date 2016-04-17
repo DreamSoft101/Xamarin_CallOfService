@@ -12,6 +12,7 @@ using PubSub;
 using Xamarin.Forms;
 using System.Windows.Input;
 using CallOfService.Technician.Mobile.Core.SystemServices;
+using CallOfService.Technician.Mobile.Messages;
 using PropertyChanged;
 
 namespace CallOfService.Technician.Mobile.Features.JobDetails
@@ -49,7 +50,7 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
         public ObservableCollection<NoteViewModel> Notes { get; set; }
 	    public ObservableCollection<string> CustomFields  { get; set; }
         public string Custom { get; set; }
-
+	    public GpsPoint GpsPoint { get; set; }
         private async Task LoadJobeDetails(int jobId)
         {
             _userDialogs.ShowLoading("Loading Job Details");
@@ -63,6 +64,7 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
             Contact = job.ContactName;
             JobNumber = job.Id.ToString();
             Status = job.StatusDescription;
+            GpsPoint = job.Point;
             Notes.Clear();
 			foreach (var note in job.Notes) {
 				var noteViewModel = DependencyResolver.Resolve<NoteViewModel> ();
@@ -77,6 +79,9 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
                 CustomFields.Add(s);
             }
 
+            if(GpsPoint.IsValid)
+                this.Publish(new ShowPinOnMap(GpsPoint,Location,Contact));
+            
             _userDialogs.HideLoading();
         }
         
@@ -98,7 +103,7 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
         }
     }
 
-	[ImplementPropertyChanged]
+    [ImplementPropertyChanged]
     public class NoteViewModel
     {
         private readonly IAppointmentService _appointmentService;

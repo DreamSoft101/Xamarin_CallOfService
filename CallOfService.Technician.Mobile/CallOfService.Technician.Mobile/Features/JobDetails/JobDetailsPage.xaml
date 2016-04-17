@@ -24,7 +24,7 @@
     <StackLayout Orientation="Horizontal" BackgroundColor="Silver">
     </StackLayout>
     <ContentView>
-      <maps:Map MapType="Street" IsShowingUser="True" HeightRequest="200" />
+      <maps:Map x:Name="Map" MapType="Street" IsShowingUser="True" HeightRequest="200" />
     </ContentView>
     <ScrollView>
       <StackLayout>

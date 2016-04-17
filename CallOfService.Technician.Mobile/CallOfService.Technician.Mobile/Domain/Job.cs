@@ -64,6 +64,7 @@ namespace CallOfService.Technician.Mobile.Domain
 		public Dictionary<string,string> CustomFields { get; set; }
         public string CancellationReason { get; set; }
         public string StatusDescription { get; set; }
+        public GpsPoint Point { get; set; }
     }
 
     public class WorkerInfo

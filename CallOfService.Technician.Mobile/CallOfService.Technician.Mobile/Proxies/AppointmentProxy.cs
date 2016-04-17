@@ -69,7 +69,7 @@ namespace CallOfService.Technician.Mobile.Proxies
                     BaseAddress = new Uri("https://maps.googleapis.com/"),
                     Timeout = new TimeSpan(0, 2, 0)
                 };
-                string url = $"maps/api/geocode/json?address={location}&key={_googleApiKey}";
+                string url = $"maps/api/geocode/json?address={location.FormattedAddress}&key={_googleApiKey}";
                 httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
                 HttpResponseMessage message = await httpClient.GetAsync(url);
                 string responseString = await message.Content.ReadAsStringAsync();

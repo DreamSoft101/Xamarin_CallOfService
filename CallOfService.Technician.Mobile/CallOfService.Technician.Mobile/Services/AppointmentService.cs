@@ -76,5 +76,15 @@ namespace CallOfService.Technician.Mobile.Services
 
             return new Uri(url);
         }
+
+        public Task<bool> StartJob(int jobId)
+        {
+            return _appointmentProxy.StartJob(jobId);
+        }
+
+        public Task<bool> FinishJob(int jobId)
+        {
+            return _appointmentProxy.FinishJob(jobId);
+        }
     }
 }

@@ -44,7 +44,7 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
         public string Location { get; set; }
         public string Title { get; set; }
         public string Contact { get; set; }
-        public string JobNumber { get; set; }
+        public int JobNumber { get; set; }
         public string Status { get; set; }
         public string Strata { get; set; }
         public ObservableCollection<NoteViewModel> Notes { get; set; }
@@ -53,8 +53,40 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 	    public GpsPoint GpsPoint { get; set; }
 		public string PageTitle { get; set; }
 		public string ActionText { get; set; }
-		public ICommand StartFinishJob { get; set; }
-        private async Task LoadJobeDetails(int jobId)
+	    public bool ShowActionButton { get; set; }
+
+	    public ICommand StartFinishJob
+	    {
+	        get
+	        {
+	            return new Command(async () =>
+	            {
+	                if (Status == "Scheduled")
+	                {
+	                    _userDialogs.ShowLoading("Starting Job");
+	                    var started = await _appointmentService.StartJob(JobNumber);
+	                    if (started)
+	                        _userDialogs.ShowSuccess("Job Started");
+	                    else
+	                        _userDialogs.ShowError("Error Starting Job");
+	                }
+	                else if (Status == "InProgress")
+	                {
+	                    _userDialogs.ShowLoading("Finishing Job");
+	                    var started = await _appointmentService.StartJob(JobNumber);
+	                    if (started)
+	                    {
+	                        _userDialogs.ShowSuccess("Job Finished");
+	                        ShowActionButton = false;
+	                    }
+	                    else
+	                        _userDialogs.ShowError("Error Finishing Job");
+	                }
+	            });
+	        }
+	    }
+
+	    private async Task LoadJobeDetails(int jobId)
         {
             _userDialogs.ShowLoading("Loading Job Details");
             Appointment appointment = await _appointmentService.GetAppointmentByJobId(jobId);
@@ -67,7 +99,7 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
             Location = appointment.Location;
             Title = appointment.Title;
             Contact = job.ContactName;
-            JobNumber = job.Id.ToString();
+            JobNumber = job.Id;
             Status = job.StatusDescription;
             GpsPoint = job.Point;
             Notes.Clear();
@@ -90,6 +122,14 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 			PageTitle = appointment.Title;
 			if(!string.IsNullOrWhiteSpace(appointment.JobType))
 				PageTitle = PageTitle + $"[{appointment.JobType}]";
+
+            ShowActionButton = true;
+            if (Status == "Scheduled")
+                ActionText = "Start";
+            else if (Status == "InProgress")
+                ActionText = "Finish";
+            else
+                ShowActionButton = false;
 
             _userDialogs.HideLoading();
         }

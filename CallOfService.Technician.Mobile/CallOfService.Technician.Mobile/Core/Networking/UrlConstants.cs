@@ -7,6 +7,8 @@
         public const string AppointmentsUrl = "api/appointments";
         public const string JobByIdUrl = "api/job/";
         public const string FileUrl = "api/file/";
+        public const string StartJob = "api/job/start";
+        public const string FinishJob = "api/job/finish";
 
 
 

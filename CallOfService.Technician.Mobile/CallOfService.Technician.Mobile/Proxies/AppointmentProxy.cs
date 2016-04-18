@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using CallOfService.Technician.Mobile.Core.Networking;
 using CallOfService.Technician.Mobile.Core.SystemServices;
@@ -69,7 +71,7 @@ namespace CallOfService.Technician.Mobile.Proxies
                     BaseAddress = new Uri("https://maps.googleapis.com/"),
                     Timeout = new TimeSpan(0, 2, 0)
                 };
-				string url = $"maps/api/geocode/json?address={location.FormattedAddress}";//&key={_googleApiKey}";
+                string url = $"maps/api/geocode/json?address={location.FormattedAddress}"; //&key={_googleApiKey}";
                 httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
                 HttpResponseMessage message = await httpClient.GetAsync(url);
                 string responseString = await message.Content.ReadAsStringAsync();
@@ -88,6 +90,52 @@ namespace CallOfService.Technician.Mobile.Proxies
                 return new GpsPoint {IsValid = false};
             }
 
+        }
+
+        public async Task<bool> StartJob(int jobId)
+        {
+            try
+            {
+                CreateHttpClient();
+                var stringContent = new StringContent(JsonConvert.SerializeObject(new {Id = jobId}), Encoding.UTF8,
+                    "application/json");
+
+                Client.DefaultRequestHeaders.Add("Accept", "application/json");
+                //Client.DefaultRequestHeaders.Add("Content-Type", "application/json");
+                var url = $"{UrlConstants.StartJob}";
+                HttpResponseMessage responseMessage = await Client.PostAsync(url, stringContent);
+                if (responseMessage.StatusCode == HttpStatusCode.OK)
+                    return true;
+                return false;
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.ToString());
+                return false;
+            }
+        }
+
+        public async Task<bool> FinishJob(int jobId)
+        {
+            try
+            {
+                CreateHttpClient();
+                var stringContent = new StringContent(JsonConvert.SerializeObject(new {Id = jobId}), Encoding.UTF8,
+                    "application/json");
+
+                Client.DefaultRequestHeaders.Add("Accept", "application/json");
+                //Client.DefaultRequestHeaders.Add("Content-Type", "application/json");
+                var url = $"{UrlConstants.FinishJob}";
+                HttpResponseMessage responseMessage = await Client.PostAsync(url, stringContent);
+                if (responseMessage.StatusCode == HttpStatusCode.OK)
+                    return true;
+                return false;
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.ToString());
+                return false;
+            }
         }
     }
 }

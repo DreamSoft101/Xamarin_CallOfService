@@ -73,7 +73,7 @@
 								<controls:RepeaterView Spacing="10" Orientation="Horizontal" x:TypeArguments="ImageSource" ItemsSource="{Binding ThumbnilImageSources}">
 									<controls:RepeaterView.ItemTemplate>
 										<DataTemplate>
-											<Image Source="{Binding}" HeightRequest="100" WidthRequest="100"/>
+											<Image Source="{Binding}" HeightRequest="100" WidthRequest="100" />
 										</DataTemplate>
 									</controls:RepeaterView.ItemTemplate>
 								</controls:RepeaterView>
@@ -87,5 +87,8 @@
 				<Button Text="Attach Photo" Command="{Binding AddNewNoteImage}" />
 			</StackLayout>
 		</ScrollView>
+		<ContentView Padding="5">
+			<Button Text="{Binding ActionText}" BackgroundColor="Teal" Command="{Binding StartFinishJob}" BorderColor="Black" BorderWidth="1" />
+		</ContentView>
 	</StackLayout>
 </ui:BasePage>

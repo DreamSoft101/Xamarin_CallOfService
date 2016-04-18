@@ -52,6 +52,8 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
         public string Custom { get; set; }
 	    public GpsPoint GpsPoint { get; set; }
 		public string PageTitle { get; set; }
+		public string ActionText { get; set; }
+		public ICommand StartFinishJob { get; set; }
         private async Task LoadJobeDetails(int jobId)
         {
             _userDialogs.ShowLoading("Loading Job Details");

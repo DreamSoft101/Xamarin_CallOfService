@@ -213,6 +213,14 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 			if (!string.IsNullOrWhiteSpace (appointment.JobType))
 				PageTitle = PageTitle +$"[{appointment.JobType}]";
 
+            ShowActionButton = true;
+            if (Status == "Scheduled")
+                ActionText = "Start";
+            else if (Status == "InProgress")
+                ActionText = "Finish";
+            else
+                ShowActionButton = false;
+
 			ShowActionButton = true;
 			if (Status == "Scheduled")
 				ActionText = "Start";

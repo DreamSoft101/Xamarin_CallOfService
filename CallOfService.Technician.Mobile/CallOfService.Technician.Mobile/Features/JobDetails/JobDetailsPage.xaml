@@ -88,7 +88,7 @@
 			</StackLayout>
 		</ScrollView>
 		<ContentView Padding="5">
-			<Button Text="{Binding ActionText}" BackgroundColor="Teal" IsVisible="{Binding ShowActionButton}" Command="{Binding StartFinishJob}" BorderColor="Black" BorderWidth="1" />
+			<Button TextColor="White" Text="{Binding ActionText}" BackgroundColor="Teal" IsVisible="{Binding ShowActionButton}" Command="{Binding StartFinishJob}" BorderColor="Black" BorderWidth="1" />
 		</ContentView>
 	</StackLayout>
 </ui:BasePage>

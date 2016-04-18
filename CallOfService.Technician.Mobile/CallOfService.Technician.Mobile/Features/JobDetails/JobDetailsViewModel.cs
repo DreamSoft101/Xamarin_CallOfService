@@ -70,10 +70,10 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 	                    else
 	                        _userDialogs.ShowError("Error Starting Job");
 	                }
-	                else if (Status == "InProgress")
+	                else if (Status == "In Progress")
 	                {
 	                    _userDialogs.ShowLoading("Finishing Job");
-	                    var started = await _appointmentService.StartJob(JobNumber);
+							var started = await _appointmentService.FinishJob(JobNumber);
 	                    if (started)
 	                    {
 	                        _userDialogs.ShowSuccess("Job Finished");
@@ -126,7 +126,7 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
             ShowActionButton = true;
             if (Status == "Scheduled")
                 ActionText = "Start";
-            else if (Status == "InProgress")
+            else if (Status == "In Progress")
                 ActionText = "Finish";
             else
                 ShowActionButton = false;

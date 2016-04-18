@@ -12,5 +12,7 @@ namespace CallOfService.Technician.Mobile.Services.Abstracts
         Task<Appointment> GetAppointmentByJobId(int jobId);
         Task<Job> GetJobById(int jobId);
         Uri GetFileUri(FileReference fileReference, bool isThumbnil);
+		Task<bool> StartJob(int jobId);
+		Task<bool> FinishJob(int jobId);
     }
 }

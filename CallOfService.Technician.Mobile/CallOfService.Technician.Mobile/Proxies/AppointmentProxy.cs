@@ -106,6 +106,11 @@ namespace CallOfService.Technician.Mobile.Proxies
                 HttpResponseMessage responseMessage = await Client.PostAsync(url, stringContent);
                 if (responseMessage.StatusCode == HttpStatusCode.OK)
                     return true;
+				else
+				{
+					string responseString = await responseMessage.Content.ReadAsStringAsync();
+					System.Diagnostics.Debug.WriteLine(responseString);
+				}
                 return false;
             }
             catch (Exception e)
@@ -129,6 +134,11 @@ namespace CallOfService.Technician.Mobile.Proxies
                 HttpResponseMessage responseMessage = await Client.PostAsync(url, stringContent);
                 if (responseMessage.StatusCode == HttpStatusCode.OK)
                     return true;
+				else
+				{
+					string responseString = await responseMessage.Content.ReadAsStringAsync();
+					System.Diagnostics.Debug.WriteLine(responseString);
+				}
                 return false;
             }
             catch (Exception e)

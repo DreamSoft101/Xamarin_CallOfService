@@ -12,7 +12,7 @@
 				<ColumnDefinition Width="44" />
 			</Grid.ColumnDefinitions>
 			<Button Grid.Row="0" Grid.Column="0" Text="Prev" Command="{Binding GoToPrevDay}" />
-			<Label Grid.Row="0" Grid.Column="1" Text="{Binding Date,StringFormat='{}{0:dddd} - {0:MMMM} - {0:yyyy}'}" HorizontalTextAlignment="Center" HeightRequest="60" VerticalTextAlignment="Center" BackgroundColor="Silver" FontSize="25" />
+			<Label Grid.Row="0" Grid.Column="1" Text="{Binding Date,StringFormat='{}{0:ddd}-{0:MMM}-{0:yyyy}'}" HorizontalTextAlignment="Center" HeightRequest="60" VerticalTextAlignment="Center" BackgroundColor="Silver" FontSize="25" />
 			<Button Grid.Row="0" Grid.Column="2" Text="Next" Command="{Binding GoToNextDay}" />
 		</Grid>
 		<StackLayout Padding="20">

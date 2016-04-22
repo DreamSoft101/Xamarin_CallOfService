@@ -55,7 +55,7 @@
 						<Label Grid.Row="0" Grid.Column="1" Text="{Binding PageTitle}" TextColor="White" HorizontalOptions="Center" HorizontalTextAlignment="Center" HeightRequest="60" VerticalTextAlignment="Center" FontSize="25" />
 					</Grid>
 				</AbsoluteLayout>
-				<StackLayout Padding="0,15,0,0">
+				<StackLayout Padding="20">
 					<Label HorizontalOptions="Center" Text="{Binding Date,StringFormat='{}{0:dddd}/{0:MMMM}/{0:yyyy}'}" />
 					<BoxView HeightRequest="1" BackgroundColor="Silver" />
 					<Label Text="{Binding Contact,StringFormat='Contact: {0}'}" />

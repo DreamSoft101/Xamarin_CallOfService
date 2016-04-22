@@ -13,56 +13,55 @@ using Xamarin.Forms;
 using PubSub;
 using CallOfService.Technician.Mobile.Core.SystemServices;
 using Acr.UserDialogs;
+using CallOfService.Technician.Mobile.Messages;
 
 namespace CallOfService.Technician.Mobile.Features.Jobs
 {
-    [ImplementPropertyChanged]
-    public class JobsViewModel : IViewAwareViewModel
-    {
-        private readonly IAppointmentService _appointmentService;
+	[ImplementPropertyChanged]
+	public class JobsViewModel : IViewAwareViewModel
+	{
+		private readonly IAppointmentService _appointmentService;
 		private readonly IUserDialogs _userDialogs;
 
-		public JobsViewModel(IAppointmentService appointmentService,IUserDialogs userDialogs)
-        {
+		public JobsViewModel (IAppointmentService appointmentService, IUserDialogs userDialogs)
+		{
 			_userDialogs = userDialogs;
-            _appointmentService = appointmentService;
-            Appointments = new ObservableCollection<AppointmentViewModel>();
+			_appointmentService = appointmentService;
+			Appointments = new ObservableCollection<AppointmentViewModel> ();
 			this.Subscribe<JobSelected> (async m => {
 				await NavigationService.NavigateToJobDetails ();
-				this.Publish(new ViewJobDetails(m.Appointment.JobId));
+				this.Publish (new ViewJobDetails (m.Appointment.JobId));
 			});
-            Date = DateTime.Today;
-        }
+			this.Subscribe<NewDateSelected> (m => {
+				Date = m.DateTime;
+				OnAppearing ();
+			});
+			Date = DateTime.Today;
+		}
 
-        public ObservableCollection<AppointmentViewModel> Appointments { get; set; }
+		public ObservableCollection<AppointmentViewModel> Appointments { get; set; }
 
-        public DateTime Date { get; set; }
+		public DateTime Date { get; set; }
 
-        public ICommand GoToNextDay
-        {
-            get
-            {
-                return new Command(() =>
-                {
-                    Date = Date.AddDays(1);
-                    OnAppearing();
-                });
-            }
-        }
+		public ICommand GoToNextDay {
+			get {
+				return new Command (() => {
+					Date = Date.AddDays (1);
+					OnAppearing ();
+				});
+			}
+		}
 
-        public ICommand GoToPrevDay
-        {
-            get
-            {
-                return new Command(() =>
-                {
-                    Date = Date.AddDays(-1);
-                    OnAppearing();
-                });
-            }
-        }
+		public ICommand GoToPrevDay {
+			get {
+				return new Command (() => {
+					Date = Date.AddDays (-1);
+					OnAppearing ();
+				});
+			}
+		}
 
-        public bool IsRefreshing { get; set; }
+		public bool IsRefreshing { get; set; }
 
 		public ICommand RefreshListOfJobsCommand {
 			get { 
@@ -72,24 +71,22 @@ namespace CallOfService.Technician.Mobile.Features.Jobs
 			}
 		}
 
-        public void Dispose()
-        {   
-            Appointments.Clear();
-        }
+		public void Dispose ()
+		{   
+			Appointments.Clear ();
+		}
 
-        public async void OnAppearing()
-        {
+		public async void OnAppearing ()
+		{
 			IsRefreshing = true;
 
-            var appointments = await _appointmentService.AppointmentsByDay(Date);
-            Appointments.Clear();
-            foreach (var appointment in appointments)
-            {
-                Appointments.Add(new AppointmentViewModel
-                {
-                    Title = appointment.Title,
+			var appointments = await _appointmentService.AppointmentsByDay (Date);
+			Appointments.Clear ();
+			foreach (var appointment in appointments) {
+				Appointments.Add (new AppointmentViewModel {
+					Title = appointment.Title,
 					Location = appointment.Location,
-                    StartTimeEndTimeFormated =  $"{appointment.StartString} - {appointment.EndString}",
+					StartTimeEndTimeFormated = $"{appointment.StartString} - {appointment.EndString}",
 					JobId = appointment.JobId
                 });
             }

@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CallOfService.Technician.Mobile.Messages;
 using CallOfService.Technician.Mobile.UI;
-using Xamarin.Forms;
+using PubSub;
 
 namespace CallOfService.Technician.Mobile.Features.Calendar
 {
@@ -13,6 +10,11 @@ namespace CallOfService.Technician.Mobile.Features.Calendar
         public CalendarPage()
         {
             InitializeComponent();
+        }
+
+        private void CalendarView_OnDateSelected(object sender, DateTime e)
+        {
+            this.Publish(new NewDateSelected(e));
         }
     }
 }

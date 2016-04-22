@@ -2,8 +2,10 @@
 using CallOfService.Technician.Mobile.Core.SystemServices;
 using CallOfService.Technician.Mobile.Features.Calendar;
 using CallOfService.Technician.Mobile.Features.Jobs;
+using CallOfService.Technician.Mobile.Messages;
 using CallOfService.Technician.Mobile.Services.Abstracts;
 using CallOfService.Technician.Mobile.UI;
+using PubSub;
 using Xamarin.Forms;
 
 namespace CallOfService.Technician.Mobile.Features.Dashboard
@@ -11,12 +13,18 @@ namespace CallOfService.Technician.Mobile.Features.Dashboard
     public partial class DashboardPage : TabbedPage
     {
 		private bool _shouldInit;
+        Page _jobsPage;
+        Page _calendarPage;
 
-		public DashboardPage()
+        public DashboardPage()
         {
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
 			_shouldInit = true;
+            this.Subscribe<NewDateSelected>(m =>
+            {
+                this.CurrentPage = _jobsPage;
+            });
         }
 
         protected async override void OnAppearing()
@@ -26,13 +34,12 @@ namespace CallOfService.Technician.Mobile.Features.Dashboard
             var appointmentService = DependencyResolver.Resolve<IAppointmentService>();
             await appointmentService.RetrieveAndSaveAppointments();
             base.OnAppearing();
-            var jobsPage = NavigationService.CreateAndBind<JobsPage>(DependencyResolver.Resolve<JobsViewModel>());
-            jobsPage.Title = "JOBS";
-            Children.Add(jobsPage);
-            var calendarPage =
-                NavigationService.CreateAndBind<CalendarPage>(DependencyResolver.Resolve<CalendarViewModel>());
-            calendarPage.Title = "CALENDAR";
-            Children.Add(calendarPage);
+            _jobsPage = NavigationService.CreateAndBind<JobsPage>(DependencyResolver.Resolve<JobsViewModel>());
+            _jobsPage.Title = "JOBS";
+            Children.Add(_jobsPage);
+            _calendarPage = NavigationService.CreateAndBind<CalendarPage>(DependencyResolver.Resolve<CalendarViewModel>());
+            _calendarPage.Title = "CALENDAR";
+            Children.Add(_calendarPage);
 			_shouldInit = false;
         }
     }

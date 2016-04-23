@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ui:BasePage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:ui="clr-namespace:CallOfService.Technician.Mobile.UI;assembly=CallOfService.Technician.Mobile" xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps" xmlns:controls="clr-namespace:XLabs.Forms.Controls;assembly=XLabs.Forms" xmlns:customcontrols="clr-namespace:CallOfService.Technician.Mobile.Controls;assembly=CallOfService.Technician.Mobile" xmlns:jobDetails="clr-namespace:CallOfService.Technician.Mobile.Features.JobDetails;assembly=CallOfService.Technician.Mobile" xmlns:system="clr-namespace:System;assembly=System.Runtime" x:Class="CallOfService.Technician.Mobile.Features.JobDetails.JobDetailsPage">
-	<StackLayout>
+	<StackLayout BackgroundColor="#EDEDED" Spacing="0">
+		<BoxView HeightRequest="20" BackgroundColor="#44b6ae" />
 		<ScrollView>
 			<StackLayout Spacing="5">
 				<AbsoluteLayout HeightRequest="300">
@@ -38,7 +39,7 @@
 						</customcontrols:SvgImage>
 					</Grid>
 					<BoxView AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 0.22" BackgroundColor="Black" Opacity="0.5" />
-					<Grid AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 0.21" Padding="0,20,0,0">
+					<Grid AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 0.21" Padding="0,15,0,0">
 						<Grid.RowDefinitions>
 							<RowDefinition Height="36" />
 						</Grid.RowDefinitions>
@@ -96,8 +97,15 @@
 						</controls:RepeaterView.ItemTemplate>
 					</controls:RepeaterView>
 					<Label Text="Add NOTE / IMAGE" />
-					<Editor Text="{Binding NewNoteText}" />
-					<Button Text="Attach Photo" Command="{Binding AddNewNoteImage}" />
+					<StackLayout Spacing="10" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+						<Editor HorizontalOptions="FillAndExpand" Text="{Binding NewNoteText}" HeightRequest="60" />
+						<customcontrols:SvgImage FileName="take-photo" WidthRequest="44" HeightRequest="34">
+							<customcontrols:SvgImage.GestureRecognizers>
+								<TapGestureRecognizer Command="{Binding AddNewNoteImage}" />
+							</customcontrols:SvgImage.GestureRecognizers>
+						</customcontrols:SvgImage>
+					</StackLayout>
+					<Button Text="Add note" />
 				</StackLayout>
 			</StackLayout>
 		</ScrollView>

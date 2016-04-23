@@ -14,6 +14,7 @@ using PubSub;
 using CallOfService.Technician.Mobile.Core.SystemServices;
 using Acr.UserDialogs;
 using CallOfService.Technician.Mobile.Messages;
+using XLabs.Platform.Services.Media;
 
 namespace CallOfService.Technician.Mobile.Features.Jobs
 {
@@ -22,11 +23,15 @@ namespace CallOfService.Technician.Mobile.Features.Jobs
 	{
 		private readonly IAppointmentService _appointmentService;
 		private readonly IUserDialogs _userDialogs;
-
-		public JobsViewModel (IAppointmentService appointmentService, IUserDialogs userDialogs)
+		private ImageSource _imageSource;
+		private IMediaPicker _mediaPicker;
+		private IImageCompressor _imageCompressor;
+		public JobsViewModel (IAppointmentService appointmentService, IUserDialogs userDialogs, IMediaPicker mediaPicker,IImageCompressor imageCompressor)
 		{
 			_userDialogs = userDialogs;
 			_appointmentService = appointmentService;
+			_mediaPicker = mediaPicker;
+			_imageCompressor = imageCompressor;
 			Appointments = new ObservableCollection<AppointmentViewModel> ();
 			this.Subscribe<JobSelected> (async m => {
 				await NavigationService.NavigateToJobDetails ();
@@ -86,26 +91,79 @@ namespace CallOfService.Technician.Mobile.Features.Jobs
 				Appointments.Add (new AppointmentViewModel {
 					Title = appointment.Title,
 					Location = appointment.Location,
-					StartTimeEndTimeFormated = $"{appointment.StartString} - {appointment.EndString}",
+					StartTimeEndTimeFormated =$"{appointment.StartString} - {appointment.EndString}",
 					JobId = appointment.JobId
-                });
-            }
+				});
+			}
 
 			IsRefreshing = false;
-        }
+		}
 
-        public void OnDisappearing()
-        {
-        }
-    }
+		private async void SelectAPhoto ()
+		{
+			try {
+				var mediaFile = await _mediaPicker.SelectPhotoAsync (GetCameraMediaStorageOptions ());
+				ResizeAddToAttachmentsAndAssignImageSource (mediaFile);
+			} catch (Exception) {
+				// ignored
+			}
+		}
 
-    [ImplementPropertyChanged]
-    public class AppointmentViewModel
-    {
-        public string Title { get; set; }
-        public string StartTimeEndTimeFormated { get; set; }
-        public string Location { get; set; }
-		public int JobId { get; set;}
+		private async void TakeAPhoto ()
+		{
+			try {
+				var mediaFile = await _mediaPicker.TakePhotoAsync (GetCameraMediaStorageOptions ()).ContinueWith (t => {
+					if (t.IsFaulted || t.IsCanceled) {
+						return null;
+					}
+
+					return t.Result;
+				});
+
+				ResizeAddToAttachmentsAndAssignImageSource (mediaFile);
+			} catch (Exception) {
+				//Ignored
+			}
+		}
+
+		private void ResizeAddToAttachmentsAndAssignImageSource (MediaFile mediaFile)
+		{
+			if (mediaFile == null)
+				return;
+
+			_imageSource = null;
+
+			var newImageStream = _imageCompressor.ResizeImage (mediaFile.Source, 0.5f);
+			_imageSource = ImageSource.FromStream (() => {
+				newImageStream.Position = 0;
+				return newImageStream;
+			});
+		}
+
+		private static CameraMediaStorageOptions GetCameraMediaStorageOptions ()
+		{
+			return new CameraMediaStorageOptions {
+				DefaultCamera = CameraDevice.Rear,
+				MaxPixelDimension = 400
+			};
+		}
+
+		public void OnDisappearing ()
+		{
+		}
+	}
+
+	[ImplementPropertyChanged]
+	public class AppointmentViewModel
+	{
+		public string Title { get; set; }
+
+		public string StartTimeEndTimeFormated { get; set; }
+
+		public string Location { get; set; }
+
+		public int JobId { get; set; }
+
 		public ICommand ViewDetails { get { return new Command (() => this.Publish (new JobSelected (this))); } }
-    }
+	}
 }

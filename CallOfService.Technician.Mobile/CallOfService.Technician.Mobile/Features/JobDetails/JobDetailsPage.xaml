@@ -105,6 +105,13 @@
 							</customcontrols:SvgImage.GestureRecognizers>
 						</customcontrols:SvgImage>
 					</StackLayout>
+					<controls:RepeaterView Spacing="10" Orientation="Horizontal" x:TypeArguments="ImageSource" ItemsSource="{Binding Attachments}">
+						<controls:RepeaterView.ItemTemplate>
+							<DataTemplate>
+								<Image Source="{Binding}" HeightRequest="100" WidthRequest="100" />
+							</DataTemplate>
+						</controls:RepeaterView.ItemTemplate>
+					</controls:RepeaterView>
 					<Button Text="Add note" />
 				</StackLayout>
 			</StackLayout>

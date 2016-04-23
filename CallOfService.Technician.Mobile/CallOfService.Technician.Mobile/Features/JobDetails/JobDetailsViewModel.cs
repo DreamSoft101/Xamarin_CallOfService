@@ -14,6 +14,7 @@ using System.Windows.Input;
 using CallOfService.Technician.Mobile.Core.SystemServices;
 using CallOfService.Technician.Mobile.Messages;
 using PropertyChanged;
+using XLabs.Platform.Services.Media;
 
 namespace CallOfService.Technician.Mobile.Features.JobDetails
 {
@@ -22,12 +23,18 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 	{
 		private readonly IAppointmentService _appointmentService;
 		private readonly IUserDialogs _userDialogs;
+		private ImageSource _imageSource;
+		private IMediaPicker _mediaPicker;
+		private IImageCompressor _imageCompressor;
 
-		public JobDetailsViewModel (IAppointmentService appointmentService, IUserDialogs userDialogs)
+		public JobDetailsViewModel (IAppointmentService appointmentService, IUserDialogs userDialogs, IMediaPicker mediaPicker, IImageCompressor imageCompressor)
 		{
 			_appointmentService = appointmentService;
 			_userDialogs = userDialogs;
+			_mediaPicker = mediaPicker;
+			_imageCompressor = imageCompressor;
 			Notes = new ObservableCollection<NoteViewModel> ();
+			Attachments = new ObservableCollection<ImageSource> ();
 			CustomFields = new ObservableCollection<string> ();
 			this.Subscribe<ViewJobDetails> (async m => await LoadJobeDetails (m.JobId));
 		}
@@ -112,6 +119,8 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 			}
 		}
 
+		public ObservableCollection<ImageSource> Attachments { get; set; }
+
 		public ICommand EmailCustomerCommand {
 			get { 
 				return new Command (() => {
@@ -151,7 +160,6 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 				});
 			}
 		}
-
 
 		public ICommand StartFinishJob {
 			get {
@@ -213,13 +221,13 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 			if (!string.IsNullOrWhiteSpace (appointment.JobType))
 				PageTitle = PageTitle +$"[{appointment.JobType}]";
 
-            ShowActionButton = true;
-            if (Status == "Scheduled")
-                ActionText = "Start";
-            else if (Status == "InProgress")
-                ActionText = "Finish";
-            else
-                ShowActionButton = false;
+			ShowActionButton = true;
+			if (Status == "Scheduled")
+				ActionText = "Start";
+			else if (Status == "InProgress")
+				ActionText = "Finish";
+			else
+				ShowActionButton = false;
 
 			ShowActionButton = true;
 			if (Status == "Scheduled")
@@ -233,6 +241,72 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 			Emails = job.Emails.Select (e => e.Value).ToList ();
 			_userDialogs.HideLoading ();
 
+		}
+
+		public ICommand AddNewNoteImage {
+			get { 
+				return new Command (() => {
+					var options = new List<ActionSheetOption> ();
+					options.Add (new ActionSheetOption ("Take a photo", async () => await TakeAPhoto ()));
+					options.Add (new ActionSheetOption ("Select a photo", async () => await SelectAPhoto ()));
+							
+					_userDialogs.ActionSheet (new ActionSheetConfig () {
+						Options = options,
+						Cancel = new ActionSheetOption ("Cancel")
+					});
+				});
+			}
+		}
+
+		private async Task SelectAPhoto ()
+		{
+			try {
+				var mediaFile = await _mediaPicker.SelectPhotoAsync (GetCameraMediaStorageOptions ());
+				ResizeAddToAttachmentsAndAssignImageSource (mediaFile);
+			} catch (Exception) {
+				// ignored
+			}
+		}
+
+		private async Task TakeAPhoto ()
+		{
+			try {
+				var mediaFile = await _mediaPicker.TakePhotoAsync (GetCameraMediaStorageOptions ()).ContinueWith (t => {
+					if (t.IsFaulted || t.IsCanceled) {
+						return null;
+					}
+
+					return t.Result;
+				});
+
+				ResizeAddToAttachmentsAndAssignImageSource (mediaFile);
+			} catch (Exception) {
+				//Ignored
+			}
+		}
+
+		private void ResizeAddToAttachmentsAndAssignImageSource (MediaFile mediaFile)
+		{
+			if (mediaFile == null)
+				return;
+
+			_imageSource = null;
+
+			var newImageStream = _imageCompressor.ResizeImage (mediaFile.Source, 0.5f);
+			_imageSource = ImageSource.FromStream (() => {
+				newImageStream.Position = 0;
+				return newImageStream;
+			});
+
+			Attachments.Add (_imageSource);
+		}
+
+		private static CameraMediaStorageOptions GetCameraMediaStorageOptions ()
+		{
+			return new CameraMediaStorageOptions {
+				DefaultCamera = CameraDevice.Rear,
+				MaxPixelDimension = 400
+			};
 		}
 
 		public void Dispose ()

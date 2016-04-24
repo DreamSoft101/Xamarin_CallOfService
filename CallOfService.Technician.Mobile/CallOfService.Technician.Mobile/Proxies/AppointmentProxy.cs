@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -11,7 +12,6 @@ using CallOfService.Technician.Mobile.Domain;
 using CallOfService.Technician.Mobile.Proxies.Abstratcs;
 using CallOfService.Technician.Mobile.Services.Abstracts;
 using Newtonsoft.Json;
-using Xamarin.Forms;
 
 namespace CallOfService.Technician.Mobile.Proxies
 {
@@ -37,7 +37,7 @@ namespace CallOfService.Technician.Mobile.Proxies
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine(e.ToString());
+                Debug.WriteLine(e.ToString());
                 return null;
             }
         }
@@ -56,7 +56,7 @@ namespace CallOfService.Technician.Mobile.Proxies
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine(e.ToString());
+                Debug.WriteLine(e.ToString());
                 return null;
             }
         }
@@ -111,13 +111,13 @@ namespace CallOfService.Technician.Mobile.Proxies
                 else
                 {
                     string responseString = await responseMessage.Content.ReadAsStringAsync();
-                    System.Diagnostics.Debug.WriteLine(responseString);
+                    Debug.WriteLine(responseString);
                 }
                 return false;
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine(e.ToString());
+                Debug.WriteLine(e.ToString());
                 return false;
             }
         }
@@ -139,18 +139,18 @@ namespace CallOfService.Technician.Mobile.Proxies
                 else
                 {
                     string responseString = await responseMessage.Content.ReadAsStringAsync();
-                    System.Diagnostics.Debug.WriteLine(responseString);
+                    Debug.WriteLine(responseString);
                 }
                 return false;
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine(e.ToString());
+                Debug.WriteLine(e.ToString());
                 return false;
             }
         }
 
-        public async Task AddNote(int jobNumber, string newNoteText, List<Stream> attachments, DateTime now)
+        public async Task<bool> AddNote(int jobNumber, string newNoteText, List<Stream> attachments, DateTime now)
         {
             CreateHttpClient();
 
@@ -169,8 +169,18 @@ namespace CallOfService.Technician.Mobile.Proxies
                     var stream = attachments[index];
                     content.Add(new StreamContent(stream), $"S{index + 1}", $"{jobNumber} - {Guid.NewGuid()}.jpg");
                 }
-
-                await Client.PostAsync(UrlConstants.NewNoteUrl, content);
+                try
+                {
+                    var responseMessage = await Client.PostAsync(UrlConstants.NewNoteUrl, content);
+                    if (responseMessage.StatusCode == HttpStatusCode.OK)
+                        return true;
+                    return false;
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.ToString());
+                    return false;
+                }
             }
         }
     }

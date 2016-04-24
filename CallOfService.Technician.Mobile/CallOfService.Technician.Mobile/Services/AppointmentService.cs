@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using CallOfService.Technician.Mobile.Core;
 using CallOfService.Technician.Mobile.Core.Networking;
@@ -88,7 +89,7 @@ namespace CallOfService.Technician.Mobile.Services
             return _appointmentProxy.FinishJob(jobId);
         }
 
-        public Task SubmitNote(int jobNumber, string newNoteText, List<ImageSource> attachments, DateTime now)
+        public Task<bool> SubmitNote(int jobNumber, string newNoteText, List<Stream> attachments, DateTime now)
         {
             return _appointmentProxy.AddNote(jobNumber, newNoteText, attachments, now);
         }

@@ -9,8 +9,6 @@
         public const string FileUrl = "api/file/";
         public const string StartJob = "api/job/start";
         public const string FinishJob = "api/job/finish";
-
-
-
+        public const string NewNoteUrl = "api/jobnote";
     }
 }

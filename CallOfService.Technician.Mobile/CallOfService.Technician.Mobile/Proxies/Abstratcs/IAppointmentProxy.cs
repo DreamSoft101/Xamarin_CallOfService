@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using CallOfService.Technician.Mobile.Domain;
+using Xamarin.Forms;
 
 namespace CallOfService.Technician.Mobile.Proxies.Abstratcs
 {
@@ -11,5 +14,6 @@ namespace CallOfService.Technician.Mobile.Proxies.Abstratcs
         Task<GpsPoint> GetJobLocation(AddressInfo location);
         Task<bool> StartJob(int jobId);
         Task<bool> FinishJob(int jobId);
+        Task AddNote(int jobNumber, string newNoteText, List<Stream> attachments, DateTime now);
     }
 }

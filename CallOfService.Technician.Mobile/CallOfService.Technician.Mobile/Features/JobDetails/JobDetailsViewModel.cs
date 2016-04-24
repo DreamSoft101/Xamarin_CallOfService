@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Acr.UserDialogs;
 using CallOfService.Technician.Mobile.Core.DI;
@@ -35,7 +37,8 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 			_imageCompressor = imageCompressor;
 			Notes = new ObservableCollection<NoteViewModel> ();
 			Attachments = new ObservableCollection<ImageSource> ();
-			CustomFields = new ObservableCollection<string> ();
+            AttachmentsStreams = new List<Stream>();
+            CustomFields = new ObservableCollection<string> ();
 			this.Subscribe<ViewJobDetails> (async m => await LoadJobeDetails (m.JobId));
 		}
 
@@ -82,8 +85,35 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 		public List<string> PhoneNumbers { get; set; }
 
 		public List<string> Emails { get; set; }
+	    public string NewNoteText { get; set; }
 
-		public ICommand CallCustomerCommand {
+	    public ICommand AddNote
+	    {
+	        get
+	        {
+	            return new Command(async () =>
+	            {
+	                _userDialogs.ShowLoading("Adding note");
+	                var noteSaved =
+	                    await _appointmentService.SubmitNote(JobNumber, NewNoteText, AttachmentsStreams, DateTime.Now);
+	                if (noteSaved)
+	                {
+	                    _userDialogs.HideLoading();
+	                    await LoadJobeDetails(JobNumber);
+	                }
+	                else
+	                {
+	                    _userDialogs.HideLoading();
+	                    _userDialogs.Confirm(new ConfirmConfig()
+	                    {
+	                        Message = "Error saving note please try again"
+	                    });
+	                }
+	            });
+	        }
+	    }
+
+	    public ICommand CallCustomerCommand {
 			get { 
 				return new Command (() => {
 					if (PhoneNumbers != null || PhoneNumbers.Count > 0) {
@@ -120,7 +150,7 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 		}
 
 		public ObservableCollection<ImageSource> Attachments { get; set; }
-
+	    public List<Stream> AttachmentsStreams { get; set; }
 		public ICommand EmailCustomerCommand {
 			get { 
 				return new Command (() => {
@@ -293,7 +323,8 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 			_imageSource = null;
 
 			var newImageStream = _imageCompressor.ResizeImage (mediaFile.Source, 0.5f);
-			_imageSource = ImageSource.FromStream (() => {
+		    AttachmentsStreams.Add(newImageStream);
+            _imageSource = ImageSource.FromStream (() => {
 				newImageStream.Position = 0;
 				return newImageStream;
 			});

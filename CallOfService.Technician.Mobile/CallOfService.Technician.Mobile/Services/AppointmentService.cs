@@ -9,6 +9,7 @@ using CallOfService.Technician.Mobile.Database.Repos.Abstracts;
 using CallOfService.Technician.Mobile.Domain;
 using CallOfService.Technician.Mobile.Proxies.Abstratcs;
 using CallOfService.Technician.Mobile.Services.Abstracts;
+using Xamarin.Forms;
 
 namespace CallOfService.Technician.Mobile.Services
 {
@@ -85,6 +86,11 @@ namespace CallOfService.Technician.Mobile.Services
         public Task<bool> FinishJob(int jobId)
         {
             return _appointmentProxy.FinishJob(jobId);
+        }
+
+        public Task SubmitNote(int jobNumber, string newNoteText, List<ImageSource> attachments, DateTime now)
+        {
+            return _appointmentProxy.AddNote(jobNumber, newNoteText, attachments, now);
         }
     }
 }

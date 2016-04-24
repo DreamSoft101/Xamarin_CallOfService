@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -10,6 +11,7 @@ using CallOfService.Technician.Mobile.Domain;
 using CallOfService.Technician.Mobile.Proxies.Abstratcs;
 using CallOfService.Technician.Mobile.Services.Abstracts;
 using Newtonsoft.Json;
+using Xamarin.Forms;
 
 namespace CallOfService.Technician.Mobile.Proxies
 {
@@ -106,11 +108,11 @@ namespace CallOfService.Technician.Mobile.Proxies
                 HttpResponseMessage responseMessage = await Client.PostAsync(url, stringContent);
                 if (responseMessage.StatusCode == HttpStatusCode.OK)
                     return true;
-				else
-				{
-					string responseString = await responseMessage.Content.ReadAsStringAsync();
-					System.Diagnostics.Debug.WriteLine(responseString);
-				}
+                else
+                {
+                    string responseString = await responseMessage.Content.ReadAsStringAsync();
+                    System.Diagnostics.Debug.WriteLine(responseString);
+                }
                 return false;
             }
             catch (Exception e)
@@ -134,17 +136,41 @@ namespace CallOfService.Technician.Mobile.Proxies
                 HttpResponseMessage responseMessage = await Client.PostAsync(url, stringContent);
                 if (responseMessage.StatusCode == HttpStatusCode.OK)
                     return true;
-				else
-				{
-					string responseString = await responseMessage.Content.ReadAsStringAsync();
-					System.Diagnostics.Debug.WriteLine(responseString);
-				}
+                else
+                {
+                    string responseString = await responseMessage.Content.ReadAsStringAsync();
+                    System.Diagnostics.Debug.WriteLine(responseString);
+                }
                 return false;
             }
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e.ToString());
                 return false;
+            }
+        }
+
+        public async Task AddNote(int jobNumber, string newNoteText, List<Stream> attachments, DateTime now)
+        {
+            CreateHttpClient();
+
+            using (var content = new MultipartFormDataContent())
+            {
+                var stringContent =
+                    new StringContent(
+                        JsonConvert.SerializeObject(new {Id = jobNumber, Note = newNoteText, Timestamp = now.Ticks}),
+                        Encoding.UTF8,
+                        "application/json");
+
+                content.Add(stringContent);
+
+                for (int index = 0; index < attachments.Count; index++)
+                {
+                    var stream = attachments[index];
+                    content.Add(new StreamContent(stream), $"S{index + 1}", $"{jobNumber} - {Guid.NewGuid()}.jpg");
+                }
+
+                await Client.PostAsync(UrlConstants.NewNoteUrl, content);
             }
         }
     }

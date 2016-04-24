@@ -112,7 +112,7 @@
 							</DataTemplate>
 						</controls:RepeaterView.ItemTemplate>
 					</controls:RepeaterView>
-					<Button Text="Add note" />
+					<Button Text="Add note" Command="{Binding AddNote}" />
 				</StackLayout>
 			</StackLayout>
 		</ScrollView>

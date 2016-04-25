@@ -89,7 +89,7 @@ namespace CallOfService.Technician.Mobile.Services
             return _appointmentProxy.FinishJob(jobId);
         }
 
-        public Task<bool> SubmitNote(int jobNumber, string newNoteText, List<Stream> attachments, DateTime now)
+		public Task<bool> SubmitNote(int jobNumber, string newNoteText, List<byte[]> attachments, DateTime now)
         {
             return _appointmentProxy.AddNote(jobNumber, newNoteText, attachments, now);
         }

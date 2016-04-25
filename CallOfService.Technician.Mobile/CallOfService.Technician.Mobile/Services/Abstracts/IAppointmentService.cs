@@ -16,6 +16,6 @@ namespace CallOfService.Technician.Mobile.Services.Abstracts
         Uri GetFileUri(FileReference fileReference, bool isThumbnil);
 		Task<bool> StartJob(int jobId);
 		Task<bool> FinishJob(int jobId);
-        Task<bool> SubmitNote(int jobNumber, string newNoteText, List<Stream> attachments, DateTime now);
+		Task<bool> SubmitNote(int jobNumber, string newNoteText, List<byte[]> attachments, DateTime now);
     }
 }

@@ -13,6 +13,6 @@ namespace CallOfService.Technician.Mobile.Proxies.Abstratcs
         Task<GpsPoint> GetJobLocation(AddressInfo location);
         Task<bool> StartJob(int jobId);
         Task<bool> FinishJob(int jobId);
-        Task<bool> AddNote(int jobNumber, string newNoteText, List<Stream> attachments, DateTime now);
+		Task<bool> AddNote(int jobNumber, string newNoteText, List<byte[]> attachments, DateTime now);
     }
 }

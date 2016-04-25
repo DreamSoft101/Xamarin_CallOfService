@@ -150,15 +150,15 @@ namespace CallOfService.Technician.Mobile.Proxies
             }
         }
 
-        public async Task<bool> AddNote(int jobNumber, string newNoteText, List<Stream> attachments, DateTime now)
+		public async Task<bool> AddNote(int jobNumber, string newNoteText, List<byte[]> attachments, DateTime now)
         {
-            CreateHttpClient();
+            CreateHttpClient(10);
 
-            using (var content = new MultipartFormDataContent())
+			using (var content = new MultipartFormDataContent("form-data"))
             {
                 var stringContent =
                     new StringContent(
-                        JsonConvert.SerializeObject(new {Id = jobNumber, Note = newNoteText, Timestamp = now.Ticks}),
+						JsonConvert.SerializeObject(new {id = jobNumber, note = newNoteText, timestamp = GetTime(now)}),
                         Encoding.UTF8,
                         "application/json");
 
@@ -166,12 +166,13 @@ namespace CallOfService.Technician.Mobile.Proxies
 
                 for (int index = 0; index < attachments.Count; index++)
                 {
-                    var stream = attachments[index];
-                    content.Add(new StreamContent(stream), $"S{index + 1}", $"{jobNumber} - {Guid.NewGuid()}.jpg");
+                    var data = attachments[index];
+					content.Add(new StreamContent(new MemoryStream (data)), $"S{index + 1}", $"{jobNumber} - {Guid.NewGuid()}.jpg");
                 }
                 try
                 {
                     var responseMessage = await Client.PostAsync(UrlConstants.NewNoteUrl, content);
+					var s = await responseMessage.Content.ReadAsStringAsync();
                     if (responseMessage.StatusCode == HttpStatusCode.OK)
                         return true;
                     return false;
@@ -183,5 +184,14 @@ namespace CallOfService.Technician.Mobile.Proxies
                 }
             }
         }
+
+		private Int64 GetTime(DateTime datetime)
+		{
+			Int64 retval=0;
+			var  st=  new DateTime(1970,1,1);
+			TimeSpan t= (datetime.ToUniversalTime()-st);
+			retval= (Int64)(t.TotalMilliseconds+0.5);
+			return retval;
+		}
     }
 }

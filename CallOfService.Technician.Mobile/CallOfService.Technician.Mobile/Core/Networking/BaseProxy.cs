@@ -19,14 +19,14 @@ namespace CallOfService.Technician.Mobile.Core.Networking
             Client = CreateHttpClient();
         }
 
-        protected HttpClient CreateHttpClient()
+		protected HttpClient CreateHttpClient(int minutes  = 2)
         {
             var serverUri = new Uri(UrlConstants.BaseUrl);
 
             var httpClient = new HttpClient
             {
                 BaseAddress = serverUri,
-                Timeout = new TimeSpan(0, 2, 0)
+				Timeout = new TimeSpan(0, minutes, 0)
             };
 
             var userCredentials = _userService.GetUserCredentials();

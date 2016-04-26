@@ -40,6 +40,7 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 			AttachmentsStreams = new List<byte[]> ();
 			CustomFields = new ObservableCollection<string> ();
 			this.Subscribe<ViewJobDetails> (async m => await LoadJobeDetails (m.JobId));
+			DataLoaded = false;
 		}
 
 		public ICommand NavigateBack {
@@ -49,6 +50,8 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 				});
 			}
 		}
+
+		public bool DataLoaded { get ; set; }
 
 		public DateTime Date { get; set; }
 
@@ -269,6 +272,7 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 
 			PhoneNumbers = job.PhoneNumbers.Select (p => p.Number).ToList ();
 			Emails = job.Emails.Select (e => e.Value).ToList ();
+			DataLoaded = true;
 			_userDialogs.HideLoading ();
 
 		}
@@ -343,18 +347,18 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 		public void Dispose ()
 		{
 			Notes.Clear ();
+			Attachments.Clear ();
+			AttachmentsStreams.Clear ();
 			CustomFields.Clear ();
+			DataLoaded = false;
 		}
 
 		public void OnAppearing ()
 		{
-
 		}
 
 		public void OnDisappearing ()
 		{
-			Notes.Clear ();
-			CustomFields.Clear ();
 		}
 	}
 

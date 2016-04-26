@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ui:BasePage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:ui="clr-namespace:CallOfService.Technician.Mobile.UI;assembly=CallOfService.Technician.Mobile" xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps" xmlns:controls="clr-namespace:XLabs.Forms.Controls;assembly=XLabs.Forms" xmlns:customcontrols="clr-namespace:CallOfService.Technician.Mobile.Controls;assembly=CallOfService.Technician.Mobile" xmlns:jobDetails="clr-namespace:CallOfService.Technician.Mobile.Features.JobDetails;assembly=CallOfService.Technician.Mobile" xmlns:system="clr-namespace:System;assembly=System.Runtime" x:Class="CallOfService.Technician.Mobile.Features.JobDetails.JobDetailsPage">
-	<StackLayout BackgroundColor="#EDEDED" Spacing="0">
+	<StackLayout BackgroundColor="#EDEDED" Spacing="0" IsVisible="{Binding DataLoaded}">
 		<BoxView HeightRequest="20" BackgroundColor="#44b6ae" />
 		<ScrollView>
 			<StackLayout Spacing="5">
@@ -86,13 +86,15 @@
 										<Label HorizontalOptions="Start" Text="{Binding Description}" />
 										<Label HorizontalOptions="EndAndExpand" Text="{Binding Date,StringFormat='{}{0:dd}/{0:MM}/{0:yy}'}" />
 									</StackLayout>
-									<controls:RepeaterView Spacing="10" Orientation="Horizontal" x:TypeArguments="ImageSource" ItemsSource="{Binding ThumbnilImageSources}">
-										<controls:RepeaterView.ItemTemplate>
-											<DataTemplate>
-												<Image Source="{Binding}" HeightRequest="100" WidthRequest="100" />
-											</DataTemplate>
-										</controls:RepeaterView.ItemTemplate>
-									</controls:RepeaterView>
+									<ScrollView Orientation="Horizontal">
+										<controls:RepeaterView Spacing="10" Orientation="Horizontal" x:TypeArguments="ImageSource" ItemsSource="{Binding ThumbnilImageSources}">
+											<controls:RepeaterView.ItemTemplate>
+												<DataTemplate>
+													<Image Source="{Binding}" HeightRequest="100" WidthRequest="100" />
+												</DataTemplate>
+											</controls:RepeaterView.ItemTemplate>
+										</controls:RepeaterView>
+									</ScrollView>
 									<BoxView HeightRequest="1" BackgroundColor="Silver" />
 								</StackLayout>
 							</DataTemplate>
@@ -107,13 +109,15 @@
 							</customcontrols:SvgImage.GestureRecognizers>
 						</customcontrols:SvgImage>
 					</StackLayout>
-					<controls:RepeaterView Spacing="10" Orientation="Horizontal" x:TypeArguments="ImageSource" ItemsSource="{Binding Attachments}">
-						<controls:RepeaterView.ItemTemplate>
-							<DataTemplate>
-								<Image Source="{Binding}" HeightRequest="100" WidthRequest="100" />
-							</DataTemplate>
-						</controls:RepeaterView.ItemTemplate>
-					</controls:RepeaterView>
+					<ScrollView Orientation="Horizontal">
+						<controls:RepeaterView Spacing="10" Orientation="Horizontal" x:TypeArguments="ImageSource" ItemsSource="{Binding Attachments}">
+							<controls:RepeaterView.ItemTemplate>
+								<DataTemplate>
+									<Image Source="{Binding}" HeightRequest="100" WidthRequest="100" />
+								</DataTemplate>
+							</controls:RepeaterView.ItemTemplate>
+						</controls:RepeaterView>
+					</ScrollView>
 					<Button Text="Add note" Command="{Binding AddNote}" />
 				</StackLayout>
 			</StackLayout>

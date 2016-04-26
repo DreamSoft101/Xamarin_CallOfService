@@ -34,8 +34,11 @@ namespace CallOfService.Technician.Mobile.Core.SystemServices
 			return Navigation.PushAsync (CreateAndBind<JobDetailsPage> (DependencyResolver.Resolve<JobDetailsViewModel> ()));
 		}
 
-		public static Task NavigateBack(){
-			return Navigation.PopAsync ();
+		public static async  Task NavigateBack(){
+			var page = await Navigation.PopAsync ();
+			if (page.BindingContext is IDisposable) {
+				(page.BindingContext as IDisposable).Dispose ();
+			}
 		}
     }
 }

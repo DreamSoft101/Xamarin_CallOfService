@@ -97,6 +97,9 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 					if (noteSaved) {
 						_userDialogs.HideLoading ();
 						await LoadJobeDetails (JobNumber);
+						Attachments.Clear();
+						AttachmentsStreams.Clear();
+						NewNoteText = string.Empty;
 					} else {
 						_userDialogs.HideLoading();
 						await Task.Delay(1000);

@@ -102,6 +102,8 @@
     <Compile Include="Services\Abstracts\IImageCompressor.cs" />
     <Compile Include="Features\JobDetails\ImageMetaData.cs" />
     <Compile Include="Messages\ShowCalendarView.cs" />
+    <Compile Include="Core\Networking\TokenExpirationHandler.cs" />
+    <Compile Include="Messages\UserUnauthorized.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Acr.UserDialogs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">

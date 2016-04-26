@@ -22,8 +22,11 @@ namespace CallOfService.Technician.Mobile.Features.Login
         public LoginViewModel(ILoginService loginService)
         {
             _loginService = loginService;
+			Relogin = false;
         }
 
+
+		public bool Relogin {get;set;}
         public string Username { get; set; }
         public string Password { get; set; }
 
@@ -37,7 +40,12 @@ namespace CallOfService.Technician.Mobile.Features.Login
                 {
                     var loginResult = await _loginService.Login(Username, Password);
                     if (loginResult.IsSuccessful)
-                        await NavigationService.NavigateToWelcomeScreen();
+						{
+							if(Relogin)
+								NavigationService.Dismiss();
+							else
+								await NavigationService.NavigateToWelcomeScreen();
+						}
                     else
                         ShowErrorMessage = true;
                 });

@@ -4,6 +4,8 @@ using CallOfService.Technician.Mobile.Database.Repos.Abstracts;
 using CallOfService.Technician.Mobile.Domain;
 using CallOfService.Technician.Mobile.Proxies.Abstratcs;
 using CallOfService.Technician.Mobile.Services.Abstracts;
+using PubSub;
+using CallOfService.Technician.Mobile.Messages;
 
 namespace CallOfService.Technician.Mobile.Services
 {

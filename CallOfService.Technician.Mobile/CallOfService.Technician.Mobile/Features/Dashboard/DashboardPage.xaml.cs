@@ -7,6 +7,7 @@ using CallOfService.Technician.Mobile.Services.Abstracts;
 using CallOfService.Technician.Mobile.UI;
 using PubSub;
 using Xamarin.Forms;
+using System.Threading.Tasks;
 
 namespace CallOfService.Technician.Mobile.Features.Dashboard
 {
@@ -29,7 +30,21 @@ namespace CallOfService.Technician.Mobile.Features.Dashboard
 			this.Subscribe<ShowCalendarView> (m=>{
 				this.CurrentPage = _calendarPage;
 			});
+
+			this.Subscribe<UserUnauthorized> (async m=> await RefreshToken());
         }
+
+		private async Task RefreshToken(){
+			var userService = DependencyResolver.Resolve<IUserService> ();
+			var loginService = DependencyResolver.Resolve<ILoginService> ();
+			var cred = userService.GetUserCredentials ();
+			var loginResult = await loginService.Login (cred.Email, cred.Password); 
+			if(!loginResult.IsSuccessful)
+			{
+				await NavigationService.ShowLoginPage();
+			}
+		}
+
 
         protected async override void OnAppearing()
         {

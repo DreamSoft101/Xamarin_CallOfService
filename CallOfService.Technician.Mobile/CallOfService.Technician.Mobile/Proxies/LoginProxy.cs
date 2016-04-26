@@ -22,6 +22,7 @@ namespace CallOfService.Technician.Mobile.Proxies
         {
             try
             {
+				CreateHttpClient(useTokenExpirationHandler: false);
                 var stringContent = new StringContent(JsonConvert.SerializeObject(new {username = userName, password = password}), Encoding.UTF8, "application/json");
                 Client.DefaultRequestHeaders.Add("Accept", "application/json");
                 //Client.DefaultRequestHeaders.Add("Content-Type", "application/json");

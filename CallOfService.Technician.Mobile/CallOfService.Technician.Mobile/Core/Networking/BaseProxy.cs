@@ -19,24 +19,31 @@ namespace CallOfService.Technician.Mobile.Core.Networking
             Client = CreateHttpClient();
         }
 
-		protected HttpClient CreateHttpClient(int minutes  = 2)
-        {
-            var serverUri = new Uri(UrlConstants.BaseUrl);
+		protected HttpClient CreateHttpClient(int minutes  = 2,bool useTokenExpirationHandler = true)
+		{
+			var serverUri = new Uri (UrlConstants.BaseUrl);
 
-            var httpClient = new HttpClient
-            {
-                BaseAddress = serverUri,
-				Timeout = new TimeSpan(0, minutes, 0)
-            };
+			HttpClient httpClient;
 
-            var userCredentials = _userService.GetUserCredentials();
-            if (userCredentials != null)
-            {
-                httpClient.DefaultRequestHeaders.Add("Token-Id", userCredentials.Token);
-            }
+			if (useTokenExpirationHandler)
+				httpClient = new HttpClient (new TokenExpirationHandler ()) {
+					BaseAddress = serverUri,
+					Timeout = new TimeSpan (0, minutes, 0),
+				};
+			else
+				httpClient = new HttpClient () {
+					BaseAddress = serverUri,
+					Timeout = new TimeSpan (0, minutes, 0),
+				};
 
-            return httpClient;
-        }
+			var userCredentials = _userService.GetUserCredentials ();
+			if (userCredentials != null) {
+				httpClient.DefaultRequestHeaders.Add ("Token-Id", userCredentials.Token);
+			}
+
+			return httpClient;
+		}
+
 
         protected void LogResponse(HttpResponseMessage responseMessage, string content,
             bool logSuccessfulResponse = true)

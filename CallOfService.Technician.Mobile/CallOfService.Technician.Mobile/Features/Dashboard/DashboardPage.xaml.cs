@@ -25,6 +25,10 @@ namespace CallOfService.Technician.Mobile.Features.Dashboard
             {
                 this.CurrentPage = _jobsPage;
             });
+
+			this.Subscribe<ShowCalendarView> (m=>{
+				this.CurrentPage = _calendarPage;
+			});
         }
 
         protected async override void OnAppearing()

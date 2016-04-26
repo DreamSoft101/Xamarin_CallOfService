@@ -242,6 +242,7 @@
     <EmbeddedResource Include="Resources\Images\start.svg" />
     <EmbeddedResource Include="Resources\Images\plus.svg" />
     <EmbeddedResource Include="Resources\Images\take-photo.svg" />
+    <EmbeddedResource Include="Resources\Images\sms.svg" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Images\clock-green.svg" />

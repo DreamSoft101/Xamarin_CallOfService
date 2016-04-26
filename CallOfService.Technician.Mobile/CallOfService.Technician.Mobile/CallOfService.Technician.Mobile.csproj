@@ -101,6 +101,7 @@
     <Compile Include="Messages\ViewJobDetails.cs" />
     <Compile Include="Services\Abstracts\IImageCompressor.cs" />
     <Compile Include="Features\JobDetails\ImageMetaData.cs" />
+    <Compile Include="Messages\ShowCalendarView.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Acr.UserDialogs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">

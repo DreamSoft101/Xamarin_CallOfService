@@ -22,7 +22,7 @@
 								<TapGestureRecognizer Command="{Binding CallCustomerCommand}" />
 							</customcontrols:SvgImage.GestureRecognizers>
 						</customcontrols:SvgImage>
-						<customcontrols:SvgImage Grid.Row="0" Grid.Column="1" FileName="call" WidthRequest="12" HeightRequest="20">
+						<customcontrols:SvgImage Grid.Row="0" Grid.Column="1" FileName="sms" WidthRequest="12" HeightRequest="20">
 							<customcontrols:SvgImage.GestureRecognizers>
 								<TapGestureRecognizer Command="{Binding SmsCustomerCommand}" />
 							</customcontrols:SvgImage.GestureRecognizers>
@@ -57,6 +57,8 @@
 					</Grid>
 				</AbsoluteLayout>
 				<StackLayout Padding="20">
+					<Label HorizontalOptions="Center" Text="{Binding Location}" />
+					<BoxView HeightRequest="1" BackgroundColor="Silver" />
 					<Label HorizontalOptions="Center" Text="{Binding Date,StringFormat='{}{0:dddd}/{0:MMMM}/{0:yyyy}'}" />
 					<BoxView HeightRequest="1" BackgroundColor="Silver" />
 					<Label Text="{Binding Contact,StringFormat='Contact: {0}'}" />

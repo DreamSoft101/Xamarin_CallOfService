@@ -205,6 +205,8 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 						} else
 							_userDialogs.ShowError ("Error Finishing Job");
 					}
+
+					await LoadJobeDetails(JobNumber);
 				});
 			}
 		}

@@ -3,8 +3,10 @@ using CallOfService.Technician.Mobile.Domain;
 
 namespace CallOfService.Technician.Mobile.Services.Abstracts
 {
-    public interface ILoginService
-    {
-        Task<UserLoginResult> Login(string userName, string password);
-    }
+	public interface ILoginService
+	{
+		Task<UserLoginResult> Login (string userName, string password);
+
+		Task<bool> Logout ();
+	}
 }

@@ -26,5 +26,8 @@ namespace CallOfService.Technician.Mobile.Database.Repos
             var userProfiles = await _userProfileDbSet.GetAllAsync();
             return userProfiles.FirstOrDefault();
         }
+		public Task DeleteUserProfile(){
+			return _userProfileDbSet.DeleteAll ();
+		}
     }
 }

@@ -261,4 +261,9 @@
   <ItemGroup>
     <Folder Include="Services\" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\MenuIcon.png" />
+    <BundleResource Include="Resources\MenuIcon%402x.png" />
+    <BundleResource Include="Resources\MenuIcon%403x.png" />
+  </ItemGroup>
 </Project>

@@ -67,6 +67,10 @@ namespace CallOfService.Technician.Mobile.iOS.Core.Security
             return new Credential(credential.Email,credential.Password,credential.Token);
         }
 
+		public void Delete(){
+			DeletedOldSecureRecords();
+		}
+
         private string GetSavedAccount()
         {
             var cred = Retrive(null);

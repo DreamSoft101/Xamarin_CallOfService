@@ -11,6 +11,7 @@ using CallOfService.Technician.Mobile.Core.SystemServices;
 using CallOfService.Technician.Mobile.Database;
 using CallOfService.Technician.Mobile.Features.Dashboard;
 using CallOfService.Technician.Mobile.Services.Abstracts;
+using PubSub;
 
 namespace CallOfService.Technician.Mobile
 {
@@ -18,6 +19,12 @@ namespace CallOfService.Technician.Mobile
     {
         public App()
         {
+			this.Subscribe <Logout> (async m => {
+				await NavigationService.NaviGateToLoginPage();
+				//var loginPage = new LoginPage { BindingContext = DependencyResolver.Resolve<LoginViewModel> () };
+				//MainPage = new NavigationPage (loginPage);
+				//NavigationService.Navigation = MainPage.Navigation;
+			});
         }
 
         protected async override void OnStart()
@@ -28,13 +35,12 @@ namespace CallOfService.Technician.Mobile
             {
                 var loginPage = new LoginPage { BindingContext = DependencyResolver.Resolve<LoginViewModel>() };
                 MainPage = new NavigationPage(loginPage);
+				NavigationService.MainNavigation = MainPage.Navigation;
             }
             else
             {
-                MainPage = new NavigationPage(new DashboardPage());
+				MainPage = new MasterDetailMainPage();
             }
-            
-            NavigationService.Navigation = MainPage.Navigation;
         }
 
         private async Task<bool> ShouldLogin()

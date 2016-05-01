@@ -50,7 +50,7 @@ namespace CallOfService.Technician.Mobile.Features.Welcome
             {
                 return new Command(() =>
                 {
-                    NavigationService.NavigateToDashboardScreen();
+                    NavigationService.NavigateToMainPage();
                 });
             }
         }

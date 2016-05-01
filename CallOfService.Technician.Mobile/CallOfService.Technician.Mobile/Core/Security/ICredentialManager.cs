@@ -10,5 +10,6 @@ namespace CallOfService.Technician.Mobile.Core.Security
     {
         bool Save(Credential credential);
         Credential Retrive(string account);
+		void Delete();
     }
 }

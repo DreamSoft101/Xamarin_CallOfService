@@ -71,6 +71,8 @@ namespace CallOfService.Technician.Mobile.Core.DI
             builder.RegisterType<CalendarViewModel>().AsSelf().SingleInstance();
 			builder.RegisterType<JobDetailsViewModel> ().AsSelf ().SingleInstance ();
 			builder.RegisterType<NoteViewModel> ().AsSelf ();
+			builder.RegisterType<MainMenuViewModel> ().AsSelf ();
+
         }
     }
 }

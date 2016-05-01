@@ -104,6 +104,12 @@
     <Compile Include="Messages\ShowCalendarView.cs" />
     <Compile Include="Core\Networking\TokenExpirationHandler.cs" />
     <Compile Include="Messages\UserUnauthorized.cs" />
+    <Compile Include="Features\MasterDetailMainPage\MasterDetailMainPage.cs" />
+    <Compile Include="Features\MenuPage\MainMenuPage.xaml.cs">
+      <DependentUpon>MainMenuPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\MenuPage\MainMenuViewModel.cs" />
+    <Compile Include="Messages\Logout.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Acr.UserDialogs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -187,6 +193,9 @@
     <EmbeddedResource Include="Features\JobDetails\JobDetailsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="Features\MenuPage\MainMenuPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Features\Welcome\WelcomePage.xaml">
@@ -234,4 +243,8 @@
     <Error Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
   </Target>
   <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Features\MasterDetailMainPage\" />
+    <Folder Include="Features\MenuPage\" />
+  </ItemGroup>
 </Project>

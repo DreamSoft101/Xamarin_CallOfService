@@ -13,9 +13,11 @@ namespace CallOfService.Technician.Mobile.Core.SystemServices
 	{
 		public static INavigation Navigation { get; set; }
 
+		public static INavigation MainNavigation { get; set; }
+
 		public static Task NavigateToWelcomeScreen ()
 		{
-			return Navigation.PushAsync (CreateAndBind<WelcomePage> (DependencyResolver.Resolve<WelcomeViewModel> ()));
+			return MainNavigation.PushAsync (CreateAndBind<WelcomePage> (DependencyResolver.Resolve<WelcomeViewModel> ()));
 		}
 
 		public static Page CreateAndBind<T> (object obj) where T : Page, new()
@@ -56,6 +58,14 @@ namespace CallOfService.Technician.Mobile.Core.SystemServices
 			if (page.BindingContext is IDisposable) {
 				(page.BindingContext as IDisposable).Dispose ();
 			}
+		}
+
+		public static Task NavigateToMainPage(){
+			return MainNavigation.PushAsync (CreateAndBind<MasterDetailMainPage> (new object ()));
+		}
+
+		public static Task NaviGateToLoginPage(){
+			return MainNavigation.PushAsync (CreateAndBind<LoginPage> (DependencyResolver.Resolve<LoginViewModel>()));
 		}
 	}
 }

@@ -20,7 +20,10 @@ namespace CallOfService.Technician.Mobile.Features.Dashboard
         public DashboardPage()
         {
             InitializeComponent();
-            NavigationPage.SetHasNavigationBar(this, false);
+            //NavigationPage.SetHasNavigationBar(this, false);
+
+			Title ="Call Of Service";
+
 			_shouldInit = true;
             this.Subscribe<NewDateSelected>(m =>
             {

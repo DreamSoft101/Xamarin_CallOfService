@@ -7,7 +7,7 @@
     <Label x:Name="Message1" HorizontalOptions="Center" TextColor="White"></Label>
     <Label x:Name="Message2" HorizontalOptions="Center" TextColor="White"></Label>
     <Button Text="Let's Start" 
-            HorizontalOptions="Center" 
+            
             IsVisible="{Binding ShowStartButton}" 
             TextColor="White" 
             BorderColor="White" 

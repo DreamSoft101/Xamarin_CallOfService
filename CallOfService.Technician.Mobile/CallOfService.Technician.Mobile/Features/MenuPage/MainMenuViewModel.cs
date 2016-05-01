@@ -6,6 +6,7 @@ using CallOfService.Technician.Mobile.Services.Abstracts;
 using Acr.UserDialogs;
 using CallOfService.Technician.Mobile.Core.SystemServices;
 using PubSub;
+using CallOfService.Technician.Mobile.Messages;
 
 namespace CallOfService.Technician.Mobile
 {
@@ -35,6 +36,16 @@ namespace CallOfService.Technician.Mobile
 				});
 			}
 		}
+
+		public ICommand ShowJobsCommand{
+			get{ 
+				return new Command (async ()=> {
+					var isJobDetailsLastPage = NavigationService.IsJobDetailsPresent();
+					if(isJobDetailsLastPage)
+						await NavigationService.NavigateBack();
+					this.Publish(new NewDateSelected(DateTime.Now));
+				});
+			}
+		}
 	}
 }
-

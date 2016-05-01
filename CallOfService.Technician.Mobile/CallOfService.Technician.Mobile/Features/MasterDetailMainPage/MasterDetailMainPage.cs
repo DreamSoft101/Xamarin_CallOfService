@@ -3,6 +3,8 @@ using Xamarin.Forms;
 using CallOfService.Technician.Mobile.Features.Dashboard;
 using CallOfService.Technician.Mobile.Core.SystemServices;
 using CallOfService.Technician.Mobile.Core.DI;
+using PubSub;
+using CallOfService.Technician.Mobile.Messages;
 
 namespace CallOfService.Technician.Mobile
 {
@@ -10,6 +12,11 @@ namespace CallOfService.Technician.Mobile
 	{
 		public MasterDetailMainPage ()
 		{
+
+			this.Subscribe<NewDateSelected> (mn => {
+				IsPresented = false;
+			});
+
 			NavigationPage.SetHasNavigationBar (this, false);
 			var mainMenuPage = new MainMenuPage (){
 				Title = "Call Of Service",

@@ -6,6 +6,7 @@ using CallOfService.Technician.Mobile.Features.JobDetails;
 using CallOfService.Technician.Mobile.Features.Welcome;
 using Xamarin.Forms;
 using CallOfService.Technician.Mobile.Features.Login;
+using System.Linq;
 
 namespace CallOfService.Technician.Mobile.Core.SystemServices
 {
@@ -66,6 +67,14 @@ namespace CallOfService.Technician.Mobile.Core.SystemServices
 
 		public static Task NaviGateToLoginPage(){
 			return MainNavigation.PushAsync (CreateAndBind<LoginPage> (DependencyResolver.Resolve<LoginViewModel>()));
+		}
+
+		public static bool IsJobDetailsPresent(){
+			var lastPage = Navigation.NavigationStack.Last ();
+			if(lastPage.GetType() == typeof(JobDetailsPage)){
+				return true;
+			}
+			return false;
 		}
 	}
 }

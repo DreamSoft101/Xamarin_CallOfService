@@ -15,8 +15,6 @@ namespace CallOfService.Technician.Mobile.iOS
 	{
 		// class-level declarations
 
-
-
 		public override bool FinishedLaunching (UIApplication application, NSDictionary launchOptions)
 		{
 			Forms.Init();

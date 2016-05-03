@@ -1,11 +1,12 @@
 ﻿using Android.App;
 using Android.Widget;
 using Android.OS;
+using XLabs.Forms;
 
 namespace CallOfService.Technician.Mobile.Droid
 {
 	[Activity (Label = "CallOfService.Technician.Mobile.Droid", MainLauncher = true, Icon = "@mipmap/icon")]
-	public class MainActivity : Activity
+	public class MainActivity : XFormsApplicationDroid
 	{
 		int count = 1;
 

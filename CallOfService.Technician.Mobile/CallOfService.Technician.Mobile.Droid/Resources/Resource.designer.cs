@@ -64,6 +64,8 @@ namespace CallOfService.Technician.Mobile.Droid
 			global::AndroidHUD.Resource.Styleable.ProgressWheel_ahTextColor = global::CallOfService.Technician.Mobile.Droid.Resource.Styleable.ProgressWheel_ahTextColor;
 			global::AndroidHUD.Resource.Styleable.ProgressWheel_ahTextSize = global::CallOfService.Technician.Mobile.Droid.Resource.Styleable.ProgressWheel_ahTextSize;
 			global::Splat.Resource.String.library_name = global::CallOfService.Technician.Mobile.Droid.Resource.String.library_name;
+			global::SQLite.Net.Platform.XamarinAndroid.Resource.String.ApplicationName = global::CallOfService.Technician.Mobile.Droid.Resource.String.ApplicationName;
+			global::SQLite.Net.Platform.XamarinAndroid.Resource.String.Hello = global::CallOfService.Technician.Mobile.Droid.Resource.String.Hello;
 			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::CallOfService.Technician.Mobile.Droid.Resource.Attribute.actionBarSize;
 			global::XLabs.Forms.Resource.Animation.abc_fade_in = global::CallOfService.Technician.Mobile.Droid.Resource.Animation.abc_fade_in;
 			global::XLabs.Forms.Resource.Animation.abc_fade_out = global::CallOfService.Technician.Mobile.Droid.Resource.Animation.abc_fade_out;

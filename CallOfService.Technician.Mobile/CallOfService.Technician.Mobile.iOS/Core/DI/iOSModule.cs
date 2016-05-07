@@ -2,7 +2,6 @@
 using Autofac;
 using CallOfService.Technician.Mobile.Core.Security;
 using CallOfService.Technician.Mobile.Database;
-using CallOfService.Technician.Mobile.iOS.Core.Security;
 using CallOfService.Technician.Mobile.iOS.Database;
 using XLabs.Platform.Services.Media;
 

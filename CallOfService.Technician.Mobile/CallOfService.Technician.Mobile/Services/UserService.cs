@@ -24,11 +24,11 @@ namespace CallOfService.Technician.Mobile.Services
 
         public Credential GetUserCredentials()
         {
-            var credential = _credentialManager.Retrive(null);
+            var credential = _credentialManager.Retrive();
             if (string.IsNullOrWhiteSpace(credential?.Email))
                 return null;
 
-            return _credentialManager.Retrive(credential.Email);
+            return _credentialManager.Retrive();
         }
     }
 }

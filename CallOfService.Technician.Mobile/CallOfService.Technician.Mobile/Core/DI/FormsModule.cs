@@ -61,6 +61,7 @@ namespace CallOfService.Technician.Mobile.Core.DI
             builder.RegisterType<Logger>().As<ILogger>().SingleInstance();
             builder.RegisterType<AppointmentService>().As<IAppointmentService>().SingleInstance();
 			builder.RegisterType<UserService>().As<IUserService>().SingleInstance();
+            builder.RegisterType<CredentialManager>().As<ICredentialManager>().SingleInstance();
         }
 
         private void RegisterViewModels(ContainerBuilder builder)

@@ -9,7 +9,7 @@ namespace CallOfService.Technician.Mobile.Core.Security
     public interface ICredentialManager
     {
         bool Save(Credential credential);
-        Credential Retrive(string account);
+        Credential Retrive();
 		void Delete();
     }
 }

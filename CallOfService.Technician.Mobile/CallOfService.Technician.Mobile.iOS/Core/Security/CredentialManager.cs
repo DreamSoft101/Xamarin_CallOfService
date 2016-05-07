@@ -1,160 +1,160 @@
-﻿using System;
-using CallOfService.Technician.Mobile.Core.Security;
-using CallOfService.Technician.Mobile.Core.SystemServices;
-using Foundation;
-using Newtonsoft.Json;
-using ObjCRuntime;
-using Security;
+﻿//using System;
+//using CallOfService.Technician.Mobile.Core.Security;
+//using CallOfService.Technician.Mobile.Core.SystemServices;
+//using Foundation;
+//using Newtonsoft.Json;
+//using ObjCRuntime;
+//using Security;
 
-namespace CallOfService.Technician.Mobile.iOS.Core.Security
-{
-    public class CredentialManager : ICredentialManager
-    {
+//namespace CallOfService.Technician.Mobile.iOS.Core.Security
+//{
+//    public class CredentialManager : ICredentialManager
+//    {
 
-        private string ServiceId = "CallOfServiceLogin";
-        private string Label = "CallOfServiceLogin";
+//        private string ServiceId = "CallOfServiceLogin";
+//        private string Label = "CallOfServiceLogin";
 
 
-        private readonly ILogger _logger;
+//        private readonly ILogger _logger;
 
-        public CredentialManager(ILogger logger)
-        {
-            _logger = logger;
-        }
+//        public CredentialManager(ILogger logger)
+//        {
+//            _logger = logger;
+//        }
         
-        public bool Save(Credential credential)
-        {
-            try
-            {
-                DeletedOldSecureRecords();
+//        public bool Save(Credential credential)
+//        {
+//            try
+//            {
+//                DeletedOldSecureRecords();
 
-                var secureRecord = GetNewSecureRecord(credential);
+//                var secureRecord = GetNewSecureRecord(credential);
 
-                var status = SecKeyChain.Add(secureRecord);
+//                var status = SecKeyChain.Add(secureRecord);
 
-                if (status == SecStatusCode.Success)
-                {
-                    _logger.WriteInfo("User credentials has bee added to key-chain");
-                    return true;
-                }
+//                if (status == SecStatusCode.Success)
+//                {
+//                    _logger.WriteInfo("User credentials has bee added to key-chain");
+//                    return true;
+//                }
 
-                _logger.WriteInfo($"User credentials has not been added to key-chain with status code {status}");
-                return false;
-            }
-            catch (Exception ex)
-            {
-                _logger.WriteError($"Error Persisting User Credentials , {ex}");
-                return false;
-            }
-        }
+//                _logger.WriteInfo($"User credentials has not been added to key-chain with status code {status}");
+//                return false;
+//            }
+//            catch (Exception ex)
+//            {
+//                _logger.WriteError($"Error Persisting User Credentials , {ex}");
+//                return false;
+//            }
+//        }
 
-        public Credential Retrive(string account)
-        {
-            var match = SearchForSecRecord(account);
-            if (match == null)
-            {
-                _logger.WriteInfo($"User credentials for user-name {account} not found");
-                return null;
-            }
+//        public Credential Retrive(string account)
+//        {
+//            var match = SearchForSecRecord(account);
+//            if (match == null)
+//            {
+//                _logger.WriteInfo($"User credentials for user-name {account} not found");
+//                return null;
+//            }
 
-            _logger.WriteInfo($"Found user credentials for user-name {match.Account}");
+//            _logger.WriteInfo($"Found user credentials for user-name {match.Account}");
 
 
-            if (match.Generic == null)
-                return new Credential();
+//            if (match.Generic == null)
+//                return new Credential();
 
-            var credential = JsonConvert.DeserializeObject<Credential>(match.Generic.ToString());
-            return new Credential(credential.Email,credential.Password,credential.Token);
-        }
+//            var credential = JsonConvert.DeserializeObject<Credential>(match.Generic.ToString());
+//            return new Credential(credential.Email,credential.Password,credential.Token);
+//        }
 
-		public void Delete(){
-			DeletedOldSecureRecords();
-		}
+//		public void Delete(){
+//			DeletedOldSecureRecords();
+//		}
 
-        private string GetSavedAccount()
-        {
-            var cred = Retrive(null);
-            return cred == null ? null : cred.Email;
-        }
+//        private string GetSavedAccount()
+//        {
+//            var cred = Retrive(null);
+//            return cred == null ? null : cred.Email;
+//        }
 
-        private void DeletedOldSecureRecords()
-        {
-            var savedRecords = SearchForAllSecRecord();
+//        private void DeletedOldSecureRecords()
+//        {
+//            var savedRecords = SearchForAllSecRecord();
 
-            if (savedRecords == null) return;
+//            if (savedRecords == null) return;
 
-            foreach (var record in savedRecords)
-            {
-                var toBeRemovedSecureRecord = new SecRecord(SecKind.GenericPassword)
-                {
-                    Account = record.Account,
-                    Service = ServiceId,
-                    Label = Label
-                };
+//            foreach (var record in savedRecords)
+//            {
+//                var toBeRemovedSecureRecord = new SecRecord(SecKind.GenericPassword)
+//                {
+//                    Account = record.Account,
+//                    Service = ServiceId,
+//                    Label = Label
+//                };
 
-                var removeStatus = SecKeyChain.Remove(toBeRemovedSecureRecord);
-                if (removeStatus == SecStatusCode.Success)
-                    _logger.WriteInfo($"Removed duplicate record for account {record.Account}");
-            }
-        }
+//                var removeStatus = SecKeyChain.Remove(toBeRemovedSecureRecord);
+//                if (removeStatus == SecStatusCode.Success)
+//                    _logger.WriteInfo($"Removed duplicate record for account {record.Account}");
+//            }
+//        }
 
-        private SecRecord GetNewSecureRecord(Credential credential)
-        {
-            var secureRecord = new SecRecord(SecKind.GenericPassword)
-            {
-                Account = credential.Email,
-                Generic = NSData.FromString(JsonConvert.SerializeObject(credential), NSStringEncoding.UTF8),
-                Service = ServiceId,
-                Label = Label,
-                Accessible = SecAccessible.Always
-            };
+//        private SecRecord GetNewSecureRecord(Credential credential)
+//        {
+//            var secureRecord = new SecRecord(SecKind.GenericPassword)
+//            {
+//                Account = credential.Email,
+//                Generic = NSData.FromString(JsonConvert.SerializeObject(credential), NSStringEncoding.UTF8),
+//                Service = ServiceId,
+//                Label = Label,
+//                Accessible = SecAccessible.Always
+//            };
             
-            return secureRecord;
-        }
+//            return secureRecord;
+//        }
 
-        private SecRecord SearchForSecRecord(string account)
-        {
-            var searchQuery = GetSearchQuery(account);
+//        private SecRecord SearchForSecRecord(string account)
+//        {
+//            var searchQuery = GetSearchQuery(account);
 
-            SecStatusCode status;
-            var match = SecKeyChain.QueryAsRecord(searchQuery, out status);
+//            SecStatusCode status;
+//            var match = SecKeyChain.QueryAsRecord(searchQuery, out status);
 
-            return status == SecStatusCode.Success ? match : null;
-        }
+//            return status == SecStatusCode.Success ? match : null;
+//        }
 
-        private SecRecord[] SearchForAllSecRecord()
-        {
-            var searchQuery = new SecRecord(SecKind.GenericPassword)
-            {
-                Service = ServiceId,
-                Label = Label
-            };
+//        private SecRecord[] SearchForAllSecRecord()
+//        {
+//            var searchQuery = new SecRecord(SecKind.GenericPassword)
+//            {
+//                Service = ServiceId,
+//                Label = Label
+//            };
 
 
-            SecStatusCode status;
-            var match = SecKeyChain.QueryAsRecord(searchQuery, 100, out status);
+//            SecStatusCode status;
+//            var match = SecKeyChain.QueryAsRecord(searchQuery, 100, out status);
 
-            return status == SecStatusCode.Success ? match : null;
-        }
+//            return status == SecStatusCode.Success ? match : null;
+//        }
 
-        private bool InSimulator()
-        {
-            return Runtime.Arch == Arch.SIMULATOR;
-        }
+//        private bool InSimulator()
+//        {
+//            return Runtime.Arch == Arch.SIMULATOR;
+//        }
 
-        private SecRecord GetSearchQuery(string account)
-        {
-            var searchCriteria = new SecRecord(SecKind.GenericPassword)
-            {
-                Service = ServiceId,
-                Label = Label
-            };
+//        private SecRecord GetSearchQuery(string account)
+//        {
+//            var searchCriteria = new SecRecord(SecKind.GenericPassword)
+//            {
+//                Service = ServiceId,
+//                Label = Label
+//            };
 
-            if (!string.IsNullOrEmpty(account))
-                searchCriteria.Account = account;
+//            if (!string.IsNullOrEmpty(account))
+//                searchCriteria.Account = account;
             
-            return searchCriteria;
-        }
-    }
+//            return searchCriteria;
+//        }
+//    }
     
-}
+//}

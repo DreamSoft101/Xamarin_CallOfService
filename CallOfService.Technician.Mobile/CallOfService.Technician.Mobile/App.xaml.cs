@@ -27,6 +27,8 @@ namespace CallOfService.Technician.Mobile
 			});
         }
 
+        public static string AppName => "CallOfService.Technician.Mobile";
+
         protected async override void OnStart()
         {
             MainPage = new Page();

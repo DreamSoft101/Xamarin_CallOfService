@@ -4,6 +4,7 @@ using Android.OS;
 using XLabs.Forms;
 using CallOfService.Technician.Mobile.Core.DI;
 using CallOfService.Technician.Mobile.Droid.Core.DI;
+using Acr.UserDialogs;
 
 namespace CallOfService.Technician.Mobile.Droid
 {
@@ -13,6 +14,7 @@ namespace CallOfService.Technician.Mobile.Droid
 		protected override void OnCreate (Bundle savedInstanceState)
 		{
 			base.OnCreate (savedInstanceState);
+			UserDialogs.Init(this);
 			Xamarin.Forms.Forms.Init(this, savedInstanceState);
 			Xamarin.FormsMaps.Init(this,savedInstanceState);
 			DependencyResolver.Initialize(new AndroidModule(), new FormsModule());

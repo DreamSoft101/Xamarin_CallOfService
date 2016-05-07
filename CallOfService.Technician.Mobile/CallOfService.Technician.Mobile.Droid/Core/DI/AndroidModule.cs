@@ -13,7 +13,8 @@ namespace CallOfService.Technician.Mobile.Droid.Core.DI
 		{
 			//builder.RegisterType<CredentialManager>().As<ICredentialManager>().SingleInstance();
 			builder.RegisterType<SqliteNet>().As<ISqLiteNet>().SingleInstance();
-			builder.RegisterType<UserDialogsImpl>().As<IUserDialogs>().SingleInstance();
+			//builder.RegisterType<UserDialogsImpl>().As<IUserDialogs>().SingleInstance();
+			builder.Register(c=> UserDialogs.Instance).As<IUserDialogs>().SingleInstance();
 			builder.RegisterType<MediaPicker>().As<IMediaPicker>().SingleInstance();
 			builder.RegisterType<ImageCompressor>().As<IImageCompressor>().SingleInstance();
 		}

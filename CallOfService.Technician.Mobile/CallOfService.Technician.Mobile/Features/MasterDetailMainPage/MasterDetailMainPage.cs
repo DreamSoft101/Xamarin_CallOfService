@@ -24,7 +24,8 @@ namespace CallOfService.Technician.Mobile
 				BindingContext = DependencyResolver.Resolve<MainMenuViewModel>()
 			};
 
-			MasterBehavior = MasterBehavior.Split;
+			MasterBehavior = MasterBehavior.Default;
+			IsPresented = false;
 			Master = mainMenuPage;
 			Detail = new NavigationPage(new DashboardPage ()){
 				BarBackgroundColor = Color.FromHex("#44b6ae"),

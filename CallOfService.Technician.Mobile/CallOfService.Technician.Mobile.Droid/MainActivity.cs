@@ -1,22 +1,29 @@
 ﻿using Android.App;
 using Android.Widget;
 using Android.OS;
-using XLabs.Forms;
 using CallOfService.Technician.Mobile.Core.DI;
 using CallOfService.Technician.Mobile.Droid.Core.DI;
 using Acr.UserDialogs;
+using Android.Content.PM;
 
 namespace CallOfService.Technician.Mobile.Droid
 {
-	[Activity (Label = "CallOfService.Technician.Mobile.Droid", MainLauncher = true, Icon = "@mipmap/icon")]
-	public class MainActivity : XFormsApplicationDroid
+	[Activity (Label = "CallOfService.Technician.Mobile.Droid", 
+	           Icon = "@mipmap/icon",
+	           Theme = "@style/MyTheme",
+	           MainLauncher = true,
+			   ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+	public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
 	{
-		protected override void OnCreate (Bundle savedInstanceState)
+		protected override void OnCreate (Bundle bundle)
 		{
-			base.OnCreate (savedInstanceState);
+			TabLayoutResource = Resource.Layout.Tabbar;
+			ToolbarResource = Resource.Layout.Toolbar;
+
+			base.OnCreate (bundle);
 			UserDialogs.Init(this);
-			Xamarin.Forms.Forms.Init(this, savedInstanceState);
-			Xamarin.FormsMaps.Init(this,savedInstanceState);
+			global::Xamarin.Forms.Forms.Init(this, bundle);
+			global::Xamarin.FormsMaps.Init(this,bundle);
 			DependencyResolver.Initialize(new AndroidModule(), new FormsModule());
 			LoadApplication(new App());
 		}

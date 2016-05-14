@@ -16,7 +16,7 @@ using System.Windows.Input;
 using CallOfService.Technician.Mobile.Core.SystemServices;
 using CallOfService.Technician.Mobile.Messages;
 using PropertyChanged;
-using XLabs.Platform.Services.Media;
+using System.Diagnostics;
 
 namespace CallOfService.Technician.Mobile.Features.JobDetails
 {
@@ -199,7 +199,11 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 						_userDialogs.ShowLoading ("Starting Job");
 						var started = await _appointmentService.StartJob (JobNumber);
 						if (started)
-							_userDialogs.ShowSuccess ("Job Started");
+						{
+							_userDialogs.ShowSuccess("Job Started");
+							await Task.Delay(100);
+							_userDialogs.HideLoading();
+						}
 						else
 							_userDialogs.ShowError ("Error Starting Job");
 					} else if (Status == "In Progress") {
@@ -207,6 +211,8 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 						var started = await _appointmentService.FinishJob (JobNumber);
 						if (started) {
 							_userDialogs.ShowSuccess ("Job Finished");
+							await Task.Delay(100);
+							_userDialogs.HideLoading();
 							ShowActionButton = false;
 						} else
 							_userDialogs.ShowError ("Error Finishing Job");
@@ -297,8 +303,8 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 			try {
 				var mediaFile = await _mediaPicker.SelectPhotoAsync (GetCameraMediaStorageOptions ());
 				ResizeAddToAttachmentsAndAssignImageSource (mediaFile);
-			} catch (Exception) {
-				// ignored
+			} catch (Exception ex) {
+				Debug.WriteLine(ex.ToString());
 			}
 		}
 
@@ -314,8 +320,8 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 				});
 
 				ResizeAddToAttachmentsAndAssignImageSource (mediaFile);
-			} catch (Exception) {
-				//Ignored
+			} catch (Exception ex) {
+				Debug.WriteLine(ex.ToString());
 			}
 		}
 

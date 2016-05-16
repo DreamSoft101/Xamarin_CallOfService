@@ -42,7 +42,7 @@ namespace CallOfService.Technician.Mobile.Features.Login
                     if (loginResult.IsSuccessful)
 						{
 							if(Relogin)
-								NavigationService.Dismiss();
+								await NavigationService.Dismiss();
 							else
 								await NavigationService.NavigateToWelcomeScreen();
 						}

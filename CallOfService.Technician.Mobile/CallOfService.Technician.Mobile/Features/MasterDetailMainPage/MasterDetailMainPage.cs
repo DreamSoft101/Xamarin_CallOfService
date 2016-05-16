@@ -10,15 +10,19 @@ namespace CallOfService.Technician.Mobile
 {
 	public class MasterDetailMainPage : MasterDetailPage
 	{
-		public MasterDetailMainPage ()
+		public MasterDetailMainPage()
 		{
 
-			this.Subscribe<NewDateSelected> (mn => {
+			this.Subscribe<NewDateSelected>(mn =>
+			{
 				IsPresented = false;
 			});
 
-			NavigationPage.SetHasNavigationBar (this, false);
-			var mainMenuPage = new MainMenuPage (){
+			this.Subscribe<Logout>(m => IsPresented = false);
+
+			NavigationPage.SetHasNavigationBar(this, false);
+			var mainMenuPage = new MainMenuPage()
+			{
 				Title = "Call Of Service",
 				Icon = "MenuIcon.png",
 				BindingContext = DependencyResolver.Resolve<MainMenuViewModel>()
@@ -27,7 +31,8 @@ namespace CallOfService.Technician.Mobile
 			MasterBehavior = MasterBehavior.Default;
 			IsPresented = false;
 			Master = mainMenuPage;
-			Detail = new NavigationPage(new DashboardPage ()){
+			Detail = new NavigationPage(new DashboardPage())
+			{
 				BarBackgroundColor = Color.FromHex("#44b6ae"),
 				BarTextColor = Color.White
 			};

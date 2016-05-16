@@ -54,14 +54,16 @@ namespace CallOfService.Technician.Mobile.Features.Dashboard
 			if (!_shouldInit)
 				return;
             var appointmentService = DependencyResolver.Resolve<IAppointmentService>();
-            await appointmentService.RetrieveAndSaveAppointments();
+			Task.Run(async () => await appointmentService.RetrieveAndSaveAppointments()).ConfigureAwait(false);
             base.OnAppearing();
             _jobsPage = NavigationService.CreateAndBind<JobsPage>(DependencyResolver.Resolve<JobsViewModel>());
             _jobsPage.Title = "JOBS";
             Children.Add(_jobsPage);
-            _calendarPage = NavigationService.CreateAndBind<CalendarPage>(DependencyResolver.Resolve<CalendarViewModel>());
-            _calendarPage.Title = "CALENDAR";
-            Children.Add(_calendarPage);
+			Task.Run(() => {
+				_calendarPage = NavigationService.CreateAndBind<CalendarPage>(DependencyResolver.Resolve<CalendarViewModel>());
+				_calendarPage.Title = "CALENDAR";
+				Device.BeginInvokeOnMainThread(() => Children.Add(_calendarPage));
+			});
 			_shouldInit = false;
         }
     }

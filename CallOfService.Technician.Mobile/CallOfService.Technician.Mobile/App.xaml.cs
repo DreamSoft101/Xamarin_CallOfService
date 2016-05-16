@@ -18,6 +18,7 @@ namespace CallOfService.Technician.Mobile
 		{
 			this.Subscribe<Logout>(async m =>
 			{
+				NavigationService.MainNavigation = NavigationService.Navigation;
 				await NavigationService.NaviGateToLoginPage();
 				//var loginPage = new LoginPage { BindingContext = DependencyResolver.Resolve<LoginViewModel> () };
 				//MainPage = new NavigationPage (loginPage);

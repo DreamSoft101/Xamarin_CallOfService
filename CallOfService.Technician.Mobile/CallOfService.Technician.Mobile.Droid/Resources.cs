@@ -147,7 +147,7 @@ namespace CallOfService.Technician.Mobile.Droid
 
         public partial class Color
         {
-            public const int abc_color_highlight_material = abc_input_method_navigation_guard;
+            //public const int abc_color_highlight_material = abc_input_method_navigation_guard;
             public const int design_textinput_error_color = abc_input_method_navigation_guard;
         }
 
@@ -161,11 +161,35 @@ namespace CallOfService.Technician.Mobile.Droid
             public const int dialog_fixed_width_major = design_navigation_padding_bottom;
             public const int mr_media_route_controller_art_max_height = design_navigation_padding_bottom;
             public const int dialog_fixed_width_minor = design_navigation_padding_bottom;
-        }
+			// aapt resource value: 0x7f060000
+			//public static int calendar_day_headers_paddingbottom = 2131099648;
+
+			// aapt resource value: 0x7f060002
+			//public static int calendar_month_title_bottommargin = 2131099650;
+
+			// aapt resource value: 0x7f060001
+			//public static int calendar_month_topmargin = 2131099649;
+
+			// aapt resource value: 0x7f060003
+			//public static int calendar_text_medium = 2131099651;
+
+			// aapt resource value: 0x7f060004
+			//public static int calendar_text_small = 2131099652;
+
+			//static Dimension()
+			//{
+			//	global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			//}
+
+			//private Dimension()
+			//{
+			//}
+
+		}
 
         public partial class Drawable
         {
-            public const int abc_control_background_material = abc_cab_background_top_material;
+            //public const int abc_control_background_material = abc_cab_background_top_material;
             public const int ic_setting_dark = abc_cab_background_top_material;
             public const int ic_setting_light = abc_cab_background_top_material;
             public const int mr_ic_settings_dark = abc_cab_background_top_material;
@@ -212,10 +236,10 @@ namespace CallOfService.Technician.Mobile.Droid
 
         public partial class Style
         {
-            public const int Base_V22_Theme_AppCompat = Base_V21_Theme_AppCompat;
-            public const int Base_V22_Theme_AppCompat_Light = Base_V21_Theme_AppCompat_Light;
-            public const int Base_V23_Theme_AppCompat = Base_V21_Theme_AppCompat;
-            public const int Base_V23_Theme_AppCompat_Light = Base_V21_Theme_AppCompat_Light;
+            //public const int Base_V22_Theme_AppCompat = Base_V21_Theme_AppCompat;
+            //public const int Base_V22_Theme_AppCompat_Light = Base_V21_Theme_AppCompat_Light;
+            //public const int Base_V23_Theme_AppCompat = Base_V21_Theme_AppCompat;
+            //public const int Base_V23_Theme_AppCompat_Light = Base_V21_Theme_AppCompat_Light;
             public const int RtlOverlay_Widget_AppCompat_ActionButton_Overflow = Widget_AppCompat_ActionButton_Overflow;
         }
     }

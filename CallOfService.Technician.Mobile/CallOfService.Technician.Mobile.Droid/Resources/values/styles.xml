@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<style name="MyTheme" parent="MyTheme.Base">
+	</style>
+	<!-- Base theme applied no matter what API -->
+	<style name="MyTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+		<!--If you are using revision 22.1 please use just windowNoTitle. Without android:-->
+		<item name="windowNoTitle">true</item>
+		<!--We will be using the toolbar so no need to show ActionBar-->
+		<item name="windowActionBar">false</item>
+		<!-- Set theme colors from http://www.google.com/design/spec/style/color.html#color-color-palette-->
+		<!-- colorPrimary is used for the default action bar background -->
+		<item name="colorPrimary">#2196F3</item>
+		<!-- colorPrimaryDark is used for the status bar -->
+		<item name="colorPrimaryDark">#1976D2</item>
+		<!-- colorAccent is used as the default value for colorControlActivated
+         which is used to tint widgets -->
+		<item name="colorAccent">#FF4081</item>
+		<!-- You can also set colorControlNormal, colorControlActivated
+         colorControlHighlight and colorSwitchThumbNormal. -->
+		<item name="windowActionModeOverlay">true</item>
+		<item name="android:datePickerDialogTheme">@style/AppCompatDialogStyle</item>
+	</style>
+	<style name="AppCompatDialogStyle" parent="Theme.AppCompat.Light.Dialog">
+		<item name="colorAccent">#FF4081</item>
+	</style>
+	<style name="CalendarTitle">
+		<item name="android:textSize">@dimen/calendar_text_medium</item>
+		<item name="android:textColor">@color/calendar_text_active</item>
+		<item name="android:textStyle">bold</item>
+	</style>
+	<style name="CalendarCell">
+		<item name="android:layout_width">0dp</item>
+		<item name="android:layout_weight">1</item>
+		<item name="android:gravity">center</item>
+		<!--    <item name="android:textAlignment">center</item>-->
+	</style>
+	<style name="CalendarCell.DayHeader">
+		<item name="android:textColor">@color/calendar_text_active</item>
+		<item name="android:textSize">@dimen/calendar_text_small</item>
+	</style>
+	<style name="CalendarCell.CalendarDate">
+		<item name="android:textSize">@dimen/calendar_text_medium</item>
+		<item name="android:background">@drawable/calendar_bg_selector</item>
+		<item name="android:textColor">@color/calendar_text_selector</item>
+		<item name="android:clickable">true</item>
+		<item name="android:textStyle">bold</item>
+	</style>
+</resources>

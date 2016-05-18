@@ -6,7 +6,7 @@ using CoreGraphics;
 using ImageIO;
 using Foundation;
 
-namespace CallOfService.Technician.Mobile.iOS
+namespace CallOfService.Technician.Mobile.iOS.Services
 {
 	public class ImageCompressor : IImageCompressor
 	{

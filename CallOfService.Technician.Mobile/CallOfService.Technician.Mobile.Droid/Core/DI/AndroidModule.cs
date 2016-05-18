@@ -3,7 +3,6 @@ using Autofac;
 using CallOfService.Technician.Mobile.Database;
 using CallOfService.Technician.Mobile.Droid.Database;
 using CallOfService.Technician.Mobile.Droid.Services;
-using XLabs.Platform.Services.Media;
 
 namespace CallOfService.Technician.Mobile.Droid.Core.DI
 {

@@ -2,7 +2,6 @@
 using CallOfService.Technician.Mobile.Messages;
 using CallOfService.Technician.Mobile.UI;
 using PubSub;
-using XLabs.Forms.Controls;
 using Xamarin.Forms;
 
 namespace CallOfService.Technician.Mobile.Features.Calendar

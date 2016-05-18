@@ -59,11 +59,21 @@ namespace CallOfService.Technician.Mobile.Features.Dashboard
             _jobsPage = NavigationService.CreateAndBind<JobsPage>(DependencyResolver.Resolve<JobsViewModel>());
             _jobsPage.Title = "JOBS";
             Children.Add(_jobsPage);
-			Task.Run(() => {
+			Device.OnPlatform(() =>
+			{
 				_calendarPage = NavigationService.CreateAndBind<CalendarPage>(DependencyResolver.Resolve<CalendarViewModel>());
 				_calendarPage.Title = "CALENDAR";
-				Device.BeginInvokeOnMainThread(() => Children.Add(_calendarPage));
+				Children.Add(_calendarPage);
+			}, () =>
+			{
+				Task.Run(() =>
+				{
+					_calendarPage = NavigationService.CreateAndBind<CalendarPage>(DependencyResolver.Resolve<CalendarViewModel>());
+					_calendarPage.Title = "CALENDAR";
+					Device.BeginInvokeOnMainThread(() => Children.Add(_calendarPage));
+				});
 			});
+
 			_shouldInit = false;
         }
     }

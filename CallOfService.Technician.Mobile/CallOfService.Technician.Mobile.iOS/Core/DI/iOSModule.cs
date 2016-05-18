@@ -3,6 +3,7 @@ using Autofac;
 using CallOfService.Technician.Mobile.Core.Security;
 using CallOfService.Technician.Mobile.Database;
 using CallOfService.Technician.Mobile.iOS.Database;
+using CallOfService.Technician.Mobile.iOS.Services;
 
 namespace CallOfService.Technician.Mobile.iOS.Core.DI
 {

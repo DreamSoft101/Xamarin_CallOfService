@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using CallOfService.Technician.Mobile.iOS.Services;
 using CoreGraphics;
 using Foundation;
 using UIKit;

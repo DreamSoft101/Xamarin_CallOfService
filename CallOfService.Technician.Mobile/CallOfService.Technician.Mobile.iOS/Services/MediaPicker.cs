@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using UIKit;
 
-namespace CallOfService.Technician.Mobile.iOS
+namespace CallOfService.Technician.Mobile.iOS.Services
 {
 	public class MediaPicker : IMediaPicker
 	{

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Acr.UserDialogs;
 using CallOfService.Technician.Mobile.Core.DI;
@@ -38,7 +36,7 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 			Notes = new ObservableCollection<NoteViewModel> ();
 			Attachments = new ObservableCollection<ImageSource> ();
 			AttachmentsStreams = new List<byte[]> ();
-			CustomFields = new ObservableCollection<string> ();
+			CustomFields = new ObservableCollection<CustomFieldViewModel>();
 			this.Subscribe<ViewJobDetails> (async m => await LoadJobeDetails (m.JobId));
 			DataLoaded = false;
 		}
@@ -51,7 +49,7 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 			}
 		}
 
-		public bool DataLoaded { get ; set; }
+        public bool DataLoaded { get ; set; }
 
 		public DateTime Date { get; set; }
 
@@ -59,13 +57,36 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 
 		public TimeSpan EndTime { get; set; }
 
-		public string Location { get; set; }
+	    public string TimeRangeFormat { get; set; }
+
+        public string DateTimeFormat { get; set; }
+
+        public string Location { get; set; }
 
 		public string Title { get; set; }
 
-		public string Contact { get; set; }
+        public string Description { get; set; }
 
-		public int JobNumber { get; set; }
+        public string CustomerName { get; set; }
+
+        public string Contact { get; set; }
+
+	    public bool HasContact
+	    {
+            get { return !string.IsNullOrEmpty(Contact); } 
+	    }
+
+	    public bool HasNoContact
+	    {
+            get { return !HasContact; }
+	    }
+
+        public bool HasDescription
+        {
+            get { return !string.IsNullOrEmpty(Description); }
+        }
+
+        public int JobNumber { get; set; }
 
 		public string Status { get; set; }
 
@@ -73,7 +94,17 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 
 		public ObservableCollection<NoteViewModel> Notes { get; set; }
 
-		public ObservableCollection<string> CustomFields  { get; set; }
+		public ObservableCollection<CustomFieldViewModel> CustomFields  { get; set; }
+
+        public bool HasCustomFields
+        {
+            get { return CustomFields != null && CustomFields.Any(); }
+        }
+
+	    public bool HasNotes
+	    {
+	        get { return Notes != null && Notes.Any(); }
+	    }
 
 		public string Custom { get; set; }
 
@@ -220,7 +251,7 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 		private async Task LoadJobeDetails (int jobId)
 		{
 			_userDialogs.ShowLoading ("Loading Job Details");
-			Appointment appointment = await _appointmentService.GetAppointmentByJobId (jobId);
+			var appointment = await _appointmentService.GetAppointmentByJobId (jobId);
 			var job = await _appointmentService.GetJobById (jobId);
 			if (job == null)
 				return;
@@ -228,23 +259,28 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 				Date = job.Date.Value;
 			StartTime = appointment.Start.TimeOfDay;
 			EndTime = appointment.End.TimeOfDay;
-			Location = appointment.Location;
+            TimeRangeFormat = $"{appointment.Start.ToUniversalTime().ToString("hh:mm tt")} - {appointment.End.ToUniversalTime().ToString("hh:mm tt")}";
+            DateTimeFormat = $"{Date.ToString("dddd dd MMMM yyyy")} at {TimeRangeFormat}";
+            Location = appointment.Location;
 			Title = appointment.Title;
+		    Description = job.Description;
+		    CustomerName = job.Customer.Name;
 			Contact = job.ContactName;
 			JobNumber = job.Id;
 			Status = job.StatusDescription;
 			GpsPoint = job.Point;
+
 			Notes.Clear ();
-			foreach (var note in job.Notes) {
+			foreach (var note in job.Notes)
+            {
 				var noteViewModel = DependencyResolver.Resolve<NoteViewModel> ();
 				noteViewModel.LoadNote (note);
 				Notes.Add (noteViewModel);
 			}
 
-			var strings = job.CustomFields.Select (c => string.Concat (c.Key, " : ", c.Value)).ToList ();
-			CustomFields.Clear ();
-			foreach (var s in strings) {
-				CustomFields.Add (s);
+			CustomFields.Clear();
+			foreach (var field in job.CustomFields) {
+				CustomFields.Add(new CustomFieldViewModel {Label = field.Key, Value = field.Value});
 			}
 
 			if (GpsPoint.IsValid)
@@ -252,7 +288,7 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
             
 			PageTitle = appointment.Title;
 			if (!string.IsNullOrWhiteSpace (appointment.JobType))
-				PageTitle = PageTitle +$"[{appointment.JobType}]";
+				PageTitle = PageTitle + $" [{appointment.JobType}]";
 
 			ShowActionButton = true;
 			if (Status == "Scheduled")
@@ -277,7 +313,7 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 
 		}
 
-		public ICommand AddNewNoteImage {
+	    public ICommand AddNewNoteImage {
 			get { 
 				return new Command (() => {
 					var options = new List<ActionSheetOption> ();
@@ -374,8 +410,8 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 		}
 
 		public string Description { get; set; }
-
 		public DateTime Date { get; set; }
+        public string DateFormat { get; set; }
 
 		public ObservableCollection<ImageSource> ThumbnilImageSources { get; set; }
 
@@ -383,11 +419,19 @@ namespace CallOfService.Technician.Mobile.Features.JobDetails
 		{
 			Description = note.Description;
 			Date = note.Timestamp.DateTime;
-			foreach (var fileReference in note.Files) {
+		    DateFormat = $"at {Date.ToString("dd MMMM yyyy")} {Date.ToUniversalTime().ToString("hh:mm tt")}";
+            foreach (var fileReference in note.Files) {
 				ThumbnilImageSources.Add (new UriImageSource {
 					Uri = _appointmentService.GetFileUri (fileReference, true)
 				});
 			}
 		}
 	}
+
+    [ImplementPropertyChanged]
+    public class CustomFieldViewModel
+    {
+        public string Label { get; set; }
+        public string Value { get; set; }
+    }
 }

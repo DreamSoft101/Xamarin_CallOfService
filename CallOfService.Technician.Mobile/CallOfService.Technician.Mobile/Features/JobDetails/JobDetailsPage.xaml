@@ -1,129 +1,186 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ui:BasePage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:ui="clr-namespace:CallOfService.Technician.Mobile.UI;assembly=CallOfService.Technician.Mobile" xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps" xmlns:controls="clr-namespace:XLabs.Forms.Controls;assembly=XLabs.Forms" xmlns:customcontrols="clr-namespace:CallOfService.Technician.Mobile.Controls;assembly=CallOfService.Technician.Mobile" xmlns:jobDetails="clr-namespace:CallOfService.Technician.Mobile.Features.JobDetails;assembly=CallOfService.Technician.Mobile" xmlns:system="clr-namespace:System;assembly=System.Runtime" x:Class="CallOfService.Technician.Mobile.Features.JobDetails.JobDetailsPage">
-	<StackLayout BackgroundColor="#EDEDED" Spacing="0" IsVisible="{Binding DataLoaded}">
-		<BoxView HeightRequest="20" BackgroundColor="#44b6ae" />
-		<ScrollView>
-			<StackLayout Spacing="5">
-				<AbsoluteLayout HeightRequest="300">
-					<maps:Map AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" x:Name="Map" MapType="Street" IsShowingUser="True" HeightRequest="200" />
-					<Grid Padding="10,0,10,0" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 1, 1, 0.1">
-						<Grid.RowDefinitions>
-							<RowDefinition Height="44" />
-						</Grid.RowDefinitions>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="44" />
-							<ColumnDefinition Width="44" />
-							<ColumnDefinition Width="44" />
-							<ColumnDefinition Width="*" />
-							<ColumnDefinition Width="44" />
-						</Grid.ColumnDefinitions>
-						<customcontrols:SvgImage Grid.Row="0" Grid.Column="0" FileName="call" WidthRequest="12" HeightRequest="20">
-							<customcontrols:SvgImage.GestureRecognizers>
-								<TapGestureRecognizer Command="{Binding CallCustomerCommand}" />
-							</customcontrols:SvgImage.GestureRecognizers>
-						</customcontrols:SvgImage>
-						<customcontrols:SvgImage Grid.Row="0" Grid.Column="1" FileName="sms" WidthRequest="12" HeightRequest="20">
-							<customcontrols:SvgImage.GestureRecognizers>
-								<TapGestureRecognizer Command="{Binding SmsCustomerCommand}" />
-							</customcontrols:SvgImage.GestureRecognizers>
-						</customcontrols:SvgImage>
-						<customcontrols:SvgImage Grid.Row="0" Grid.Column="2" FileName="email" WidthRequest="12" HeightRequest="20">
-							<customcontrols:SvgImage.GestureRecognizers>
-								<TapGestureRecognizer Command="{Binding EmailCustomerCommand}" />
-							</customcontrols:SvgImage.GestureRecognizers>
-						</customcontrols:SvgImage>
-						<customcontrols:SvgImage Grid.Row="0" Grid.Column="4" FileName="direction" WidthRequest="12" HeightRequest="20">
-							<customcontrols:SvgImage.GestureRecognizers>
-								<TapGestureRecognizer Command="{Binding DirectionCommand}" />
-							</customcontrols:SvgImage.GestureRecognizers>
-						</customcontrols:SvgImage>
-					</Grid>
-					<BoxView AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 0.22" BackgroundColor="Black" Opacity="0.5" />
-					<Grid AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 0.21" Padding="0,15,0,0">
-						<Grid.RowDefinitions>
-							<RowDefinition Height="36" />
-						</Grid.RowDefinitions>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="44" />
-							<ColumnDefinition Width="*" />
-						</Grid.ColumnDefinitions>
-						<ContentView Grid.Row="0" VerticalOptions="Center" Grid.Column="0" HeightRequest="44" WidthRequest="44" HorizontalOptions="Start">
-							<ContentView.GestureRecognizers>
-								<TapGestureRecognizer Command="{Binding NavigateBack}" />
-							</ContentView.GestureRecognizers>
-							<customcontrols:SvgImage FileName="navigate-back" WidthRequest="12" HeightRequest="20" />
-						</ContentView>
-						<Label Grid.Row="0" Grid.Column="1" Text="{Binding PageTitle}" TextColor="White" HorizontalOptions="Center" HorizontalTextAlignment="Center" HeightRequest="60" VerticalTextAlignment="Center" FontSize="25" />
-					</Grid>
-				</AbsoluteLayout>
-				<StackLayout Padding="20">
-					<Label HorizontalOptions="Center" Text="{Binding Location}" />
-					<BoxView HeightRequest="1" BackgroundColor="Silver" />
-					<Label HorizontalOptions="Center" Text="{Binding Date,StringFormat='{}{0:dddd}/{0:MMMM}/{0:yyyy}'}" />
-					<BoxView HeightRequest="1" BackgroundColor="Silver" />
-					<Label Text="{Binding Contact,StringFormat='Contact: {0}'}" />
-					<BoxView HeightRequest="1" BackgroundColor="Silver" />
-					<StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-						<Label HorizontalOptions="Start" Text="{Binding JobNumber,StringFormat='JobNumber: {0}'}" />
-						<Label HorizontalOptions="EndAndExpand" Text="{Binding Status,StringFormat='Status: {0}'}" />
-					</StackLayout>
-					<BoxView HeightRequest="1" BackgroundColor="Silver" />
-					<controls:RepeaterView x:TypeArguments="system:String" ItemsSource="{Binding CustomFields}">
-						<controls:RepeaterView.ItemTemplate>
-							<DataTemplate>
-								<StackLayout>
-									<Label Text="{Binding}" />
-									<BoxView HeightRequest="1" BackgroundColor="Silver" />
-								</StackLayout>
-							</DataTemplate>
-						</controls:RepeaterView.ItemTemplate>
-					</controls:RepeaterView>
-					<controls:RepeaterView x:TypeArguments="jobDetails:NoteViewModel" ItemsSource="{Binding Notes}">
-						<controls:RepeaterView.ItemTemplate>
-							<DataTemplate>
-								<StackLayout>
-									<StackLayout Orientation="Horizontal">
-										<Label HorizontalOptions="Start" Text="{Binding Description}" />
-										<Label HorizontalOptions="EndAndExpand" Text="{Binding Date,StringFormat='{}{0:dd}/{0:MM}/{0:yy}'}" />
-									</StackLayout>
-									<ScrollView Orientation="Horizontal">
-										<controls:RepeaterView Spacing="10" Orientation="Horizontal" x:TypeArguments="ImageSource" ItemsSource="{Binding ThumbnilImageSources}">
-											<controls:RepeaterView.ItemTemplate>
-												<DataTemplate>
-													<Image Source="{Binding}" HeightRequest="100" WidthRequest="100" />
-												</DataTemplate>
-											</controls:RepeaterView.ItemTemplate>
-										</controls:RepeaterView>
-									</ScrollView>
-									<BoxView HeightRequest="1" BackgroundColor="Silver" />
-								</StackLayout>
-							</DataTemplate>
-						</controls:RepeaterView.ItemTemplate>
-					</controls:RepeaterView>
-					<Label Text="Add NOTE / IMAGE" />
-					<StackLayout Spacing="10" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-						<Editor HorizontalOptions="FillAndExpand" Text="{Binding NewNoteText}" HeightRequest="60" />
-						<customcontrols:SvgImage FileName="take-photo" WidthRequest="44" HeightRequest="34">
-							<customcontrols:SvgImage.GestureRecognizers>
-								<TapGestureRecognizer Command="{Binding AddNewNoteImage}" />
-							</customcontrols:SvgImage.GestureRecognizers>
-						</customcontrols:SvgImage>
-					</StackLayout>
-					<ScrollView Orientation="Horizontal">
-						<controls:RepeaterView Spacing="10" Orientation="Horizontal" x:TypeArguments="ImageSource" ItemsSource="{Binding Attachments}">
-							<controls:RepeaterView.ItemTemplate>
-								<DataTemplate>
-									<Image Source="{Binding}" HeightRequest="100" WidthRequest="100" />
-								</DataTemplate>
-							</controls:RepeaterView.ItemTemplate>
-						</controls:RepeaterView>
-					</ScrollView>
-					<Button Text="Add note" Command="{Binding AddNote}" />
-				</StackLayout>
-			</StackLayout>
-		</ScrollView>
-		<ContentView Padding="5">
-			<Button TextColor="White" Text="{Binding ActionText}" BackgroundColor="Teal" IsVisible="{Binding ShowActionButton}" Command="{Binding StartFinishJob}" BorderColor="Black" BorderWidth="1" />
-		</ContentView>
-	</StackLayout>
+<ui:BasePage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:ui="clr-namespace:CallOfService.Technician.Mobile.UI;assembly=CallOfService.Technician.Mobile" 
+             xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps" 
+             xmlns:controls="clr-namespace:XLabs.Forms.Controls;assembly=XLabs.Forms" 
+             xmlns:customcontrols="clr-namespace:CallOfService.Technician.Mobile.Controls;assembly=CallOfService.Technician.Mobile" 
+             xmlns:jobDetails="clr-namespace:CallOfService.Technician.Mobile.Features.JobDetails;assembly=CallOfService.Technician.Mobile" 
+             x:Class="CallOfService.Technician.Mobile.Features.JobDetails.JobDetailsPage">
+  <StackLayout BackgroundColor="#EDEDED" Spacing="0" IsVisible="{Binding DataLoaded}">
+    <BoxView HeightRequest="20" BackgroundColor="#44b6ae" />
+    <ScrollView>
+      <StackLayout Spacing="5">
+        <AbsoluteLayout HeightRequest="300">
+
+          <maps:Map AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" x:Name="Map" MapType="Street" IsShowingUser="True" HeightRequest="200" />
+
+          <Grid Padding="10,0,10,0" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 1, 1, 0.1">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="44" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="44" />
+              <ColumnDefinition Width="44" />
+              <ColumnDefinition Width="44" />
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="44" />
+            </Grid.ColumnDefinitions>
+            <customcontrols:SvgImage Grid.Row="0" Grid.Column="0" FileName="call" WidthRequest="12" HeightRequest="20">
+              <customcontrols:SvgImage.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding CallCustomerCommand}" />
+              </customcontrols:SvgImage.GestureRecognizers>
+            </customcontrols:SvgImage>
+            <customcontrols:SvgImage Grid.Row="0" Grid.Column="1" FileName="sms" WidthRequest="12" HeightRequest="20">
+              <customcontrols:SvgImage.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding SmsCustomerCommand}" />
+              </customcontrols:SvgImage.GestureRecognizers>
+            </customcontrols:SvgImage>
+            <customcontrols:SvgImage Grid.Row="0" Grid.Column="2" FileName="email" WidthRequest="12" HeightRequest="20">
+              <customcontrols:SvgImage.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding EmailCustomerCommand}" />
+              </customcontrols:SvgImage.GestureRecognizers>
+            </customcontrols:SvgImage>
+            <customcontrols:SvgImage Grid.Row="0" Grid.Column="4" FileName="direction" WidthRequest="12" HeightRequest="20">
+              <customcontrols:SvgImage.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding DirectionCommand}" />
+              </customcontrols:SvgImage.GestureRecognizers>
+            </customcontrols:SvgImage>
+          </Grid>
+
+          <BoxView AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 0.22" BackgroundColor="Black" Opacity="0.5" />
+
+          <Grid AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 0.21" Padding="0,15,0,0">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="36" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="44" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <ContentView Grid.Row="0" VerticalOptions="Center" Grid.Column="0" HeightRequest="44" WidthRequest="44" HorizontalOptions="Start">
+              <ContentView.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding NavigateBack}" />
+              </ContentView.GestureRecognizers>
+              <customcontrols:SvgImage FileName="navigate-back" WidthRequest="12" HeightRequest="20" />
+            </ContentView>
+            <Label Grid.Row="0" Grid.Column="1" Text="{Binding PageTitle}" LineBreakMode="TailTruncation" TextColor="White" HorizontalOptions="Center" HorizontalTextAlignment="Center" HeightRequest="60" VerticalTextAlignment="Center" FontSize="24" />
+          </Grid>
+        </AbsoluteLayout>
+
+        <StackLayout Padding="20">
+          <Label HorizontalOptions="Center" Text="{Binding Location}" FontSize="10"/>
+          
+          <BoxView HeightRequest="1" BackgroundColor="#f2f2f2" Margin="24,0,24,0"/>
+          <Label HorizontalOptions="Center" FontSize="12" Text="{Binding DateTimeFormat}" />
+          
+          <BoxView HeightRequest="1" BackgroundColor="#f2f2f2" Margin="24,0,24,0"/>
+          <Label HorizontalOptions="Center" Text="{Binding PageTitle}" />
+          
+          <BoxView HeightRequest="1" BackgroundColor="Silver" />
+          
+          <Grid IsVisible="{Binding HasContact}">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition/>
+              <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <StackLayout Grid.Column="0" Orientation="Vertical" HorizontalOptions="Fill">
+              <Label FontSize="12" TextColor="Gray" HorizontalOptions="Start" VerticalTextAlignment="Center" Text="CUSTOMER" />
+              <Label HorizontalOptions="Start" Text="{Binding CustomerName}" />
+            </StackLayout>
+            <StackLayout Grid.Column="1" Orientation="Vertical" HorizontalOptions="Fill">
+              <Label FontSize="12" TextColor="Gray" HorizontalOptions="Start" VerticalTextAlignment="Center" Text="CONTACT" />
+              <Label HorizontalOptions="Start" Text="{Binding Contact}" />
+            </StackLayout>
+          </Grid>
+          <StackLayout IsVisible="{Binding HasNoContact}" Orientation="Vertical" HorizontalOptions="Fill">
+              <Label FontSize="12" TextColor="Gray" HorizontalOptions="Start" VerticalTextAlignment="Center" Text="CUSTOMER" />
+              <Label HorizontalOptions="Start" Text="{Binding CustomerName}" />
+            </StackLayout>
+          
+          <BoxView HeightRequest="1" BackgroundColor="#f2f2f2" />
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition/>
+              <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <StackLayout Grid.Column="0" Orientation="Vertical" HorizontalOptions="Fill">
+              <Label FontSize="12" TextColor="Gray" HorizontalOptions="Start" VerticalTextAlignment="Center" Text="JOB #" />
+              <Label HorizontalOptions="Start" Text="{Binding JobNumber}" />
+            </StackLayout>
+            <StackLayout Grid.Column="1" Orientation="Vertical" HorizontalOptions="Fill">
+              <Label FontSize="12" TextColor="Gray" HorizontalOptions="Start" VerticalTextAlignment="Center" Text="STATUS" />
+              <Label HorizontalOptions="Start" Text="{Binding Status}" />
+            </StackLayout>
+          </Grid>
+          
+          <BoxView IsVisible="{Binding HasDescription}" HeightRequest="1" BackgroundColor="Silver" />
+          <Label IsVisible="{Binding HasDescription}" FontSize="12" TextColor="Gray" HorizontalOptions="Start" VerticalTextAlignment="Center" Text="DESCRIPTION" />
+          <Label IsVisible="{Binding HasDescription}" LineBreakMode="WordWrap" Text="{Binding Description}" FontSize="12"/>
+          
+          <BoxView IsVisible="{Binding HasCustomFields}" HeightRequest="1" BackgroundColor="Silver" />
+          <controls:RepeaterView x:TypeArguments="jobDetails:CustomFieldViewModel" ItemsSource="{Binding CustomFields}">
+            <controls:RepeaterView.ItemTemplate>
+              <DataTemplate>
+                <StackLayout>
+                    <Label FontSize="12" TextColor="Gray" HorizontalOptions="Start" VerticalTextAlignment="Center" Text="{Binding Label}" />
+                    <Label HorizontalOptions="Start" Text="{Binding Value}" />
+                    <BoxView HeightRequest="1" BackgroundColor="#f2f2f2" />
+                </StackLayout>
+              </DataTemplate>
+            </controls:RepeaterView.ItemTemplate>
+          </controls:RepeaterView>
+          
+          <BoxView HeightRequest="1" BackgroundColor="Silver" />
+          <Label IsVisible="{Binding HasNotes}" FontSize="14" TextColor="Gray" HorizontalOptions="Start" VerticalTextAlignment="Center" Text="NOTES" />
+          <controls:RepeaterView x:TypeArguments="jobDetails:NoteViewModel" ItemsSource="{Binding Notes}">
+            <controls:RepeaterView.ItemTemplate>
+              <DataTemplate>
+                <StackLayout>
+                  <StackLayout Orientation="Vertical">
+                    <Label LineBreakMode="WordWrap" Text="{Binding Description}" FontSize="12"/>
+                    <Label HorizontalOptions="EndAndExpand" Text="{Binding DateFormat}" FontSize="12"/>
+                  </StackLayout>
+                  <ScrollView Orientation="Horizontal">
+                    <controls:RepeaterView Spacing="10" Orientation="Horizontal" x:TypeArguments="ImageSource" ItemsSource="{Binding ThumbnilImageSources}">
+                      <controls:RepeaterView.ItemTemplate>
+                        <DataTemplate>
+                          <Image Source="{Binding}" HeightRequest="100" WidthRequest="100" />
+                        </DataTemplate>
+                      </controls:RepeaterView.ItemTemplate>
+                    </controls:RepeaterView>
+                  </ScrollView>
+                  <BoxView HeightRequest="1" BackgroundColor="#f2f2f2" />
+                </StackLayout>
+              </DataTemplate>
+            </controls:RepeaterView.ItemTemplate>
+          </controls:RepeaterView>
+          
+          <Label FontSize="14" TextColor="Gray" HorizontalOptions="Start" VerticalTextAlignment="Center" Text="NEW NOTE / IMAGE" />
+          <StackLayout Spacing="10" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+            <Editor HorizontalOptions="FillAndExpand" Text="{Binding NewNoteText}" HeightRequest="60" />
+            <customcontrols:SvgImage FileName="take-photo" WidthRequest="44" HeightRequest="34">
+              <customcontrols:SvgImage.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding AddNewNoteImage}" />
+              </customcontrols:SvgImage.GestureRecognizers>
+            </customcontrols:SvgImage>
+          </StackLayout>
+          <ScrollView Orientation="Horizontal">
+            <controls:RepeaterView Spacing="10" Orientation="Horizontal" x:TypeArguments="ImageSource" ItemsSource="{Binding Attachments}">
+              <controls:RepeaterView.ItemTemplate>
+                <DataTemplate>
+                  <Image Source="{Binding}" HeightRequest="100" WidthRequest="100" />
+                </DataTemplate>
+              </controls:RepeaterView.ItemTemplate>
+            </controls:RepeaterView>
+          </ScrollView>
+          <Button Text="Add note" Command="{Binding AddNote}" />
+        </StackLayout>
+      </StackLayout>
+    </ScrollView>
+    
+    <ContentView Padding="5">
+      <Button TextColor="White" Text="{Binding ActionText}" BackgroundColor="Teal" IsVisible="{Binding ShowActionButton}" Command="{Binding StartFinishJob}" BorderColor="Black" BorderWidth="1" />
+    </ContentView>
+  </StackLayout>
 </ui:BasePage>

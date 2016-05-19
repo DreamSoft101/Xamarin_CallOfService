@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.callofservice.mobile" android:installLocation="auto">
+	<uses-sdk android:minSdkVersion="15" />
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.CALL_PHONE" />
+	<uses-permission android:name="android.permission.CAMERA" />
+	<application android:allowBackup="true" android:label="Call of Service" android:icon="@drawable/icon">
+		<meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyDwSOIXf8vGJ6fuU0_TUHuY2BAIXi9UZAE" />
+	</application>
+</manifest>

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="CallOfService.Mobile.MainMenuPage" Title="Meue" BackgroundColor="#8775a7">
+	<StackLayout>
+		<BoxView BackgroundColor="#44b6ae" HeightRequest="20" />
+		<StackLayout Padding="10,30,10,10">
+			<Label HorizontalTextAlignment="Center" TextColor="White" Text="Call of Service" />
+			<Button Command="{Binding ShowJobsCommand}" Text="Jobs" TextColor="White" />
+			<Button Command="{Binding LogoutCommand}" Text="Logout" TextColor="White" />
+		</StackLayout>
+	</StackLayout>
+</ContentPage>

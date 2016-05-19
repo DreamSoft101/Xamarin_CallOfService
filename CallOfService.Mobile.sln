@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallOfService.Technician.Mobile.iOS", "CallOfService.Technician.Mobile\CallOfService.Technician.Mobile.iOS\CallOfService.Technician.Mobile.iOS.csproj", "{823FA3D5-A3C5-47B8-B007-9FCB53982BE6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallOfService.Mobile.iOS", "CallOfService.Mobile\CallOfService.Mobile.iOS\CallOfService.Mobile.iOS.csproj", "{823FA3D5-A3C5-47B8-B007-9FCB53982BE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallOfService.Technician.Mobile", "CallOfService.Technician.Mobile\CallOfService.Technician.Mobile\CallOfService.Technician.Mobile.csproj", "{F9628B05-872B-4CDB-949C-72DD994B4F1D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallOfService.Mobile", "CallOfService.Mobile\CallOfService.Mobile\CallOfService.Mobile.csproj", "{F9628B05-872B-4CDB-949C-72DD994B4F1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallOfService.Technician.Mobile.Tests", "CallOfService.Technician.Mobile.Tests\CallOfService.Technician.Mobile.Tests.csproj", "{E29DA0B7-E042-4591-B351-84D156B5E066}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallOfService.Mobile.Tests", "CallOfService.Mobile.Tests\CallOfService.Mobile.Tests.csproj", "{E29DA0B7-E042-4591-B351-84D156B5E066}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallOfService.Technician.Mobile.Droid", "CallOfService.Technician.Mobile\CallOfService.Technician.Mobile.Droid\CallOfService.Technician.Mobile.Droid.csproj", "{3E08C660-F6E2-45F4-8C1C-B240A94E7112}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallOfService.Mobile.Droid", "CallOfService.Mobile\CallOfService.Mobile.Droid\CallOfService.Mobile.Droid.csproj", "{3E08C660-F6E2-45F4-8C1C-B240A94E7112}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

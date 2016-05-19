@@ -1,15 +1,27 @@
-using System;using System.Collections.ObjectModel;using System.Linq;using System.Windows.Input;using CallOfService.Mobile.Services.Abstracts;using CallOfService.Mobile.UI;using PropertyChanged;using Xamarin.Forms;using PubSub;using CallOfService.Mobile.Core.SystemServices;using Acr.UserDialogs;using CallOfService.Mobile.Messages;namespace CallOfService.Mobile.Features.Jobs{
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
+using CallOfService.Mobile.Services.Abstracts;
+using CallOfService.Mobile.UI;
+using PropertyChanged;
+using Xamarin.Forms;
+using PubSub;
+using CallOfService.Mobile.Core.SystemServices;
+using CallOfService.Mobile.Core;
+using CallOfService.Mobile.Messages;
+
+namespace CallOfService.Mobile.Features.Jobs
+{
     [ImplementPropertyChanged]
     public class JobsViewModel : IViewAwareViewModel
     {
         private readonly IAppointmentService _appointmentService;
-        private readonly IUserDialogs _userDialogs;
-        private ImageSource _imageSource;
-        private IMediaPicker _mediaPicker;
-        private IImageCompressor _imageCompressor;
-        public JobsViewModel(IAppointmentService appointmentService, IUserDialogs userDialogs)
+        private readonly IAnalyticsService _analyticsService;
+       
+        public JobsViewModel(IAppointmentService appointmentService, IAnalyticsService analyticsService)
         {
-            _userDialogs = userDialogs;
+            _analyticsService = analyticsService;
             _appointmentService = appointmentService;
 
             Appointments = new ObservableCollection<AppointmentViewModel>();
@@ -20,6 +32,10 @@ using System;using System.Collections.ObjectModel;using System.Linq;using Sys
             });
             this.Subscribe<NewDateSelected>(m =>
             {
+#pragma warning disable 4014
+                _analyticsService.Track("Date Selected");
+#pragma warning restore 4014
+
                 Date = m.DateTime;
                 OnAppearing();
             });
@@ -73,6 +89,10 @@ using System;using System.Collections.ObjectModel;using System.Linq;using Sys
             {
                 return new Command(async () =>
                 {
+#pragma warning disable 4014
+                    _analyticsService.Track("Refreshing Jobs");
+#pragma warning restore 4014
+
                     IsRefreshing = true;
                     await _appointmentService.RetrieveAndSaveAppointments();
                     OnAppearing();
@@ -88,6 +108,10 @@ using System;using System.Collections.ObjectModel;using System.Linq;using Sys
 
         public async void OnAppearing()
         {
+#pragma warning disable 4014
+            _analyticsService.Screen("Jobs");
+#pragma warning restore 4014
+
             IsRefreshing = true;
             var appointments = await _appointmentService.AppointmentsByDay(Date);
             Appointments.Clear();
@@ -95,7 +119,11 @@ using System;using System.Collections.ObjectModel;using System.Linq;using Sys
             {
                 Appointments.Add(new AppointmentViewModel
                 {
-                    Title = appointment.Title,                    Location = appointment.Location,                    IsFinished = appointment.IsFinished,                    IsInProgress = appointment.IsInProgress,                    IsCancelled = appointment.IsCancelled,
+                    Title = appointment.Title,
+                    Location = appointment.Location,
+                    IsFinished = appointment.IsFinished,
+                    IsInProgress = appointment.IsInProgress,
+                    IsCancelled = appointment.IsCancelled,
                     StartTimeEndTimeFormated = $"{appointment.Start.ToUniversalTime().ToString("hh:mm tt")} - {appointment.End.ToUniversalTime().ToString("hh:mm tt")}",
                     JobId = appointment.JobId
                 });
@@ -117,5 +145,13 @@ using System;using System.Collections.ObjectModel;using System.Linq;using Sys
 
         public string Location { get; set; }
 
-        public int JobId { get; set; }        public bool IsFinished { get; set; }        public bool IsInProgress { get; set; }        public bool IsCancelled { get; set; }        public bool IsScheduled { get { return !IsFinished && !IsInProgress && !IsCancelled; } }        public ICommand ViewDetails { get { return new Command(() => this.Publish(new JobSelected(this))); } }
-    }}
+        public int JobId { get; set; }
+
+        public bool IsFinished { get; set; }
+        public bool IsInProgress { get; set; }
+        public bool IsCancelled { get; set; }
+        public bool IsScheduled { get { return !IsFinished && !IsInProgress && !IsCancelled; } }
+
+        public ICommand ViewDetails { get { return new Command(() => this.Publish(new JobSelected(this))); } }
+    }
+}

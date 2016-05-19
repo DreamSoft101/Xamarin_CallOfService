@@ -15,6 +15,7 @@ using CallOfService.Mobile.Core.SystemServices;
 using CallOfService.Mobile.Messages;
 using PropertyChanged;
 using System.Diagnostics;
+using CallOfService.Mobile.Core;
 
 namespace CallOfService.Mobile.Features.JobDetails
 {
@@ -24,16 +25,18 @@ namespace CallOfService.Mobile.Features.JobDetails
 		private readonly IAppointmentService _appointmentService;
 		private readonly IUserDialogs _userDialogs;
 		private ImageSource _imageSource;
+	    private readonly IAnalyticsService _analyticsService;
 		private IMediaPicker _mediaPicker;
 		private IImageCompressor _imageCompressor;
 
-		public JobDetailsViewModel (IAppointmentService appointmentService, IUserDialogs userDialogs, IMediaPicker mediaPicker, IImageCompressor imageCompressor)
+		public JobDetailsViewModel (IAppointmentService appointmentService, IUserDialogs userDialogs, IMediaPicker mediaPicker, IImageCompressor imageCompressor, IAnalyticsService analyticsService)
 		{
 			_appointmentService = appointmentService;
 			_userDialogs = userDialogs;
 			_mediaPicker = mediaPicker;
 			_imageCompressor = imageCompressor;
-			Notes = new ObservableCollection<NoteViewModel> ();
+		    _analyticsService = analyticsService;
+		    Notes = new ObservableCollection<NoteViewModel> ();
 			Attachments = new ObservableCollection<ImageSource> ();
 			AttachmentsStreams = new List<byte[]> ();
 			CustomFields = new ObservableCollection<CustomFieldViewModel>();
@@ -125,7 +128,11 @@ namespace CallOfService.Mobile.Features.JobDetails
 		public ICommand AddNote {
 			get {
 				return new Command (async () => {
-					_userDialogs.ShowLoading ("Adding note");
+#pragma warning disable 4014
+                    _analyticsService.Track("Adding note");
+#pragma warning restore 4014
+
+                    _userDialogs.ShowLoading ("Adding note");
 					var noteSaved =
 						await _appointmentService.SubmitNote (JobNumber, NewNoteText, AttachmentsStreams, DateTime.Now);
 					if (noteSaved) {
@@ -146,9 +153,13 @@ namespace CallOfService.Mobile.Features.JobDetails
 		public ICommand CallCustomerCommand {
 			get { 
 				return new Command (() => {
-					if (PhoneNumbers != null || PhoneNumbers.Count > 0) {
+                    if (PhoneNumbers != null || PhoneNumbers.Count > 0) {
 
-						var options = new List<ActionSheetOption> ();
+#pragma warning disable 4014
+                        _analyticsService.Track("Calling");
+#pragma warning restore 4014
+
+                        var options = new List<ActionSheetOption> ();
 						foreach (var phoneNumber in PhoneNumbers) {
 							options.Add (new ActionSheetOption (phoneNumber, () => Device.BeginInvokeOnMainThread (() => Device.OpenUri (new Uri ($"mailto:{phoneNumber}")))));
 						}
@@ -166,7 +177,11 @@ namespace CallOfService.Mobile.Features.JobDetails
 				return new Command (() => {
 					if (PhoneNumbers != null || PhoneNumbers.Count > 0) {
 
-						var options = new List<ActionSheetOption> ();
+#pragma warning disable 4014
+                        _analyticsService.Track("Sending SMS");
+#pragma warning restore 4014
+
+                        var options = new List<ActionSheetOption> ();
 						foreach (var phoneNumber in PhoneNumbers) {
 							options.Add (new ActionSheetOption (phoneNumber, () => Device.BeginInvokeOnMainThread (() => Device.OpenUri (new Uri ($"sms:{phoneNumber}")))));
 						}
@@ -188,7 +203,11 @@ namespace CallOfService.Mobile.Features.JobDetails
 				return new Command (() => {
 					if (Emails != null || Emails.Count > 0) {
 
-						var options = new List<ActionSheetOption> ();
+#pragma warning disable 4014
+                        _analyticsService.Track("Emailing");
+#pragma warning restore 4014
+
+                        var options = new List<ActionSheetOption> ();
 						foreach (var email in Emails) {
 							options.Add (new ActionSheetOption (email, () => Device.BeginInvokeOnMainThread (() => Device.OpenUri (new Uri ($"mailto:{email}")))));
 						}
@@ -204,8 +223,13 @@ namespace CallOfService.Mobile.Features.JobDetails
 		public ICommand DirectionCommand {
 			get { 
 				return new Command (() => {
-					// Windows Phone doesn't like ampersands in the names and the normal URI escaping doesn't help
-					var name = Location.Replace ("&", "and"); // var name = Uri.EscapeUriString(place.Name);
+
+#pragma warning disable 4014
+                    _analyticsService.Track("Directions");
+#pragma warning restore 4014
+
+                    // Windows Phone doesn't like ampersands in the names and the normal URI escaping doesn't help
+                    var name = Location.Replace ("&", "and"); // var name = Uri.EscapeUriString(place.Name);
 					var loc = string.Format ("{0},{1}", GpsPoint.Lat, GpsPoint.Lng);
 					var request = Device.OnPlatform (
 						// iOS doesn't like %s or spaces in their URLs, so manually replace spaces with +s
@@ -227,7 +251,11 @@ namespace CallOfService.Mobile.Features.JobDetails
 			get {
 				return new Command (async () => {
 					if (Status == "Scheduled") {
-						_userDialogs.ShowLoading ("Starting Job");
+#pragma warning disable 4014
+                        _analyticsService.Track("Starting Job");
+#pragma warning restore 4014
+
+                        _userDialogs.ShowLoading ("Starting Job");
 						var started = await _appointmentService.StartJob (JobNumber);
 						if (started)
 						{
@@ -238,7 +266,10 @@ namespace CallOfService.Mobile.Features.JobDetails
 						else
 							_userDialogs.ShowError ("Error Starting Job");
 					} else if (Status == "In Progress") {
-						_userDialogs.ShowLoading ("Finishing Job");
+#pragma warning disable 4014
+                        _analyticsService.Track("Finishing Job");
+#pragma warning restore 4014
+                        _userDialogs.ShowLoading ("Finishing Job");
 						var started = await _appointmentService.FinishJob (JobNumber);
 						if (started) {
 							_userDialogs.ShowSuccess ("Job Finished");
@@ -322,7 +353,11 @@ namespace CallOfService.Mobile.Features.JobDetails
 	    public ICommand AddNewNoteImage {
 			get { 
 				return new Command (() => {
-					var options = new List<ActionSheetOption> ();
+#pragma warning disable 4014
+                    _analyticsService.Track("Attaching Image");
+#pragma warning restore 4014
+
+                    var options = new List<ActionSheetOption> ();
 					options.Add (new ActionSheetOption ("Take a photo", async () => await TakeAPhoto ()));
 					options.Add (new ActionSheetOption ("Select a photo", async () => await SelectAPhoto ()));
 							
@@ -346,7 +381,12 @@ namespace CallOfService.Mobile.Features.JobDetails
 
 		private async Task TakeAPhoto ()
 		{
-			try {
+#pragma warning disable 4014
+            _analyticsService.Track("Taking a photo");
+#pragma warning restore 4014
+
+            try
+            {
 				var mediaFile = await _mediaPicker.TakePhotoAsync (GetCameraMediaStorageOptions ()).ContinueWith (t => {
 					if (t.IsFaulted || t.IsCanceled) {
 						return null;
@@ -397,9 +437,12 @@ namespace CallOfService.Mobile.Features.JobDetails
 
 		public void OnAppearing ()
 		{
-		}
+#pragma warning disable 4014
+            _analyticsService.Screen("Job Details");
+#pragma warning restore 4014
+        }
 
-		public void OnDisappearing ()
+        public void OnDisappearing ()
 		{
 		}
 	}

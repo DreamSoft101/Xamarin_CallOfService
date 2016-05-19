@@ -23,7 +23,7 @@ namespace CallOfService.Mobile.Features.Welcome
             Message1.FadeTo(0, 250);
             await Message2.FadeTo(0, 250);
 
-            Message1.Text = "HI";
+            Message1.Text = "Hi";
             Message2.Text = username;
 
             Message1.FadeTo(100, 500);

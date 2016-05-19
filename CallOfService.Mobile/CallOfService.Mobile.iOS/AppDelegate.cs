@@ -2,6 +2,7 @@
 using CallOfService.Mobile.iOS.Core.DI;
 using Foundation;
 using HockeyApp;
+using Segment;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
@@ -15,6 +16,8 @@ namespace CallOfService.Mobile.iOS
 	{
         public override bool FinishedLaunching (UIApplication application, NSDictionary launchOptions)
 		{
+            Analytics.Initialize("fsRp8sDmNQbkQzldzqwdSCurOTF0S1vj");
+
             var manager = BITHockeyManager.SharedHockeyManager;
             manager.Configure("95bc2d92ecb04f179edf35df5e942eca");
             manager.StartManager();

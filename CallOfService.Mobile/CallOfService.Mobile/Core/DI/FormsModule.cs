@@ -22,7 +22,7 @@ namespace CallOfService.Mobile.Core.DI
         protected override void Load(ContainerBuilder builder)
         {
             RegisterViewModels(builder);
-            RegisterServces(builder);
+            RegisterServices(builder);
             RegisterDatabaseDbSets(builder);
             RegisterRepos(builder);
             RegisterProxies(builder);
@@ -48,13 +48,14 @@ namespace CallOfService.Mobile.Core.DI
             builder.RegisterType<DbSet<JobDetails>>().As<IDbSet<JobDetails>>().SingleInstance();
         }
 
-        private void RegisterServces(ContainerBuilder builder)
+        private void RegisterServices(ContainerBuilder builder)
         {
             builder.RegisterType<LoginService>().As<ILoginService>().SingleInstance();
             builder.RegisterType<Logger>().As<ILogger>().SingleInstance();
             builder.RegisterType<AppointmentService>().As<IAppointmentService>().SingleInstance();
 			builder.RegisterType<UserService>().As<IUserService>().SingleInstance();
             builder.RegisterType<CredentialManager>().As<ICredentialManager>().SingleInstance();
+            builder.RegisterType<AnalyticsService>().As<IAnalyticsService>().SingleInstance();
         }
 
         private void RegisterViewModels(ContainerBuilder builder)

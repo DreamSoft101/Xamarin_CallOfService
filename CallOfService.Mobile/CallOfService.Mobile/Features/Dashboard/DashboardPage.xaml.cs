@@ -7,6 +7,8 @@ using CallOfService.Mobile.Services.Abstracts;
 using PubSub;
 using Xamarin.Forms;
 using System.Threading.Tasks;
+using CallOfService.Mobile.Core;
+using Page = Xamarin.Forms.Page;
 
 namespace CallOfService.Mobile.Features.Dashboard
 {
@@ -53,6 +55,13 @@ namespace CallOfService.Mobile.Features.Dashboard
         {
             if (!_shouldInit)
                 return;
+
+            var analyticsService = DependencyResolver.Resolve<IAnalyticsService>();
+            await analyticsService.Identify();
+#pragma warning disable 4014
+            analyticsService.Track("Loading App");
+#pragma warning restore 4014
+
             var appointmentService = DependencyResolver.Resolve<IAppointmentService>();
             //Task.Run(async () => await appointmentService.RetrieveAndSaveAppointments()).ConfigureAwait(false);
             await appointmentService.RetrieveAndSaveAppointments();

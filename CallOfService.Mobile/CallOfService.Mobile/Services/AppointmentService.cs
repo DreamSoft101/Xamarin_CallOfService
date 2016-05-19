@@ -1,16 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using CallOfService.Mobile.Core;
 using CallOfService.Mobile.Core.Networking;
-using CallOfService.Mobile.Core.Security;
-using CallOfService.Mobile.Database.Repos;
 using CallOfService.Mobile.Database.Repos.Abstracts;
 using CallOfService.Mobile.Domain;
 using CallOfService.Mobile.Proxies.Abstratcs;
 using CallOfService.Mobile.Services.Abstracts;
-using Xamarin.Forms;
 
 namespace CallOfService.Mobile.Services
 {

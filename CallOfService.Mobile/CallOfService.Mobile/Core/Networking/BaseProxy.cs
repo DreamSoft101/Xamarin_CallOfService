@@ -19,7 +19,7 @@ namespace CallOfService.Mobile.Core.Networking
             Client = CreateHttpClient();
         }
 
-		protected HttpClient CreateHttpClient(int minutes  = 2,bool useTokenExpirationHandler = true)
+		protected HttpClient CreateHttpClient(int minutes = 2,bool useTokenExpirationHandler = true)
 		{
 			var serverUri = new Uri (UrlConstants.BaseUrl);
 
@@ -31,7 +31,7 @@ namespace CallOfService.Mobile.Core.Networking
 					Timeout = new TimeSpan (0, minutes, 0),
 				};
 			else
-				httpClient = new HttpClient () {
+				httpClient = new HttpClient {
 					BaseAddress = serverUri,
 					Timeout = new TimeSpan (0, minutes, 0),
 				};

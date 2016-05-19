@@ -11,42 +11,13 @@ namespace CallOfService.Mobile.iOS
 {
 	internal class MediaPickerDelegate : UIImagePickerControllerDelegate
 	{
-		/// <summary>
-		/// The _orientation
-		/// </summary>
 		private UIDeviceOrientation? _orientation;
-
-		/// <summary>
-		/// The _observer
-		/// </summary>
 		private readonly NSObject _observer;
-
-		/// <summary>
-		/// The _options
-		/// </summary>
 		private readonly MediaStorageOptions _options;
-
-		/// <summary>
-		/// The _source
-		/// </summary>
 		private readonly UIImagePickerControllerSourceType _source;
-
-		/// <summary>
-		/// The _TCS
-		/// </summary>
 		private readonly TaskCompletionSource<MediaFile> _tcs = new TaskCompletionSource<MediaFile>();
-
-		/// <summary>
-		/// The _view controller
-		/// </summary>
 		private readonly UIViewController _viewController;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="MediaPickerDelegate"/> class.
-		/// </summary>
-		/// <param name="viewController">The view controller.</param>
-		/// <param name="sourceType">Type of the source.</param>
-		/// <param name="options">The options.</param>
 		internal MediaPickerDelegate(
 			UIViewController viewController,
 			UIImagePickerControllerSourceType sourceType,
@@ -63,16 +34,8 @@ namespace CallOfService.Mobile.iOS
 			}
 		}
 
-		/// <summary>
-		/// Gets or sets the popover.
-		/// </summary>
-		/// <value>The popover.</value>
 		public UIPopoverController Popover { get; set; }
 
-		/// <summary>
-		/// Gets the view.
-		/// </summary>
-		/// <value>The view.</value>
 		public UIView View
 		{
 			get
@@ -81,10 +44,6 @@ namespace CallOfService.Mobile.iOS
 			}
 		}
 
-		/// <summary>
-		/// Gets the task.
-		/// </summary>
-		/// <value>The task.</value>
 		public Task<MediaFile> Task
 		{
 			get
@@ -93,10 +52,6 @@ namespace CallOfService.Mobile.iOS
 			}
 		}
 
-		/// <summary>
-		/// Gets a value indicating whether this instance is captured.
-		/// </summary>
-		/// <value><c>true</c> if this instance is captured; otherwise, <c>false</c>.</value>
 		private bool IsCaptured
 		{
 			get
@@ -105,12 +60,6 @@ namespace CallOfService.Mobile.iOS
 			}
 		}
 
-		/// <summary>
-		/// Finisheds the picking media.
-		/// </summary>
-		/// <param name="picker">The picker.</param>
-		/// <param name="info">The information.</param>
-		/// <exception cref="NotSupportedException"></exception>
 		public override void FinishedPickingMedia(UIImagePickerController picker, NSDictionary info)
 		{
 			MediaFile mediaFile;
@@ -131,19 +80,11 @@ namespace CallOfService.Mobile.iOS
 			Dismiss(picker, () => _tcs.TrySetResult(mediaFile));
 		}
 
-		/// <summary>
-		/// Canceleds the specified picker.
-		/// </summary>
-		/// <param name="picker">The picker.</param>
 		public override void Canceled(UIImagePickerController picker)
 		{
 			Dismiss(picker, () => _tcs.TrySetCanceled());
 		}
 
-		/// <summary>
-		/// Displays the popover.
-		/// </summary>
-		/// <param name="hideFirst">if set to <c>true</c> [hide first].</param>
 		public void DisplayPopover(bool hideFirst = false)
 		{
 			if (Popover == null)
@@ -189,11 +130,6 @@ namespace CallOfService.Mobile.iOS
 			Popover.PresentFromRect(new CGRect(x, y, width, height), View, 0, true);
 		}
 
-		/// <summary>
-		/// Dismisses the specified picker.
-		/// </summary>
-		/// <param name="picker">The picker.</param>
-		/// <param name="onDismiss">The on dismiss.</param>
 		private void Dismiss(UIImagePickerController picker, Action onDismiss)
 		{
 			if (_viewController == null)
@@ -223,10 +159,6 @@ namespace CallOfService.Mobile.iOS
 			}
 		}
 
-		/// <summary>
-		/// Dids the rotate.
-		/// </summary>
-		/// <param name="notice">The notice.</param>
 		private void DidRotate(NSNotification notice)
 		{
 			var device = (UIDevice)notice.Object;
@@ -262,11 +194,6 @@ namespace CallOfService.Mobile.iOS
 			DisplayPopover(true);
 		}
 
-		/// <summary>
-		/// Gets the should rotate.
-		/// </summary>
-		/// <param name="orientation">The orientation.</param>
-		/// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
 		private bool GetShouldRotate(UIDeviceOrientation orientation)
 		{
 			var iorientation = UIInterfaceOrientation.Portrait;
@@ -295,11 +222,6 @@ namespace CallOfService.Mobile.iOS
 			return _viewController.ShouldAutorotateToInterfaceOrientation(iorientation);
 		}
 
-		/// <summary>
-		/// Gets the should rotate6.
-		/// </summary>
-		/// <param name="orientation">The orientation.</param>
-		/// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
 		private bool GetShouldRotate6(UIDeviceOrientation orientation)
 		{
 			if (!_viewController.ShouldAutorotate())
@@ -333,11 +255,6 @@ namespace CallOfService.Mobile.iOS
 			return _viewController.GetSupportedInterfaceOrientations().HasFlag(mask);
 		}
 
-		/// <summary>
-		/// Gets the picture media file.
-		/// </summary>
-		/// <param name="info">The information.</param>
-		/// <returns>MediaFile.</returns>
 		private MediaFile GetPictureMediaFile(NSDictionary info)
 		{
 			var image = (UIImage)info[UIImagePickerController.EditedImage];
@@ -367,11 +284,6 @@ namespace CallOfService.Mobile.iOS
 			return new MediaFile(path, () => File.OpenRead(path), dispose);
 		}
 
-		/// <summary>
-		/// Gets the movie media file.
-		/// </summary>
-		/// <param name="info">The information.</param>
-		/// <returns>MediaFile.</returns>
 		private MediaFile GetMovieMediaFile(NSDictionary info)
 		{
 			var url = (NSUrl)info[UIImagePickerController.MediaURL];
@@ -392,13 +304,6 @@ namespace CallOfService.Mobile.iOS
 			return new MediaFile(path, () => File.OpenRead(path), dispose);
 		}
 
-		/// <summary>
-		/// Gets the unique path.
-		/// </summary>
-		/// <param name="type">The type.</param>
-		/// <param name="path">The path.</param>
-		/// <param name="name">The name.</param>
-		/// <returns>System.String.</returns>
 		private static string GetUniquePath(string type, string path, string name)
 		{
 			var isPhoto = (type == MediaPicker.TypeImage);
@@ -420,13 +325,6 @@ namespace CallOfService.Mobile.iOS
 			return Path.Combine(path, nname);
 		}
 
-		/// <summary>
-		/// Gets the output path.
-		/// </summary>
-		/// <param name="type">The type.</param>
-		/// <param name="path">The path.</param>
-		/// <param name="name">The name.</param>
-		/// <returns>System.String.</returns>
 		private static string GetOutputPath(string type, string path, string name)
 		{
 			path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), path);
@@ -448,23 +346,12 @@ namespace CallOfService.Mobile.iOS
 			return Path.Combine(path, GetUniquePath(type, path, name));
 		}
 
-		/// <summary>
-		/// Determines whether [is valid interface orientation] [the specified self].
-		/// </summary>
-		/// <param name="self">The self.</param>
-		/// <returns><c>true</c> if [is valid interface orientation] [the specified self]; otherwise, <c>false</c>.</returns>
 		private static bool IsValidInterfaceOrientation(UIDeviceOrientation self)
 		{
 			return (self != UIDeviceOrientation.FaceUp && self != UIDeviceOrientation.FaceDown
 					&& self != UIDeviceOrientation.Unknown);
 		}
 
-		/// <summary>
-		/// Determines whether [is same orientation kind] [the specified o1].
-		/// </summary>
-		/// <param name="o1">The o1.</param>
-		/// <param name="o2">The o2.</param>
-		/// <returns><c>true</c> if [is same orientation kind] [the specified o1]; otherwise, <c>false</c>.</returns>
 		private static bool IsSameOrientationKind(UIDeviceOrientation o1, UIDeviceOrientation o2)
 		{
 			if (o1 == UIDeviceOrientation.FaceDown || o1 == UIDeviceOrientation.FaceUp)
@@ -483,12 +370,6 @@ namespace CallOfService.Mobile.iOS
 			return false;
 		}
 
-		/// <summary>
-		/// Gets the device orientation.
-		/// </summary>
-		/// <param name="self">The self.</param>
-		/// <returns>UIDeviceOrientation.</returns>
-		/// <exception cref="InvalidOperationException"></exception>
 		private static UIDeviceOrientation GetDeviceOrientation(UIInterfaceOrientation self)
 		{
 			switch (self)

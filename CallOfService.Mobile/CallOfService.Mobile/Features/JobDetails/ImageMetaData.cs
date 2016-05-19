@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CallOfService.Mobile
+﻿namespace CallOfService.Mobile
 {
 	public class ImageMetaData
 	{

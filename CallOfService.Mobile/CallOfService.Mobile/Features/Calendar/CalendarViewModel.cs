@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CallOfService.Mobile.UI;
+﻿using CallOfService.Mobile.UI;
 using PropertyChanged;
 
 namespace CallOfService.Mobile.Features.Calendar

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Acr.UserDialogs;
 using CallOfService.Mobile.Core.SystemServices;
-using CallOfService.Mobile.Domain;
 using CallOfService.Mobile.Services.Abstracts;
 using CallOfService.Mobile.UI;
 using PropertyChanged;
@@ -18,15 +12,16 @@ namespace CallOfService.Mobile.Features.Login
     public class LoginViewModel : IViewAwareViewModel
     {
         private readonly ILoginService _loginService;
+        private readonly IUserDialogs _userDialogs;
 
-        public LoginViewModel(ILoginService loginService)
+        public LoginViewModel(ILoginService loginService, IUserDialogs userDialogs)
         {
             _loginService = loginService;
-			Relogin = false;
+            _userDialogs = userDialogs;
+            Relogin = false;
         }
 
-
-		public bool Relogin {get;set;}
+        public bool Relogin { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
 
@@ -38,14 +33,17 @@ namespace CallOfService.Mobile.Features.Login
             {
                 return new Command(async () =>
                 {
+                    _userDialogs.ShowLoading("Logging in...");
+
                     var loginResult = await _loginService.Login(Username, Password);
+                    _userDialogs.HideLoading();
                     if (loginResult.IsSuccessful)
-						{
-							if(Relogin)
-								await NavigationService.Dismiss();
-							else
-								await NavigationService.NavigateToWelcomeScreen();
-						}
+                    {
+                        if (Relogin)
+                            await NavigationService.Dismiss();
+                        else
+                            await NavigationService.NavigateToWelcomeScreen();
+                    }
                     else
                         ShowErrorMessage = true;
                 });

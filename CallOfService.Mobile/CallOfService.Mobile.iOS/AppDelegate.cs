@@ -1,6 +1,7 @@
 ﻿using CallOfService.Mobile.Core.DI;
 using CallOfService.Mobile.iOS.Core.DI;
 using Foundation;
+using HockeyApp;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
@@ -12,11 +13,13 @@ namespace CallOfService.Mobile.iOS
 	[Register ("AppDelegate")]
 	public class AppDelegate : FormsApplicationDelegate
 	{
-		// class-level declarations
-
-		public override bool FinishedLaunching (UIApplication application, NSDictionary launchOptions)
+        public override bool FinishedLaunching (UIApplication application, NSDictionary launchOptions)
 		{
-			Forms.Init();
+            var manager = BITHockeyManager.SharedHockeyManager;
+            manager.Configure("95bc2d92ecb04f179edf35df5e942eca");
+            manager.StartManager();
+
+            Forms.Init();
 			Xamarin.FormsMaps.Init();
 			DependencyResolver.Initialize(new IosModule(), new FormsModule());
             LoadApplication(new App());

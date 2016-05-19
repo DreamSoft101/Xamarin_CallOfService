@@ -1,5 +1,4 @@
-﻿using System;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using CallOfService.Mobile.Features.Dashboard;
 using CallOfService.Mobile.Core.SystemServices;
 using CallOfService.Mobile.Core.DI;
@@ -12,7 +11,6 @@ namespace CallOfService.Mobile
 	{
 		public MasterDetailMainPage()
 		{
-
 			this.Subscribe<NewDateSelected>(mn =>
 			{
 				IsPresented = false;
@@ -23,7 +21,7 @@ namespace CallOfService.Mobile
 			NavigationPage.SetHasNavigationBar(this, false);
 			var mainMenuPage = new MainMenuPage()
 			{
-				Title = "Call Of Service",
+				Title = "Call of Service",
 				Icon = "MenuIcon.png",
 				BindingContext = DependencyResolver.Resolve<MainMenuViewModel>()
 			};

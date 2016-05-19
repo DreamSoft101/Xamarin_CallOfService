@@ -14,7 +14,7 @@ namespace CallOfService.Mobile.Controls
 		/// </summary>
 		/// Element created at 15/11/2014,3:11 PM by Charles
 		public static readonly BindableProperty ItemTemplateProperty =
-			BindableProperty.Create<RepeaterView<T>, DataTemplate>(
+            BindableProperty.Create<RepeaterView<T>, DataTemplate>(
 				p => p.ItemTemplate,
 				default(DataTemplate));
 

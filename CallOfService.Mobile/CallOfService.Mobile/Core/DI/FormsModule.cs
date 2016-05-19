@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Autofac;
+﻿using Autofac;
 using CallOfService.Mobile.Core.Security;
 using CallOfService.Mobile.Core.SystemServices;
 using CallOfService.Mobile.Database;
@@ -51,8 +46,6 @@ namespace CallOfService.Mobile.Core.DI
             builder.RegisterType<DbSet<UserProfile>>().As<IDbSet<UserProfile>>().SingleInstance();
             builder.RegisterType<DbSet<Appointment>>().As<IDbSet<Appointment>>().SingleInstance();
             builder.RegisterType<DbSet<JobDetails>>().As<IDbSet<JobDetails>>().SingleInstance();
-
-
         }
 
         private void RegisterServces(ContainerBuilder builder)

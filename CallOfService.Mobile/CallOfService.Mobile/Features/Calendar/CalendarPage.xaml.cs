@@ -16,14 +16,14 @@ namespace CallOfService.Mobile.Features.Calendar
 
 			Calendar.ShowNavigationArrows = true;
 			Calendar.TodayBackgroundStyle = CalendarView.BackgroundStyle.CircleOutline;
-			Calendar.NavigationArrowsColor = Color.FromHex ("#44b6ae");
+			Calendar.NavigationArrowsColor = Color.White;
 			Calendar.SelectedDateForegroundColor = Color.White;
 			Calendar.SelectedDateBackgroundColor = Color.FromHex ("#44b6ae");
 			Calendar.SelectionBackgroundStyle = CalendarView.BackgroundStyle.CircleFill;
-			Calendar.DayOfWeekLabelBackgroundColor = Color.FromHex ("#44b6ae");
-			Calendar.DayOfWeekLabelForegroundColor = Color.White;
-			Calendar.MonthTitleBackgroundColor = Color.FromHex ("#44b6ae");
-			Calendar.MonthTitleForegroundColor = Color.White;
+			Calendar.DayOfWeekLabelBackgroundColor = Color.White;
+			Calendar.DayOfWeekLabelForegroundColor = Color.FromHex("#44b6ae");
+			Calendar.MonthTitleBackgroundColor = Color.White;
+			Calendar.MonthTitleForegroundColor = Color.FromHex("#44b6ae");
         }
 
         private void CalendarView_OnDateSelected(object sender, DateTime e)

@@ -28,7 +28,6 @@ namespace CallOfService.Mobile.Domain
         public string StartString { get; set; }
         public string EndString { get; set; }
 
-
         public void UpdateDates()
         {
             StartDate = Int32.Parse(Start.ToString("yyyyMMdd"));

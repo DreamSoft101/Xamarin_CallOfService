@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using CallOfService.Mobile.Core.SystemServices;
-using CallOfService.Mobile.Domain;
 using CallOfService.Mobile.Messages;
 using CallOfService.Mobile.Services.Abstracts;
 using CallOfService.Mobile.UI;
@@ -15,7 +10,6 @@ using Xamarin.Forms;
 
 namespace CallOfService.Mobile.Features.Welcome
 {
-
     [ImplementPropertyChanged]
     public class WelcomeViewModel : IViewAwareViewModel
     {
@@ -26,21 +20,21 @@ namespace CallOfService.Mobile.Features.Welcome
         {
             _userService = userService;
             _appointmentService = appointmentService;
-            this.Subscribe<FinishedLoadingAppointments>((m) =>
+            this.Subscribe<FinishedLoadingAppointments>(m =>
             {
                 FinishedLoadingAppointments = true;
-                if (FinishedShowingMessages)
-                    ShowStartButton = true;
+                //if (FinishedShowingMessages)
+                //    NavigationService.NavigateToMainPage();
             });
         }
 
-		public async Task<string> GetUserName(){
-			return (await _userService.GetCurrentUser ()).FirstName;
-		}
+        public async Task<string> GetUserName()
+        {
+            return (await _userService.GetCurrentUser()).FirstName;
+        }
 
         public bool FinishedLoadingAppointments { get; set; }
         public bool FinishedShowingMessages { get; set; }
-        public bool ShowStartButton { get; set; }
         public string Message1 { get; set; }
         public string Message2 { get; set; }
 
@@ -57,7 +51,7 @@ namespace CallOfService.Mobile.Features.Welcome
 
         public void Dispose()
         {
-            
+
         }
 
         public void OnAppearing()
@@ -68,13 +62,13 @@ namespace CallOfService.Mobile.Features.Welcome
         private async Task StartDownLoadingUserData()
         {
             var appointmentsLoaded = await _appointmentService.RetrieveAndSaveAppointments();
-            if(appointmentsLoaded)
+            if (appointmentsLoaded)
                 this.Publish(new FinishedLoadingAppointments());
         }
 
         public void OnDisappearing()
         {
-            
+
         }
     }
 }

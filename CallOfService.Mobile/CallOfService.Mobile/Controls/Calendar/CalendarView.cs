@@ -1,7 +1,6 @@
 ﻿using System;
 using Xamarin.Forms;
 
-
 namespace CallOfService.Mobile
 {
 	public class CalendarView : View

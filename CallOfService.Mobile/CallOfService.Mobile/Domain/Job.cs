@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Dynamic;
 using Newtonsoft.Json;
 using SQLite.Net.Attributes;
 using System.Collections.Generic;
 
 namespace CallOfService.Mobile.Domain
 {
-
     [Table("JobDetails")]
     public class JobDetails
     {
@@ -61,7 +59,7 @@ namespace CallOfService.Mobile.Domain
         public bool IsDeleted { get; set; }
         public string Status { get; set; }
         public string AutoSchedulePeriod { get; set; }
-		public Dictionary<string,string> CustomFields { get; set; }
+        public Dictionary<string, string> CustomFields { get; set; }
         public string CancellationReason { get; set; }
         public string StatusDescription { get; set; }
         public GpsPoint Point { get; set; }

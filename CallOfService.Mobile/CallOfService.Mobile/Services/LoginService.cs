@@ -22,7 +22,7 @@ namespace CallOfService.Mobile.Services
 
         public async Task<UserLoginResult> Login(string userName, string password)
         {
-            UserToken userToken = await _loginProxy.Login(userName, password);
+            var userToken = await _loginProxy.Login(userName, password);
             if (userToken?.UserProfile != null && userToken.Token != null)
             {
                 await _userRepo.SaveUserProfile(userToken.UserProfile);

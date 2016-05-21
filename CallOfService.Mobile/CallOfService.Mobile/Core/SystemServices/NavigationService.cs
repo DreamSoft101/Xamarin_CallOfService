@@ -7,6 +7,7 @@ using CallOfService.Mobile.Features.Welcome;
 using Xamarin.Forms;
 using CallOfService.Mobile.Features.Login;
 using System.Linq;
+using CallOfService.Mobile.Features.Jobs;
 
 namespace CallOfService.Mobile.Core.SystemServices
 {
@@ -36,6 +37,11 @@ namespace CallOfService.Mobile.Core.SystemServices
         public static Task NavigateToJobDetails()
         {
             return Navigation.PushAsync(CreateAndBind<JobDetailsPage>(DependencyResolver.Resolve<JobDetailsViewModel>()));
+        }
+
+        public static Task NavigateToJobs()
+        {
+            return Navigation.PushAsync(CreateAndBind<JobsPage>(DependencyResolver.Resolve<JobsViewModel>()));
         }
 
         public static Task ShowLoginPage()

@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using CallOfService.Mobile.Core;
 using CallOfService.Mobile.Features.Login;
 using Xamarin.Forms;
 using CallOfService.Mobile.Core.DI;
@@ -28,9 +29,12 @@ namespace CallOfService.Mobile
 
 		public static string AppName => "CallOfService.Mobile";
 
-		protected async override void OnStart()
+		protected override async void OnStart()
 		{
-			MainPage = new Page();
+            var analyticsService = DependencyResolver.Resolve<IAnalyticsService>();
+		    analyticsService.Initialize();
+
+            MainPage = new Page();
 			await InitDB();
 			if (await ShouldLogin())
 			{
@@ -41,12 +45,6 @@ namespace CallOfService.Mobile
 			else
 			{
 				MainPage = new MasterDetailMainPage();
-				//MainPage = new NavigationPage(new DashboardPage())
-				//{
-				//	BarBackgroundColor = Color.FromHex("#44b6ae"),
-				//	BarTextColor = Color.White
-				//};
-				//NavigationService.Navigation = MainPage.Navigation;
 			}
 		}
 

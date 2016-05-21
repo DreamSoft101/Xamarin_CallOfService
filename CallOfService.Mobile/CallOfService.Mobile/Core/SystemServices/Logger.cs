@@ -19,6 +19,11 @@ namespace CallOfService.Mobile.Core.SystemServices
         {
             Debug.WriteLine(exception.ToString());
         }
+
+        public void WriteWarning(Exception exception)
+        {
+            Debug.WriteLine(exception.ToString());
+        }
     }
 
     public interface ILogger
@@ -26,5 +31,6 @@ namespace CallOfService.Mobile.Core.SystemServices
         void WriteInfo(string message);
         void WriteError(string message);
         void WriteError(Exception exception);
+        void WriteWarning(Exception exception);
     }
 }

@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using CallOfService.Mobile.Core.SystemServices;
 using CallOfService.Mobile.Services.Abstracts;
+using Plugin.Connectivity;
 
 namespace CallOfService.Mobile.Core.Networking
 {
@@ -12,41 +13,48 @@ namespace CallOfService.Mobile.Core.Networking
         private readonly IUserService _userService;
         protected HttpClient Client;
 
-        public BaseProxy(ILogger logger,IUserService userService)
+        public BaseProxy(ILogger logger, IUserService userService)
         {
             Logger = logger;
             _userService = userService;
             Client = CreateHttpClient();
         }
 
-		protected HttpClient CreateHttpClient(int minutes = 2,bool useTokenExpirationHandler = true)
-		{
-			var serverUri = new Uri (UrlConstants.BaseUrl);
+        protected HttpClient CreateHttpClient(int minutes = 1, bool useTokenExpirationHandler = true)
+        {
+            var serverUri = new Uri(UrlConstants.BaseUrl);
 
-			HttpClient httpClient;
+            HttpClient httpClient;
 
-			if (useTokenExpirationHandler)
-				httpClient = new HttpClient (new TokenExpirationHandler ()) {
-					BaseAddress = serverUri,
-					Timeout = new TimeSpan (0, minutes, 0),
-				};
-			else
-				httpClient = new HttpClient {
-					BaseAddress = serverUri,
-					Timeout = new TimeSpan (0, minutes, 0),
-				};
+            if (useTokenExpirationHandler)
+                httpClient = new HttpClient(new TokenExpirationHandler())
+                {
+                    BaseAddress = serverUri,
+                    Timeout = new TimeSpan(0, minutes, 0),
+                };
+            else
+                httpClient = new HttpClient
+                {
+                    BaseAddress = serverUri,
+                    Timeout = new TimeSpan(0, minutes, 0),
+                };
 
-			var userCredentials = _userService.GetUserCredentials ();
-			if (userCredentials != null) {
-				httpClient.DefaultRequestHeaders.Add ("Token-Id", userCredentials.Token);
-			}
+            var userCredentials = _userService.GetUserCredentials();
+            if (userCredentials != null)
+            {
+                httpClient.DefaultRequestHeaders.Add("Token-Id", userCredentials.Token);
+            }
 
-			return httpClient;
-		}
+            return httpClient;
+        }
+
+        protected bool IsOnline()
+        {
+            return CrossConnectivity.Current.IsConnected;
+        }
 
 
-        protected void LogResponse(HttpResponseMessage responseMessage, string content,
-            bool logSuccessfulResponse = true)
+        protected void LogResponse(HttpResponseMessage responseMessage, string content, bool logSuccessfulResponse = true)
         {
             if (responseMessage.StatusCode != HttpStatusCode.Created &&
                 responseMessage.StatusCode != HttpStatusCode.OK)

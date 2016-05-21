@@ -53,7 +53,7 @@ namespace CallOfService.Mobile.Services
         {
             var job = await _appointmentProxy.GetJobById(jobId);
 			if (job == null) {
-				return await _appointmentRepo.GetJobById (jobId);
+				return await _appointmentRepo.GetJobById(jobId);
 			}
             var point = await _appointmentProxy.GetJobLocation(job.Location);
             job.Point = point;

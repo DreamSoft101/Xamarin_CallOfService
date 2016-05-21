@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,7 +32,7 @@ namespace CallOfService.Mobile.Proxies
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine(e.ToString());
+                Logger.WriteError(e);
                 return null;
             }
         }
@@ -52,7 +51,7 @@ namespace CallOfService.Mobile.Proxies
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine(e.ToString());
+                Logger.WriteError(e);
                 return false;
             }
         }

@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CallOfService.Mobile.Core.DI;
-using CallOfService.Mobile.Features.Dashboard;
 using CallOfService.Mobile.Features.JobDetails;
 using CallOfService.Mobile.Features.Welcome;
 using Xamarin.Forms;
 using CallOfService.Mobile.Features.Login;
 using System.Linq;
-using CallOfService.Mobile.Features.Jobs;
 
 namespace CallOfService.Mobile.Core.SystemServices
 {
@@ -31,17 +29,12 @@ namespace CallOfService.Mobile.Core.SystemServices
 
         public static Task NavigateToDashboardScreen()
         {
-            return Navigation.PushAsync(CreateAndBind<DashboardPage>(new object()));
+            return Navigation.PushAsync(CreateAndBind<MasterDetailMainPage>(new object()));
         }
 
         public static Task NavigateToJobDetails()
         {
             return Navigation.PushAsync(CreateAndBind<JobDetailsPage>(DependencyResolver.Resolve<JobDetailsViewModel>()));
-        }
-
-        public static Task NavigateToJobs()
-        {
-            return Navigation.PushAsync(CreateAndBind<JobsPage>(DependencyResolver.Resolve<JobsViewModel>()));
         }
 
         public static Task ShowLoginPage()

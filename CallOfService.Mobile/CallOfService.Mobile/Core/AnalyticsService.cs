@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using CallOfService.Mobile.Core.SystemServices;
 using CallOfService.Mobile.Services.Abstracts;
 using Segment;
 using Segment.Model;
@@ -10,10 +11,12 @@ namespace CallOfService.Mobile.Core
     public class AnalyticsService : IAnalyticsService
     {
         private readonly IUserService _userService;
+        private readonly ILogger _logger;
 
-        public AnalyticsService(IUserService userService)
+        public AnalyticsService(IUserService userService, ILogger logger)
         {
             _userService = userService;
+            _logger = logger;
         }
 
         public async Task Identify()
@@ -50,7 +53,7 @@ namespace CallOfService.Mobile.Core
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine("Exception while accessing analytics: " + e);
+                _logger.WriteWarning(e);
             }
         }
 
@@ -64,7 +67,7 @@ namespace CallOfService.Mobile.Core
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine("Exception while accessing analytics: " + e);
+                _logger.WriteError(e);
             }
         }
 
@@ -78,8 +81,13 @@ namespace CallOfService.Mobile.Core
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine("Exception while accessing analytics: " + e);
+                _logger.WriteWarning(e);
             }
+        }
+
+        public void Initialize()
+        {
+            Analytics.Initialize("fsRp8sDmNQbkQzldzqwdSCurOTF0S1vj");
         }
     }
 
@@ -88,5 +96,6 @@ namespace CallOfService.Mobile.Core
         Task Identify();
         Task Track(string eventName, Properties properties = null, Options options = null);
         Task Screen(string screenName, Properties properties = null, Options options = null);
+        void Initialize();
     }
 }

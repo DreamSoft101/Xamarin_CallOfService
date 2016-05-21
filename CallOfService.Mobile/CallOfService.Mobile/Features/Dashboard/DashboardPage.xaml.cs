@@ -7,7 +7,9 @@ using CallOfService.Mobile.Services.Abstracts;
 using PubSub;
 using Xamarin.Forms;
 using System.Threading.Tasks;
+using Acr.UserDialogs;
 using CallOfService.Mobile.Core;
+using Plugin.Connectivity;
 using Page = Xamarin.Forms.Page;
 
 namespace CallOfService.Mobile.Features.Dashboard
@@ -21,7 +23,6 @@ namespace CallOfService.Mobile.Features.Dashboard
         public DashboardPage()
         {
             InitializeComponent();
-            //NavigationPage.SetHasNavigationBar(this, false);
 
             Title = "Call of Service";
 
@@ -62,8 +63,16 @@ namespace CallOfService.Mobile.Features.Dashboard
             analyticsService.Track("Loading App");
 #pragma warning restore 4014
 
+            CrossConnectivity.Current.ConnectivityChanged += (sender, args) =>
+            {
+                var userDialogs = DependencyResolver.Resolve<IUserDialogs>();
+                if (!args.IsConnected)
+                    userDialogs.WarnToast("Connection went offline.");
+                else
+                    userDialogs.InfoToast("Connection is back.");
+            };
+
             var appointmentService = DependencyResolver.Resolve<IAppointmentService>();
-            //Task.Run(async () => await appointmentService.RetrieveAndSaveAppointments()).ConfigureAwait(false);
             await appointmentService.RetrieveAndSaveAppointments();
             base.OnAppearing();
             _jobsPage = NavigationService.CreateAndBind<JobsPage>(DependencyResolver.Resolve<JobsViewModel>());

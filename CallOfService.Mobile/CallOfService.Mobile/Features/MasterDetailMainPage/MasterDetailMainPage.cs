@@ -11,14 +11,11 @@ namespace CallOfService.Mobile
 	{
 		public MasterDetailMainPage()
 		{
-			this.Subscribe<NewDateSelected>(mn =>
-			{
-				IsPresented = false;
-			});
-
+			this.Subscribe<NewDateSelected>(m => IsPresented = false);
 			this.Subscribe<Logout>(m => IsPresented = false);
 
 			NavigationPage.SetHasNavigationBar(this, false);
+
 			var mainMenuPage = new MainMenuPage()
 			{
 				Title = "Call of Service",

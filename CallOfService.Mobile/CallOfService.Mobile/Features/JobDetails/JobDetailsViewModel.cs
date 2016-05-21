@@ -14,7 +14,6 @@ using System.Windows.Input;
 using CallOfService.Mobile.Core.SystemServices;
 using CallOfService.Mobile.Messages;
 using PropertyChanged;
-using System.Diagnostics;
 using CallOfService.Mobile.Core;
 
 namespace CallOfService.Mobile.Features.JobDetails
@@ -26,16 +25,18 @@ namespace CallOfService.Mobile.Features.JobDetails
         private readonly IUserDialogs _userDialogs;
         private ImageSource _imageSource;
         private readonly IAnalyticsService _analyticsService;
-        private IMediaPicker _mediaPicker;
-        private IImageCompressor _imageCompressor;
+        private readonly IMediaPicker _mediaPicker;
+        private readonly IImageCompressor _imageCompressor;
+        private readonly ILogger _logger;
 
-        public JobDetailsViewModel(IAppointmentService appointmentService, IUserDialogs userDialogs, IMediaPicker mediaPicker, IImageCompressor imageCompressor, IAnalyticsService analyticsService)
+        public JobDetailsViewModel(IAppointmentService appointmentService, IUserDialogs userDialogs, IMediaPicker mediaPicker, IImageCompressor imageCompressor, IAnalyticsService analyticsService, ILogger logger)
         {
             _appointmentService = appointmentService;
             _userDialogs = userDialogs;
             _mediaPicker = mediaPicker;
             _imageCompressor = imageCompressor;
             _analyticsService = analyticsService;
+            _logger = logger;
             Notes = new ObservableCollection<NoteViewModel>();
             Attachments = new ObservableCollection<ImageSource>();
             AttachmentsStreams = new List<byte[]>();
@@ -340,7 +341,7 @@ namespace CallOfService.Mobile.Features.JobDetails
                 _userDialogs.HideLoading();
                 _userDialogs.ShowError("Error while loading job details");
                 await Task.Delay(3000);
-                await NavigationService.NavigateToJobs();
+                await NavigationService.NavigateToDashboardScreen();
                 return;
             }
                
@@ -435,7 +436,7 @@ namespace CallOfService.Mobile.Features.JobDetails
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.ToString());
+                _logger.WriteError(ex);
             }
         }
 
@@ -461,7 +462,7 @@ namespace CallOfService.Mobile.Features.JobDetails
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.ToString());
+                _logger.WriteError(ex);
             }
         }
 

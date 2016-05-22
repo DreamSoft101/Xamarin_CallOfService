@@ -25,8 +25,12 @@
     <MtouchDebug>True</MtouchDebug>
     <MtouchSdkVersion>9.1</MtouchSdkVersion>
     <MtouchLink>None</MtouchLink>
-    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignKey>iPhone Developer: moh.abed@callofservice.com (HZ77EM9Y59)</CodesignKey>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <CodesignProvision />
+    <CodesignEntitlements />
+    <CodesignResourceRules />
+    <CodesignExtraArgs />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>full</DebugType>

@@ -126,6 +126,39 @@
     <Compile Include="Controls\Repeater\DataTemplateSelectorExtensions.cs" />
     <Compile Include="Controls\Repeater\CollectionChangedHandler.cs" />
     <Compile Include="Controls\Calendar\CalendarView.cs" />
+    <Compile Include="Analytics\Request\BlockingRequestHandler.cs" />
+    <Compile Include="Analytics\Request\IRequestHandler.cs" />
+    <Compile Include="Analytics\Stats\Statistics.cs" />
+    <Compile Include="Analytics\Analytics.cs" />
+    <Compile Include="Analytics\Client.cs" />
+    <Compile Include="Analytics\Config.cs" />
+    <Compile Include="Analytics\Constants.cs" />
+    <Compile Include="Analytics\Defaults.cs" />
+    <Compile Include="Analytics\Logger.cs" />
+    <Compile Include="Analytics\Delegates\FailedActionHandler.cs" />
+    <Compile Include="Analytics\Delegates\SucceededActionHandler.cs" />
+    <Compile Include="Analytics\Exception\BadParameter.cs" />
+    <Compile Include="Analytics\Exception\NotInitializedException.cs" />
+    <Compile Include="Analytics\Flush\AsyncFlushHandler.cs" />
+    <Compile Include="Analytics\Flush\BlockingFlushHandler.cs" />
+    <Compile Include="Analytics\Flush\BlockingQueue.cs" />
+    <Compile Include="Analytics\Flush\IBatchFactory.cs" />
+    <Compile Include="Analytics\Flush\IFlushHandler.cs" />
+    <Compile Include="Analytics\Flush\SimpleBatchFactory.cs" />
+    <Compile Include="Analytics\Model\Alias.cs" />
+    <Compile Include="Analytics\Model\BaseAction.cs" />
+    <Compile Include="Analytics\Model\Batch.cs" />
+    <Compile Include="Analytics\Model\Context.cs" />
+    <Compile Include="Analytics\Model\Dict.cs" />
+    <Compile Include="Analytics\Model\Group.cs" />
+    <Compile Include="Analytics\Model\Identify.cs" />
+    <Compile Include="Analytics\Model\Options.cs" />
+    <Compile Include="Analytics\Model\Page.cs" />
+    <Compile Include="Analytics\Model\Properties.cs" />
+    <Compile Include="Analytics\Model\Providers.cs" />
+    <Compile Include="Analytics\Model\Screen.cs" />
+    <Compile Include="Analytics\Model\Track.cs" />
+    <Compile Include="Analytics\Model\Traits.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Acr.UserDialogs, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -134,10 +167,6 @@
     </Reference>
     <Reference Include="Acr.UserDialogs.Interface, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Acr.UserDialogs.5.0.1\lib\portable-win+net45+wp8+win8+wpa81\Acr.UserDialogs.Interface.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Autofac.3.5.2\lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="ExifLib, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -204,10 +233,15 @@
       <HintPath>..\..\packages\Xamarin.Forms.2.2.0.31\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autofac.3.5.2\lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Analytics\app.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />
@@ -262,14 +296,17 @@
     <Error Condition="!Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
     <Error Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
   </Target>
+  <ItemGroup />
+  <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\..\Segment\Analytics\Analytics.csproj">
-      <Project>{94a1e56c-5f8d-48de-8473-db47c6d2d5cf}</Project>
-      <Name>Analytics</Name>
-    </ProjectReference>
+    <Folder Include="Analytics\" />
+    <Folder Include="Analytics\Request\" />
+    <Folder Include="Analytics\Stats\" />
+    <Folder Include="Analytics\Delegates\" />
+    <Folder Include="Analytics\Exception\" />
+    <Folder Include="Analytics\Flush\" />
+    <Folder Include="Analytics\Model\" />
   </ItemGroup>
-  <ItemGroup />
-  <ItemGroup />
   <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

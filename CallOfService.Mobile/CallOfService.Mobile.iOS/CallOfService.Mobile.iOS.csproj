@@ -24,7 +24,7 @@
     <MtouchArch>i386</MtouchArch>
     <MtouchDebug>True</MtouchDebug>
     <MtouchSdkVersion>9.1</MtouchSdkVersion>
-    <MtouchLink>None</MtouchLink>
+    <MtouchLink>SdkOnly</MtouchLink>
     <CodesignKey>iPhone Developer</CodesignKey>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
@@ -177,10 +177,6 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Segment\Analytics\Analytics.csproj">
-      <Project>{94a1e56c-5f8d-48de-8473-db47c6d2d5cf}</Project>
-      <Name>Analytics</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CallOfService.Mobile\CallOfService.Mobile.csproj">
       <Name>CallOfService.Mobile</Name>
       <Project>{F9628B05-872B-4CDB-949C-72DD994B4F1D}</Project>

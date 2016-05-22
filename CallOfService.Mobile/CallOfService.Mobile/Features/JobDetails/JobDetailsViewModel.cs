@@ -37,6 +37,7 @@ namespace CallOfService.Mobile.Features.JobDetails
             _imageCompressor = imageCompressor;
             _analyticsService = analyticsService;
             _logger = logger;
+			NewNoteText = string.Empty;
             Notes = new ObservableCollection<NoteViewModel>();
             Attachments = new ObservableCollection<ImageSource>();
             AttachmentsStreams = new List<byte[]>();
@@ -134,7 +135,10 @@ namespace CallOfService.Mobile.Features.JobDetails
             get
             {
                 return new Command(async () =>
-                {
+				{
+					if (string.IsNullOrWhiteSpace(NewNoteText) && AttachmentsStreams.Count == 0)
+						return;
+					
 #pragma warning disable 4014
                     _analyticsService.Track("Adding note");
 #pragma warning restore 4014

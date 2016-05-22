@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using CallOfService.Mobile.Core.SystemServices;
 using CallOfService.Mobile.UI;
 using Xamarin.Forms;
 

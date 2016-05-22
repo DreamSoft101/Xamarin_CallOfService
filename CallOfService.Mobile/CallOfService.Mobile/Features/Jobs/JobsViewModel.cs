@@ -43,8 +43,10 @@ namespace CallOfService.Mobile.Features.Jobs
         }
 
         public ObservableCollection<AppointmentViewModel> Appointments { get; set; }
-
         public DateTime Date { get; set; }
+
+        public bool HasAppointments { get; set; }
+        public bool HasNoAppointments { get; set; }
 
         public ICommand GoToNextDay
         {
@@ -128,6 +130,8 @@ namespace CallOfService.Mobile.Features.Jobs
                     JobId = appointment.JobId
                 });
             }
+            HasAppointments = Appointments.Any();
+            HasNoAppointments = !HasAppointments;
             IsRefreshing = false;
         }
 

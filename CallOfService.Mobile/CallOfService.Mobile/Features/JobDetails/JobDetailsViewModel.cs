@@ -341,7 +341,7 @@ namespace CallOfService.Mobile.Features.JobDetails
                 _userDialogs.HideLoading();
                 _userDialogs.ShowError("Error while loading job details");
                 await Task.Delay(3000);
-                await NavigationService.NavigateToDashboardScreen();
+                await NavigationService.NavigateBack();
                 return;
             }
                

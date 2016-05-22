@@ -1,4 +1,6 @@
-﻿using CallOfService.Mobile.Core.DI;
+﻿using System.Net;
+using System.Security.Cryptography;
+using CallOfService.Mobile.Core.DI;
 using CallOfService.Mobile.iOS.Core.DI;
 using Foundation;
 using HockeyApp;
@@ -15,7 +17,8 @@ namespace CallOfService.Mobile.iOS
 	{
         public override bool FinishedLaunching (UIApplication application, NSDictionary launchOptions)
 		{
-            var manager = BITHockeyManager.SharedHockeyManager;
+			ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
+			var manager = BITHockeyManager.SharedHockeyManager;
             manager.Configure("95bc2d92ecb04f179edf35df5e942eca");
             manager.StartManager();
 

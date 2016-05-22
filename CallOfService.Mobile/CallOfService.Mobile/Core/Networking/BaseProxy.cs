@@ -17,10 +17,10 @@ namespace CallOfService.Mobile.Core.Networking
         {
             Logger = logger;
             _userService = userService;
-            Client = CreateHttpClient();
+            CreateHttpClient();
         }
 
-        protected HttpClient CreateHttpClient(int minutes = 1, bool useTokenExpirationHandler = true)
+        protected void CreateHttpClient(int minutes = 1, bool useTokenExpirationHandler = true)
         {
             var serverUri = new Uri(UrlConstants.BaseUrl);
 
@@ -45,7 +45,7 @@ namespace CallOfService.Mobile.Core.Networking
                 httpClient.DefaultRequestHeaders.Add("Token-Id", userCredentials.Token);
             }
 
-            return httpClient;
+			Client = httpClient;
         }
 
         protected bool IsOnline()

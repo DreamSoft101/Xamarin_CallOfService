@@ -77,11 +77,13 @@ namespace CallOfService.Mobile.Features.Dashboard
             base.OnAppearing();
             _jobsPage = NavigationService.CreateAndBind<JobsPage>(DependencyResolver.Resolve<JobsViewModel>());
             _jobsPage.Title = "JOBS";
+            _jobsPage.Icon = "Jobs.png";
             Children.Add(_jobsPage);
             Device.OnPlatform(() =>
             {
                 _calendarPage = NavigationService.CreateAndBind<CalendarPage>(DependencyResolver.Resolve<CalendarViewModel>());
                 _calendarPage.Title = "CALENDAR";
+                _calendarPage.Icon = "Calendar.png";
                 Children.Add(_calendarPage);
             }, () =>
             {
@@ -89,6 +91,7 @@ namespace CallOfService.Mobile.Features.Dashboard
                 {
                     _calendarPage = NavigationService.CreateAndBind<CalendarPage>(DependencyResolver.Resolve<CalendarViewModel>());
                     _calendarPage.Title = "CALENDAR";
+                    _calendarPage.Icon = "Calendar.png";
                     Device.BeginInvokeOnMainThread(() => Children.Add(_calendarPage));
                 });
             });

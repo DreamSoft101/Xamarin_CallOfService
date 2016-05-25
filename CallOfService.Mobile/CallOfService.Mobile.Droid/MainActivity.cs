@@ -5,13 +5,14 @@ using CallOfService.Mobile.Core.DI;
 using CallOfService.Mobile.Droid.Core.DI;
 using Acr.UserDialogs;
 using Android.Content.PM;
+using Android.Content.Res;
+using Android.Util;
 
 namespace CallOfService.Mobile.Droid
 {
-	[Activity (Label = "CallOfService.Mobile.Droid", 
+	[Activity (Label = "Call Of Service", 
 	           Icon = "@mipmap/icon",
 	           Theme = "@style/MyTheme",
-	           MainLauncher = true,
 			   ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
 	public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
 	{
@@ -26,6 +27,36 @@ namespace CallOfService.Mobile.Droid
 			global::Xamarin.FormsMaps.Init(this,bundle);
 			DependencyResolver.Initialize(new AndroidModule(), new FormsModule());
 			LoadApplication(new App());
+			DisplayMetrics metrics = new DisplayMetrics();
+			WindowManager.DefaultDisplay.GetMetrics(metrics);
+			var density = metrics.DensityDpi;
+			if (density == DisplayMetricsDensity.High)
+			{
+				Toast.MakeText(this, "DENSITY_HIGH... Density is " + density, ToastLength.Long).Show();
+			}
+			else if (density == DisplayMetricsDensity.Medium)
+			{
+				Toast.MakeText(this, "DENSITY_MEDIUM... Density is " + density, ToastLength.Long).Show();
+			}
+			else if (density == DisplayMetricsDensity.Low)
+			{
+				Toast.MakeText(this, "DENSITY_LOW... Density is " + density, ToastLength.Long).Show();
+			}
+			else if (density == DisplayMetricsDensity.Xhigh)
+			{
+				Toast.MakeText(this, "DENSITY_XHIGH... Density is " + density, ToastLength.Long).Show();
+			}
+			else if (density == DisplayMetricsDensity.Xxhigh)
+			{
+				Toast.MakeText(this, "DENSITY_XXHIGH... Density is " + density, ToastLength.Long).Show();
+			}
+			else if (density == DisplayMetricsDensity.Xxxhigh)
+			{
+				Toast.MakeText(this, "DENSITY_XXXHIGH... Density is " + density, ToastLength.Long).Show();
+			}
+			else {
+				Toast.MakeText(this, "Density is neither HIGH, MEDIUM OR LOW.  Density is " + density, ToastLength.Long).Show();
+			}
 		}
 	}
 }

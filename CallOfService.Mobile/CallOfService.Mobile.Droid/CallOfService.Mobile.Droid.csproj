@@ -214,6 +214,7 @@
     <Compile Include="Renderers\Calendar\MonthView.cs" />
     <Compile Include="Renderers\Calendar\StyleDescriptor.cs" />
     <Compile Include="Renderers\Calendar\FontExtensions.cs" />
+    <Compile Include="SplashScreen.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -248,6 +249,12 @@
     <AndroidResource Include="Resources\values\attrs.xml" />
     <AndroidResource Include="Resources\drawable\calendar_bg_selector.xml" />
     <AndroidResource Include="Resources\drawable\ad16.jpg" />
+    <AndroidResource Include="Resources\drawable\SplashScreen.xml" />
+    <AndroidResource Include="Resources\drawable\splash.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\splash.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\splash.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\splash.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\splash.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\Calendar.png" />

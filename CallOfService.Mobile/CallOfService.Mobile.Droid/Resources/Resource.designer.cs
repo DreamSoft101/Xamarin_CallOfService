@@ -2607,14 +2607,20 @@ namespace CallOfService.Mobile.Droid
 			// aapt resource value: 0x7f0200d1
 			public const int mr_ic_play_light = 2130837713;
 			
-			// aapt resource value: 0x7f0200d4
-			public const int notification_template_icon_bg = 2130837716;
+			// aapt resource value: 0x7f0200d6
+			public const int notification_template_icon_bg = 2130837718;
 			
 			// aapt resource value: 0x7f0200d2
 			public const int roundedbg = 2130837714;
 			
 			// aapt resource value: 0x7f0200d3
 			public const int roundedbgdark = 2130837715;
+			
+			// aapt resource value: 0x7f0200d4
+			public const int splash = 2130837716;
+			
+			// aapt resource value: 0x7f0200d5
+			public const int SplashScreen = 2130837717;
 			
 			static Drawable()
 			{
@@ -4509,6 +4515,9 @@ namespace CallOfService.Mobile.Droid
 			
 			// aapt resource value: 0x7f0c0003
 			public const int Theme_MediaRouter_LightControlPanel = 2131492867;
+			
+			// aapt resource value: 0x7f0c0179
+			public const int Theme_Splash = 2131493241;
 			
 			// aapt resource value: 0x7f0c010e
 			public const int ThemeOverlay_AppCompat = 2131493134;

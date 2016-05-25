@@ -277,22 +277,22 @@
     <AndroidResource Include="Resources\drawable-hdpi\Jobs.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\Calendar%402.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\Calendar.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\Jobs%402.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\Jobs.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\Calendar%402.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\Calendar.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\Jobs%402.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\Jobs.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\Calendar%403.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\Calendar.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\Jobs%403.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\Jobs.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\drawable\Images\calendar.svg" />

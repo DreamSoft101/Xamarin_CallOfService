@@ -499,7 +499,7 @@ namespace CallOfService.Mobile.iOS.Renders.Calnedar
             _leftArrow.TouchUpInside += HandlePreviousMonthTouch;
             _leftArrow.Direction = CalendarArrowView.ArrowDirection.Left;
             AddSubview(_leftArrow);
-            _rightArrow = new CalendarArrowView(new CGRect(320 - 22 - 10, 9, 18, 22))
+			_rightArrow = new CalendarArrowView(new CGRect(245, 9, 18, 22))
             {
                 Color =
                     StyleDescriptor.TitleForegroundColor

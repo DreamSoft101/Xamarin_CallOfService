@@ -25,7 +25,7 @@
     <MtouchDebug>True</MtouchDebug>
     <MtouchSdkVersion>9.1</MtouchSdkVersion>
     <MtouchLink>SdkOnly</MtouchLink>
-    <CodesignKey>iPhone Developer: moh.abed@callofservice.com (HZ77EM9Y59)</CodesignKey>
+    <CodesignKey>iPhone Developer</CodesignKey>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <CodesignProvision />
     <CodesignEntitlements />

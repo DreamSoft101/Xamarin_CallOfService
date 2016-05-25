@@ -87,13 +87,10 @@ namespace CallOfService.Mobile.Features.Dashboard
                 Children.Add(_calendarPage);
             }, () =>
             {
-                Task.Run(() =>
-                {
-                    _calendarPage = NavigationService.CreateAndBind<CalendarPage>(DependencyResolver.Resolve<CalendarViewModel>());
-                    _calendarPage.Title = "CALENDAR";
-                    _calendarPage.Icon = "Calendar.png";
-                    Device.BeginInvokeOnMainThread(() => Children.Add(_calendarPage));
-                });
+				_calendarPage = NavigationService.CreateAndBind<CalendarPage>(DependencyResolver.Resolve<CalendarViewModel>());
+				_calendarPage.Title = "CALENDAR";
+				_calendarPage.Icon = "Calendar.png";
+				Children.Add(_calendarPage);
             });
 
             _shouldInit = false;

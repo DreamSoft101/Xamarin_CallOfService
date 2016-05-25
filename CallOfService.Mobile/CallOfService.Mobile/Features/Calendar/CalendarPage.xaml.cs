@@ -16,7 +16,7 @@ namespace CallOfService.Mobile.Features.Calendar
 
 			Calendar.ShowNavigationArrows = true;
 			Calendar.TodayBackgroundStyle = CalendarView.BackgroundStyle.CircleOutline;
-			Calendar.NavigationArrowsColor = Color.White;
+			Calendar.NavigationArrowsColor = Color.FromHex("#44b6ae");
 			Calendar.SelectedDateForegroundColor = Color.White;
 			Calendar.SelectedDateBackgroundColor = Color.FromHex ("#44b6ae");
 			Calendar.SelectionBackgroundStyle = CalendarView.BackgroundStyle.CircleFill;

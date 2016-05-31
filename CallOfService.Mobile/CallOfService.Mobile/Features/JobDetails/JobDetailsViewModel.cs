@@ -130,13 +130,15 @@ namespace CallOfService.Mobile.Features.JobDetails
 
         public string NewNoteText { get; set; }
 
+        public bool CanAddNote { get { return !string.IsNullOrWhiteSpace(NewNoteText) || AttachmentsStreams.Count > 0; } }
+
         public ICommand AddNote
         {
             get
             {
                 return new Command(async () =>
 				{
-					if (string.IsNullOrWhiteSpace(NewNoteText) && AttachmentsStreams.Count == 0)
+					if (!CanAddNote)
 						return;
 					
 #pragma warning disable 4014
@@ -354,7 +356,7 @@ namespace CallOfService.Mobile.Features.JobDetails
             StartTime = appointment.Start.TimeOfDay;
             EndTime = appointment.End.TimeOfDay;
             TimeRangeFormat = $"{appointment.Start.ToUniversalTime().ToString("hh:mm tt")} - {appointment.End.ToUniversalTime().ToString("hh:mm tt")}";
-            DateTimeFormat = $"{Date.ToString("dddd dd MMMM yyyy")} at {TimeRangeFormat}";
+            DateTimeFormat = $"{Date.ToString("ddd dd MMMM yyyy")} at {TimeRangeFormat}";
             Location = appointment.Location;
             Title = appointment.Title;
             Description = job.Description;
@@ -387,17 +389,9 @@ namespace CallOfService.Mobile.Features.JobDetails
 
             ShowActionButton = true;
             if (Status == "Scheduled")
-                ActionText = "Start";
+                ActionText = "Start Job";
             else if (Status == "InProgress")
-                ActionText = "Finish";
-            else
-                ShowActionButton = false;
-
-            ShowActionButton = true;
-            if (Status == "Scheduled")
-                ActionText = "Start";
-            else if (Status == "In Progress")
-                ActionText = "Finish";
+                ActionText = "Finish Job";
             else
                 ShowActionButton = false;
 

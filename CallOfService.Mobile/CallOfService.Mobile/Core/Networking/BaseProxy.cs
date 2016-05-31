@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using CallOfService.Mobile.Core.SystemServices;
 using CallOfService.Mobile.Services.Abstracts;
+using ModernHttpClient;
 using Plugin.Connectivity;
 
 namespace CallOfService.Mobile.Core.Networking
@@ -33,7 +34,7 @@ namespace CallOfService.Mobile.Core.Networking
                     Timeout = new TimeSpan(0, minutes, 0),
                 };
             else
-                httpClient = new HttpClient
+                httpClient = new HttpClient(new NativeMessageHandler())
                 {
                     BaseAddress = serverUri,
                     Timeout = new TimeSpan(0, minutes, 0),

@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using System.Security.Cryptography;
 using CallOfService.Mobile.Core.DI;
 using CallOfService.Mobile.iOS.Core.DI;
 using Foundation;
@@ -17,8 +16,10 @@ namespace CallOfService.Mobile.iOS
 	{
         public override bool FinishedLaunching (UIApplication application, NSDictionary launchOptions)
 		{
-			ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
-			var manager = BITHockeyManager.SharedHockeyManager;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls;
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+
+            var manager = BITHockeyManager.SharedHockeyManager;
             manager.Configure("95bc2d92ecb04f179edf35df5e942eca");
             manager.StartManager();
 

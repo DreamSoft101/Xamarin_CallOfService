@@ -131,7 +131,7 @@
           </customcontrols:RepeaterView>
           
           <BoxView HeightRequest="1" BackgroundColor="Silver" />
-          <Label IsVisible="{Binding HasNotes}" FontSize="14" TextColor="Gray" HorizontalOptions="Start" VerticalTextAlignment="Center" Text="NOTES" />
+          <Label FontSize="14" TextColor="Gray" HorizontalOptions="Start" VerticalTextAlignment="Center" Text="NOTES" />
           <customcontrols:RepeaterView x:TypeArguments="jobDetails:NoteViewModel" ItemsSource="{Binding Notes}">
             <customcontrols:RepeaterView.ItemTemplate>
               <DataTemplate>

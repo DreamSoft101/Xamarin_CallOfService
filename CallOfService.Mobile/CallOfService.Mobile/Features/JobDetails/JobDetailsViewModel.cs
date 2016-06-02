@@ -316,8 +316,8 @@ namespace CallOfService.Mobile.Features.JobDetails
                         _analyticsService.Track("Finishing Job");
 #pragma warning restore 4014
                         _userDialogs.ShowLoading("Finishing Job");
-                        var started = await _appointmentService.FinishJob(JobNumber);
-                        if (started)
+                        var finished = await _appointmentService.FinishJob(JobNumber);
+                        if (finished)
                         {
                             _userDialogs.ShowSuccess("Job Finished");
                             await Task.Delay(100);
@@ -390,7 +390,7 @@ namespace CallOfService.Mobile.Features.JobDetails
             ShowActionButton = true;
             if (Status == "Scheduled")
                 ActionText = "Start Job";
-            else if (Status == "InProgress")
+            else if (Status == "In Progress")
                 ActionText = "Finish Job";
             else
                 ShowActionButton = false;

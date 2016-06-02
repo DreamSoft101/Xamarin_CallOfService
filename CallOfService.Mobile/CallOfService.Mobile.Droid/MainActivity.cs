@@ -29,7 +29,7 @@ namespace CallOfService.Mobile.Droid
 			LoadApplication(new App());
 			DisplayMetrics metrics = new DisplayMetrics();
 			WindowManager.DefaultDisplay.GetMetrics(metrics);
-			var density = metrics.DensityDpi;
+			/*var density = metrics.DensityDpi;
 			if (density == DisplayMetricsDensity.High)
 			{
 				Toast.MakeText(this, "DENSITY_HIGH... Density is " + density, ToastLength.Long).Show();
@@ -56,7 +56,7 @@ namespace CallOfService.Mobile.Droid
 			}
 			else {
 				Toast.MakeText(this, "Density is neither HIGH, MEDIUM OR LOW.  Density is " + density, ToastLength.Long).Show();
-			}
+			}*/
 		}
 	}
 }

@@ -14,6 +14,8 @@
 	<true/>
 	<key>MinimumOSVersion</key>
 	<string>8.1</string>
+  <key>UIRequiresFullScreen</key>
+  <string>YES</string>
 	<key>UIDeviceFamily</key>
 	<array>
 		<integer>1</integer>
@@ -34,9 +36,10 @@
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Can we use your location</string>

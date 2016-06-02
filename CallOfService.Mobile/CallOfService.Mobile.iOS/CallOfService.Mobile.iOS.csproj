@@ -44,11 +44,11 @@
     </CodesignEntitlements>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
     <ConsolePause>false</ConsolePause>
-    <CodesignKey>iPhone Developer: moh.abed@callofservice.com (HZ77EM9Y59)</CodesignKey>
+    <CodesignKey>iPhone Distribution: Ninety Nine Pty Ltd (UP9439W42L)</CodesignKey>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <BuildIpa>True</BuildIpa>
     <IpaIncludeArtwork>False</IpaIncludeArtwork>
-    <CodesignProvision>1fd7c757-f996-4e11-b7c4-b58bc5a3d3c0</CodesignProvision>
+    <CodesignProvision>f493502a-aa3f-466c-a9d2-275a352ae1be</CodesignProvision>
     <CodesignResourceRules />
     <CodesignExtraArgs />
   </PropertyGroup>

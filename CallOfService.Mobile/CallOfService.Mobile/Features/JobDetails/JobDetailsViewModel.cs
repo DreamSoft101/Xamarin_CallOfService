@@ -79,6 +79,8 @@ namespace CallOfService.Mobile.Features.JobDetails
 
         public string Contact { get; set; }
 
+        public bool ShowMap { get; set; }
+
         public bool HasContact
         {
             get { return !string.IsNullOrEmpty(Contact); }
@@ -365,6 +367,7 @@ namespace CallOfService.Mobile.Features.JobDetails
             JobNumber = job.Id;
             Status = job.StatusDescription;
             GpsPoint = job.Point;
+            ShowMap = GpsPoint?.IsValid ?? false;
 
             Notes.Clear();
             foreach (var note in job.Notes)
@@ -380,7 +383,7 @@ namespace CallOfService.Mobile.Features.JobDetails
                 CustomFields.Add(new CustomFieldViewModel { Label = field.Key, Value = field.Value });
             }
 
-            if (GpsPoint.IsValid)
+            if (GpsPoint != null && GpsPoint.IsValid)
                 this.Publish(new ShowPinOnMap(GpsPoint, Location, Contact));
 
             PageTitle = appointment.Title;

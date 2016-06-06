@@ -79,19 +79,24 @@ namespace CallOfService.Mobile.Features.Dashboard
             _jobsPage.Title = "JOBS";
             _jobsPage.Icon = "Jobs.png";
             Children.Add(_jobsPage);
-            Device.OnPlatform(() =>
-            {
-                _calendarPage = NavigationService.CreateAndBind<CalendarPage>(DependencyResolver.Resolve<CalendarViewModel>());
-                _calendarPage.Title = "CALENDAR";
-                _calendarPage.Icon = "Calendar.png";
-                Children.Add(_calendarPage);
-            }, () =>
-            {
-				_calendarPage = NavigationService.CreateAndBind<CalendarPage>(DependencyResolver.Resolve<CalendarViewModel>());
-				_calendarPage.Title = "CALENDAR";
-				_calendarPage.Icon = "Calendar.png";
-				Children.Add(_calendarPage);
-            });
+            _calendarPage = NavigationService.CreateAndBind<CalendarPage>(DependencyResolver.Resolve<CalendarViewModel>());
+            _calendarPage.Title = "CALENDAR";
+            _calendarPage.Icon = "Calendar.png";
+            Children.Add(_calendarPage);
+
+            //        Device.OnPlatform(() =>
+            //        {
+            //            _calendarPage = NavigationService.CreateAndBind<CalendarPage>(DependencyResolver.Resolve<CalendarViewModel>());
+            //            _calendarPage.Title = "CALENDAR";
+            //            _calendarPage.Icon = "Calendar.png";
+            //            Children.Add(_calendarPage);
+            //        }, () =>
+            //        {
+            //_calendarPage = NavigationService.CreateAndBind<CalendarPage>(DependencyResolver.Resolve<CalendarViewModel>());
+            //_calendarPage.Title = "CALENDAR";
+            //_calendarPage.Icon = "Calendar.png";
+            //Children.Add(_calendarPage);
+            //        });
 
             _shouldInit = false;
         }

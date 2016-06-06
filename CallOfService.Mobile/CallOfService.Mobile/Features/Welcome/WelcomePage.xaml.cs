@@ -16,32 +16,32 @@ namespace CallOfService.Mobile.Features.Welcome
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            viewModel = BindingContext as WelcomeViewModel;
+            viewModel = (WelcomeViewModel)BindingContext;
             var username = await viewModel.GetUserName();
 
-            Message1.FadeTo(0, 250);
+            await Message1.FadeTo(0, 250);
             await Message2.FadeTo(0, 250);
 
             Message1.Text = "Hi";
             Message2.Text = username;
 
-            Message1.FadeTo(100, 500);
+            await Message1.FadeTo(100, 500);
             await Message2.FadeTo(100, 500);
 
             await Task.Delay(3000);
 
-            Message1.FadeTo(0, 500);
+            await Message1.FadeTo(0, 500);
             await Message2.FadeTo(0, 500);
 
             Message1.Text = "Welcome to";
             Message2.Text = "Call of Service";
 
-            Message1.FadeTo(100, 500);
+            await Message1.FadeTo(100, 500);
             await Message2.FadeTo(100, 500);
 
             await Task.Delay(3000);
 
-            Message1.FadeTo(0, 500);
+            await Message1.FadeTo(0, 500);
             await Message2.FadeTo(0, 500);
 
             Message1.Text = "Loading configuration...";
@@ -55,8 +55,6 @@ namespace CallOfService.Mobile.Features.Welcome
                 await Message1.FadeTo(0, 500);
                 Message1.Text = "All Done !";
                 await Message1.FadeTo(100, 500);
-                //viewModel.ShowStartButton = true;
-                //ToDo: Navigate to dashboard
                 if(viewModel.NavigateToDashboard.CanExecute(null))
                     viewModel.NavigateToDashboard.Execute(null);
             }

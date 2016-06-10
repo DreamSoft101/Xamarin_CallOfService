@@ -12,4 +12,6 @@
   <color name="calendar_text_selected">#ffffffff</color>
   <color name="calendar_text_unselectable">#7f778088</color>
   <color name="calendar_text_selector">#ffffffff</color>
+  <color name="ListViewSelected">#44B6AE</color>
+  <color name="ListViewHighlighted">#44B6AE</color>
 </resources>

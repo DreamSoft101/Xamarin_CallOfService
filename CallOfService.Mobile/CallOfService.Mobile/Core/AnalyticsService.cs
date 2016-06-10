@@ -61,6 +61,11 @@ namespace CallOfService.Mobile.Core
         {
             try
             {
+                if(properties == null)
+                    properties = new Properties();
+
+                properties.Add("platform", Device.OS.ToString());
+
                 var user = await _userService.GetCurrentUser();
                 var userId = user.TenantId + "-" + user.UserId;
                 Analytics.Client.Track(userId, eventName, properties, options);
@@ -75,6 +80,11 @@ namespace CallOfService.Mobile.Core
         {
             try
             {
+                if (properties == null)
+                    properties = new Properties();
+
+                properties.Add("platform", Device.OS.ToString());
+
                 var user = await _userService.GetCurrentUser();
                 var userId = user.TenantId + "-" + user.UserId;
                 Analytics.Client.Screen(userId, screenName, properties, options);

@@ -9,7 +9,18 @@ namespace CallOfService.Mobile.Domain
 
         public Position Position
         {
-            get { return (string.IsNullOrEmpty(Lat) || string.IsNullOrEmpty(Lng)) ? new Position() : new Position(double.Parse(Lat), double.Parse(Lng)); }
+            get
+            {
+                if (string.IsNullOrEmpty(Lat) || string.IsNullOrEmpty(Lng))
+                    return new Position();
+
+                double lat;
+                double lng;
+                if (double.TryParse(Lat, out lat) && double.TryParse(Lng, out lng))
+                    return new Position(lat, lng);
+
+                return new Position();
+            }
         }
 
         public bool IsValid { get; set; }

@@ -5,6 +5,7 @@ using CallOfService.Mobile.Droid.Core.DI;
 using Acr.UserDialogs;
 using Android.Content.PM;
 using Android.Util;
+using HockeyApp;
 using TwinTechs.Droid;
 
 namespace CallOfService.Mobile.Droid
@@ -27,7 +28,10 @@ namespace CallOfService.Mobile.Droid
             SvgImageRenderer.Init();
             DependencyResolver.Initialize(new AndroidModule(), new FormsModule());
 			LoadApplication(new App());
-			DisplayMetrics metrics = new DisplayMetrics();
+
+            CrashManager.Register(this, "635a7d2e041a42fca3421315597b6e5e");
+
+            DisplayMetrics metrics = new DisplayMetrics();
 			WindowManager.DefaultDisplay.GetMetrics(metrics);
 			/*var density = metrics.DensityDpi;
 			if (density == DisplayMetricsDensity.High)

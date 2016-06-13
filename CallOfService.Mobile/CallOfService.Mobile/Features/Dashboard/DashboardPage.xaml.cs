@@ -57,6 +57,9 @@ namespace CallOfService.Mobile.Features.Dashboard
             if (!_shouldInit)
                 return;
 
+            var dialog = DependencyResolver.Resolve<IUserDialogs>();
+            dialog.ShowLoading("Loading...");
+
             var analyticsService = DependencyResolver.Resolve<IAnalyticsService>();
             await analyticsService.Identify();
 #pragma warning disable 4014
@@ -66,6 +69,7 @@ namespace CallOfService.Mobile.Features.Dashboard
             CrossConnectivity.Current.ConnectivityChanged += (sender, args) =>
             {
                 var userDialogs = DependencyResolver.Resolve<IUserDialogs>();
+
                 if (!args.IsConnected)
                     userDialogs.WarnToast("Connection went offline.");
                 else
@@ -75,6 +79,8 @@ namespace CallOfService.Mobile.Features.Dashboard
             var appointmentService = DependencyResolver.Resolve<IAppointmentService>();
             await appointmentService.RetrieveAndSaveAppointments();
             base.OnAppearing();
+
+            Children.Clear();
             _jobsPage = NavigationService.CreateAndBind<JobsPage>(DependencyResolver.Resolve<JobsViewModel>());
             _jobsPage.Title = "JOBS";
             _jobsPage.Icon = "Jobs.png";
@@ -84,19 +90,7 @@ namespace CallOfService.Mobile.Features.Dashboard
             _calendarPage.Icon = "Calendar.png";
             Children.Add(_calendarPage);
 
-            //        Device.OnPlatform(() =>
-            //        {
-            //            _calendarPage = NavigationService.CreateAndBind<CalendarPage>(DependencyResolver.Resolve<CalendarViewModel>());
-            //            _calendarPage.Title = "CALENDAR";
-            //            _calendarPage.Icon = "Calendar.png";
-            //            Children.Add(_calendarPage);
-            //        }, () =>
-            //        {
-            //_calendarPage = NavigationService.CreateAndBind<CalendarPage>(DependencyResolver.Resolve<CalendarViewModel>());
-            //_calendarPage.Title = "CALENDAR";
-            //_calendarPage.Icon = "Calendar.png";
-            //Children.Add(_calendarPage);
-            //        });
+            dialog.HideLoading();
 
             _shouldInit = false;
         }

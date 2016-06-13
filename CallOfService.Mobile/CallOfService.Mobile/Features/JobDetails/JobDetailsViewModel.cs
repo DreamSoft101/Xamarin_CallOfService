@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Acr.UserDialogs;
 using CallOfService.Mobile.Core.DI;
@@ -16,6 +15,7 @@ using CallOfService.Mobile.Core.SystemServices;
 using CallOfService.Mobile.Messages;
 using PropertyChanged;
 using CallOfService.Mobile.Core;
+using Segment.Model;
 
 namespace CallOfService.Mobile.Features.JobDetails
 {
@@ -174,7 +174,7 @@ namespace CallOfService.Mobile.Features.JobDetails
             {
                 return new Command(() =>
                 {
-                    if (PhoneNumbers != null || PhoneNumbers.Count > 0)
+                    if (PhoneNumbers != null && PhoneNumbers.Count > 0)
                     {
 
 #pragma warning disable 4014
@@ -184,9 +184,9 @@ namespace CallOfService.Mobile.Features.JobDetails
                         var options = new List<ActionSheetOption>();
                         foreach (var phoneNumber in PhoneNumbers)
                         {
-                            options.Add(new ActionSheetOption(phoneNumber, () => Device.BeginInvokeOnMainThread(() => Device.OpenUri(new Uri($"mailto:{phoneNumber}")))));
+                            options.Add(new ActionSheetOption(phoneNumber, () => Device.BeginInvokeOnMainThread(() => Device.OpenUri(new Uri($"tel:{phoneNumber}")))));
                         }
-                        _userDialogs.ActionSheet(new ActionSheetConfig()
+                        _userDialogs.ActionSheet(new ActionSheetConfig
                         {
                             Options = options,
                             Cancel = new ActionSheetOption("Cancel")
@@ -202,7 +202,7 @@ namespace CallOfService.Mobile.Features.JobDetails
             {
                 return new Command(() =>
                 {
-                    if (PhoneNumbers != null || PhoneNumbers.Count > 0)
+                    if (PhoneNumbers != null && PhoneNumbers.Count > 0)
                     {
 
 #pragma warning disable 4014
@@ -214,7 +214,7 @@ namespace CallOfService.Mobile.Features.JobDetails
                         {
                             options.Add(new ActionSheetOption(phoneNumber, () => Device.BeginInvokeOnMainThread(() => Device.OpenUri(new Uri($"sms:{phoneNumber}")))));
                         }
-                        _userDialogs.ActionSheet(new ActionSheetConfig()
+                        _userDialogs.ActionSheet(new ActionSheetConfig
                         {
                             Options = options,
                             Cancel = new ActionSheetOption("Cancel")
@@ -234,7 +234,7 @@ namespace CallOfService.Mobile.Features.JobDetails
             {
                 return new Command(() =>
                 {
-                    if (Emails != null || Emails.Count > 0)
+                    if (Emails != null && Emails.Count > 0)
                     {
 
 #pragma warning disable 4014
@@ -439,6 +439,13 @@ namespace CallOfService.Mobile.Features.JobDetails
             catch (Exception ex)
             {
                 _logger.WriteError(ex);
+#pragma warning disable 4014
+                _analyticsService.Track("Error Selecting a photo", new Properties
+                {
+                    {"exception", ex.Message}
+                });
+#pragma warning restore 4014
+                _userDialogs.ShowError("Error while attaching photo, please try again.");
             }
         }
 
@@ -465,6 +472,13 @@ namespace CallOfService.Mobile.Features.JobDetails
             catch (Exception ex)
             {
                 _logger.WriteError(ex);
+#pragma warning disable 4014
+                _analyticsService.Track("Error Taking a photo", new Properties
+                {
+                    {"exception", ex.Message}
+                });
+#pragma warning restore 4014
+                _userDialogs.ShowError("Error while taking photo, please try selecting existing photo.");
             }
         }
 

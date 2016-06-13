@@ -1,7 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<bitmap 
-	xmlns:android="http://schemas.android.com/apk/res/android" 
-	android:src="@drawable/splash" 
+<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+       android:src="@drawable/splash"
+       android:tileMode="disabled"
+       android:layout_width="fill_parent"
+       />
 
-	android:layout_width="fill_parent" 
-	android:layout_height="fill_parent" />
+<!--<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+  --><!--<item>
+    <color android:color="@color/splash_background"/>
+  </item>--><!--
+  <item>
+    <bitmap
+        android:src="@drawable/splash"
+        android:tileMode="disabled"
+        android:layout_width="fill_parent" 
+        android:gravity="center"/>
+  </item>
+</layer-list>-->

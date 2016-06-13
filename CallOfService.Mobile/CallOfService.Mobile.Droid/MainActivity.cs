@@ -1,12 +1,11 @@
 ﻿using Android.App;
-using Android.Widget;
 using Android.OS;
 using CallOfService.Mobile.Core.DI;
 using CallOfService.Mobile.Droid.Core.DI;
 using Acr.UserDialogs;
 using Android.Content.PM;
-using Android.Content.Res;
 using Android.Util;
+using TwinTechs.Droid;
 
 namespace CallOfService.Mobile.Droid
 {
@@ -25,7 +24,8 @@ namespace CallOfService.Mobile.Droid
 			UserDialogs.Init(this);
 			global::Xamarin.Forms.Forms.Init(this, bundle);
 			global::Xamarin.FormsMaps.Init(this,bundle);
-			DependencyResolver.Initialize(new AndroidModule(), new FormsModule());
+            SvgImageRenderer.Init();
+            DependencyResolver.Initialize(new AndroidModule(), new FormsModule());
 			LoadApplication(new App());
 			DisplayMetrics metrics = new DisplayMetrics();
 			WindowManager.DefaultDisplay.GetMetrics(metrics);

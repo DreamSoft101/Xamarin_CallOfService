@@ -67,6 +67,14 @@
       <HintPath>..\..\packages\AndHUD.1.2.0\lib\MonoAndroid\AndHUD.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NControl, Version=0.2.5886.19900, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NControl.0.8.6\lib\MonoAndroid10\NControl.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NControl.Droid, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NControl.0.8.6\lib\MonoAndroid10\NControl.Droid.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Json" />
     <Reference Include="System.Net.Http" />
@@ -121,6 +129,14 @@
     </Reference>
     <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <HintPath>..\..\packages\Microsoft.Net.Http.2.2.29\lib\monoandroid\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="TwinTechsForms.SvgImage, Version=1.0.5905.26720, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\TwinTechsForms.SvgImage.0.0.2\lib\MonoAndroid10\TwinTechsForms.SvgImage.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TwinTechsForms.SvgImage.Droid, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\TwinTechsForms.SvgImage.0.0.2\lib\MonoAndroid10\TwinTechsForms.SvgImage.Droid.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Xamarin.Android.Support.Animated.Vector.Drawable, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\packages\Xamarin.Android.Support.Animated.Vector.Drawable.23.3.0\lib\MonoAndroid403\Xamarin.Android.Support.Animated.Vector.Drawable.dll</HintPath>
@@ -249,7 +265,6 @@
     <AndroidResource Include="Resources\drawable\splash.png" />
     <AndroidResource Include="Resources\drawable-hdpi\splash.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\splash.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\splash.png" />
     <AndroidResource Include="Resources\drawable-mdpi\splash.png" />
   </ItemGroup>
   <ItemGroup>
@@ -261,20 +276,6 @@
       <Project>{F9628B05-872B-4CDB-949C-72DD994B4F1D}</Project>
       <Name>CallOfService.Mobile</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\drawable\Images\call.svg" />
-    <EmbeddedResource Include="Resources\drawable\Images\clock-green.svg" />
-    <EmbeddedResource Include="Resources\drawable\Images\direction.svg" />
-    <EmbeddedResource Include="Resources\drawable\Images\email.svg" />
-    <EmbeddedResource Include="Resources\drawable\Images\finish.svg" />
-    <EmbeddedResource Include="Resources\drawable\Images\location-start.svg" />
-    <EmbeddedResource Include="Resources\drawable\Images\login-page-logo.svg" />
-    <EmbeddedResource Include="Resources\drawable\Images\navigate-back.svg" />
-    <EmbeddedResource Include="Resources\drawable\Images\plus.svg" />
-    <EmbeddedResource Include="Resources\drawable\Images\sms.svg" />
-    <EmbeddedResource Include="Resources\drawable\Images\start.svg" />
-    <EmbeddedResource Include="Resources\drawable\Images\take-photo.svg" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\Jobs.png" />
@@ -298,7 +299,7 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\Jobs.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\drawable\Images\calendar.svg" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\splash.png" />
   </ItemGroup>
   <Import Project="..\..\packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\build\Xamarin.Android.Support.Vector.Drawable.targets" Condition="Exists('..\..\packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\build\Xamarin.Android.Support.Vector.Drawable.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

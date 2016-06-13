@@ -14,8 +14,8 @@ namespace CallOfService.Mobile.iOS.Renders
 {
     public class SvgImageRenderer : ImageRenderer
     {
-        private readonly Assembly _assemblyContainingImages = Assembly.Load(new AssemblyName("CallOfServiceMobileiOS"));
-		private readonly string _filePathsPrefix = "CallOfService.Mobile.iOS.Resources.Images.";
+        private readonly Assembly _assemblyContainingImages = typeof(App).GetTypeInfo().Assembly;
+		private readonly string _filePathsPrefix = "CallOfService.Mobile.Resources.Images.";
         private readonly string _filePathsSufix = ".svg";
 
         private SvgImage FormsControl => Element as SvgImage;
@@ -64,11 +64,19 @@ namespace CallOfService.Mobile.iOS.Renders
 
                 var scaleFactor = UIScreen.MainScreen.Scale;
 
-                var canvas = new ApplePlatform().CreateImageCanvas(graphics.Size, scale * scaleFactor);
-                graphics.Draw(canvas);
-                var image = canvas.GetImage();
+                //var canvas = new ApplePlatform().CreateImageCanvas(graphics.Size, scale * scaleFactor);
+                //graphics.Draw(canvas);
+                var image = new TwinTechs.SvgImage
+                {
+                    SvgAssembly = _assemblyContainingImages,
+                    SvgPath = $"{_filePathsPrefix}{FormsControl.FileName}{_filePathsSufix}",
+                    WidthRequest = FormsControl.WidthRequest,
+                    HeightRequest = FormsControl.HeightRequest
+                };
+                var canvas = image.RenderSvgToCanvas(graphics.Size, scale * scaleFactor, (outputSize, finalScale) => new ApplePlatform().CreateImageCanvas(outputSize, finalScale));
+                var iImage = canvas.GetImage();
 
-                var uiImage = image.GetUIImage();
+                var uiImage = iImage.GetUIImage();
                 Control.Image = uiImage;
             }
         }

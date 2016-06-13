@@ -3,6 +3,7 @@ using CallOfService.Mobile.Core.DI;
 using CallOfService.Mobile.iOS.Core.DI;
 using Foundation;
 using HockeyApp;
+using TwinTechs.iOS;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
@@ -24,9 +25,10 @@ namespace CallOfService.Mobile.iOS
             manager.StartManager();
 
             Forms.Init();
-			Xamarin.FormsMaps.Init();
-			DependencyResolver.Initialize(new IosModule(), new FormsModule());
+            Xamarin.FormsMaps.Init();
+            DependencyResolver.Initialize(new IosModule(), new FormsModule());
             LoadApplication(new App());
+            SvgImageRenderer.Init();
             return base.FinishedLaunching(application, launchOptions);
         }
 

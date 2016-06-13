@@ -36,30 +36,10 @@ namespace CallOfService.Mobile
                 if (((MenuItem)e.SelectedItem).Text == "Log Out")
                 {
                     ((MainMenuViewModel)BindingContext).LogoutCommand.Execute(null);
-
-                    //var userDialogs = DependencyResolver.Resolve<IUserDialogs>();
-                    //var loginService = DependencyResolver.Resolve<ILoginService>();
-
-                    //userDialogs.ShowLoading("Loging out ...");
-                    //var logout = await loginService.Logout();
-                    //if (logout)
-                    //{
-                    //    userDialogs.HideLoading();
-                    //    this.Publish(new Logout());
-                    //}
-                    //else
-                    //{
-                    //    userDialogs.ShowError("Error while logging out!");
-                    //}
                 }
                 else if (((MenuItem)e.SelectedItem).Text == "Jobs")
                 {
                     ((MainMenuViewModel)BindingContext).ShowJobsCommand.Execute(null);
-
-                    //var isJobDetailsLastPage = NavigationService.IsJobDetailsPresent();
-                    //if (isJobDetailsLastPage)
-                    //    await NavigationService.NavigateBack();
-                    //this.Publish(new NewDateSelected(DateTime.Now));
                 }
 
                 ListViewMenu.SelectedItem = null;

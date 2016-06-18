@@ -24,15 +24,15 @@ namespace CallOfService.Mobile.Droid
 			base.OnCreate (bundle);
 			UserDialogs.Init(this);
 			global::Xamarin.Forms.Forms.Init(this, bundle);
-			global::Xamarin.FormsMaps.Init(this,bundle);
+			//global::Xamarin.FormsMaps.Init(this, bundle);
             SvgImageRenderer.Init();
             DependencyResolver.Initialize(new AndroidModule(), new FormsModule());
 			LoadApplication(new App());
 
             CrashManager.Register(this, "635a7d2e041a42fca3421315597b6e5e");
 
-            DisplayMetrics metrics = new DisplayMetrics();
-			WindowManager.DefaultDisplay.GetMetrics(metrics);
+            //DisplayMetrics metrics = new DisplayMetrics();
+			//WindowManager.DefaultDisplay.GetMetrics(metrics);
 			/*var density = metrics.DensityDpi;
 			if (density == DisplayMetricsDensity.High)
 			{

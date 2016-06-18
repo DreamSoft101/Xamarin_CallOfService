@@ -53,7 +53,7 @@ namespace CallOfService.Mobile.Core.DI
             builder.RegisterType<LoginService>().As<ILoginService>().SingleInstance();
             builder.RegisterType<Logger>().As<ILogger>().SingleInstance();
             builder.RegisterType<AppointmentService>().As<IAppointmentService>().SingleInstance();
-			builder.RegisterType<UserService>().As<IUserService>().SingleInstance();
+            builder.RegisterType<UserService>().As<IUserService>().SingleInstance();
             builder.RegisterType<CredentialManager>().As<ICredentialManager>().SingleInstance();
             builder.RegisterType<AnalyticsService>().As<IAnalyticsService>().SingleInstance();
         }
@@ -64,9 +64,10 @@ namespace CallOfService.Mobile.Core.DI
             builder.RegisterType<WelcomeViewModel>().AsSelf();
             builder.RegisterType<JobsViewModel>().AsSelf().SingleInstance();
             builder.RegisterType<CalendarViewModel>().AsSelf().SingleInstance();
-			builder.RegisterType<JobDetailsViewModel> ().AsSelf ().SingleInstance ();
-			builder.RegisterType<NoteViewModel> ().AsSelf ();
-			builder.RegisterType<MainMenuViewModel> ().AsSelf ();
+            builder.RegisterType<JobDetailsViewModel>().AsSelf().SingleInstance();
+            builder.RegisterType<JobNoteViewModel>().AsSelf().SingleInstance();
+            builder.RegisterType<NoteViewModel>().AsSelf();
+            builder.RegisterType<MainMenuViewModel>().AsSelf();
 
         }
     }

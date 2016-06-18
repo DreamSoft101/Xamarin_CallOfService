@@ -11,5 +11,15 @@ namespace CallOfService.Mobile
 			JobId = jobId;
 		}
 	}
+
+    public class ViewJobNoteDetails
+    {
+        public int JobId { get; set; }
+
+        public ViewJobNoteDetails(int jobId)
+        {
+            JobId = jobId;
+        }
+    }
 }
 

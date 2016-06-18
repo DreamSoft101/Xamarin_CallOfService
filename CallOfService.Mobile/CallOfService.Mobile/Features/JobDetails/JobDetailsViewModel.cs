@@ -15,6 +15,8 @@ using CallOfService.Mobile.Core.SystemServices;
 using CallOfService.Mobile.Messages;
 using PropertyChanged;
 using CallOfService.Mobile.Core;
+using Plugin.Media;
+using Plugin.Media.Abstractions;
 using Segment.Model;
 
 namespace CallOfService.Mobile.Features.JobDetails
@@ -26,22 +28,17 @@ namespace CallOfService.Mobile.Features.JobDetails
         private readonly IUserDialogs _userDialogs;
         private ImageSource _imageSource;
         private readonly IAnalyticsService _analyticsService;
-        private readonly IMediaPicker _mediaPicker;
         private readonly IImageCompressor _imageCompressor;
         private readonly ILogger _logger;
 
-        public JobDetailsViewModel(IAppointmentService appointmentService, IUserDialogs userDialogs, IMediaPicker mediaPicker, IImageCompressor imageCompressor, IAnalyticsService analyticsService, ILogger logger)
+        public JobDetailsViewModel(IAppointmentService appointmentService, IUserDialogs userDialogs, IImageCompressor imageCompressor, IAnalyticsService analyticsService, ILogger logger)
         {
             _appointmentService = appointmentService;
             _userDialogs = userDialogs;
-            _mediaPicker = mediaPicker;
             _imageCompressor = imageCompressor;
             _analyticsService = analyticsService;
             _logger = logger;
-			NewNoteText = string.Empty;
             Notes = new ObservableCollection<NoteViewModel>();
-            Attachments = new ObservableCollection<ImageSource>();
-            AttachmentsStreams = new List<byte[]>();
             CustomFields = new ObservableCollection<CustomFieldViewModel>();
             this.Subscribe<ViewJobDetails>(async m => await LoadJobeDetails(m.JobId));
             DataLoaded = false;
@@ -125,15 +122,11 @@ namespace CallOfService.Mobile.Features.JobDetails
 
         public string ActionText { get; set; }
 
-        public bool ShowActionButton { get; set; }
+        public bool CanStartOrFinish { get; set; }
 
         public List<string> PhoneNumbers { get; set; }
 
         public List<string> Emails { get; set; }
-
-        public string NewNoteText { get; set; }
-
-        public bool CanAddNote { get { return !string.IsNullOrWhiteSpace(NewNoteText) || AttachmentsStreams.Count > 0; } }
 
         public ICommand AddNote
         {
@@ -141,29 +134,8 @@ namespace CallOfService.Mobile.Features.JobDetails
             {
                 return new Command(async () =>
 				{
-					if (!CanAddNote)
-						return;
-					
-#pragma warning disable 4014
-                    _analyticsService.Track("Adding note");
-#pragma warning restore 4014
-
-                    _userDialogs.ShowLoading("Adding note");
-                    var noteSaved = await _appointmentService.SubmitNote(JobNumber, NewNoteText, AttachmentsStreams, DateTime.Now);
-                    if (noteSaved)
-                    {
-                        _userDialogs.HideLoading();
-                        await LoadJobeDetails(JobNumber);
-                        Attachments.Clear();
-                        AttachmentsStreams.Clear();
-                        NewNoteText = string.Empty;
-                    }
-                    else
-                    {
-                        _userDialogs.HideLoading();
-                        _userDialogs.ShowError("Error saving note please try again");
-                        await Task.Delay(3000);
-                    }
+                    await NavigationService.ShowModal<JobNotePage, JobNoteViewModel>();
+                    this.Publish(new ViewJobNoteDetails(JobNumber));
                 });
             }
         }
@@ -223,10 +195,6 @@ namespace CallOfService.Mobile.Features.JobDetails
                 });
             }
         }
-
-        public ObservableCollection<ImageSource> Attachments { get; set; }
-
-        public List<byte[]> AttachmentsStreams { get; set; }
 
         public ICommand EmailCustomerCommand
         {
@@ -325,7 +293,7 @@ namespace CallOfService.Mobile.Features.JobDetails
                             _userDialogs.ShowSuccess("Job Finished");
                             await Task.Delay(100);
                             _userDialogs.HideLoading();
-                            ShowActionButton = false;
+                            CanStartOrFinish = false;
                         }
                         else
                         {
@@ -391,13 +359,13 @@ namespace CallOfService.Mobile.Features.JobDetails
             if (!string.IsNullOrWhiteSpace(appointment.JobType))
                 PageTitle = PageTitle + $" [{appointment.JobType}]";
 
-            ShowActionButton = true;
+            CanStartOrFinish = true;
             if (Status == "Scheduled")
                 ActionText = "Start Job";
             else if (Status == "In Progress")
                 ActionText = "Finish Job";
             else
-                ShowActionButton = false;
+                CanStartOrFinish = false;
 
             PhoneNumbers = job.PhoneNumbers.Select(p => p.Number).ToList();
             Emails = job.Emails.Select(e => e.Value).ToList();
@@ -406,123 +374,21 @@ namespace CallOfService.Mobile.Features.JobDetails
 
         }
 
-        public ICommand AddNewNoteImage
-        {
-            get
-            {
-                return new Command(() =>
-                {
-#pragma warning disable 4014
-                    _analyticsService.Track("Attaching Image");
-#pragma warning restore 4014
-
-                    var options = new List<ActionSheetOption>();
-                    options.Add(new ActionSheetOption("Take a photo", async () => await TakeAPhoto()));
-                    options.Add(new ActionSheetOption("Select a photo", async () => await SelectAPhoto()));
-
-                    _userDialogs.ActionSheet(new ActionSheetConfig()
-                    {
-                        Options = options,
-                        Cancel = new ActionSheetOption("Cancel")
-                    });
-                });
-            }
-        }
-
-        private async Task SelectAPhoto()
-        {
-            try
-            {
-                var mediaFile = await _mediaPicker.SelectPhotoAsync(GetCameraMediaStorageOptions());
-                ResizeAddToAttachmentsAndAssignImageSource(mediaFile);
-            }
-            catch (Exception ex)
-            {
-                _logger.WriteError(ex);
-#pragma warning disable 4014
-                _analyticsService.Track("Error Selecting a photo", new Properties
-                {
-                    {"exception", ex.Message}
-                });
-#pragma warning restore 4014
-                _userDialogs.ShowError("Error while attaching photo, please try again.");
-            }
-        }
-
-        private async Task TakeAPhoto()
-        {
-#pragma warning disable 4014
-            _analyticsService.Track("Taking a photo");
-#pragma warning restore 4014
-
-            try
-            {
-                var mediaFile = await _mediaPicker.TakePhotoAsync(GetCameraMediaStorageOptions()).ContinueWith(t =>
-                {
-                    if (t.IsFaulted || t.IsCanceled)
-                    {
-                        return null;
-                    }
-
-                    return t.Result;
-                });
-
-                ResizeAddToAttachmentsAndAssignImageSource(mediaFile);
-            }
-            catch (Exception ex)
-            {
-                _logger.WriteError(ex);
-#pragma warning disable 4014
-                _analyticsService.Track("Error Taking a photo", new Properties
-                {
-                    {"exception", ex.Message}
-                });
-#pragma warning restore 4014
-                _userDialogs.ShowError("Error while taking photo, please try selecting existing photo.");
-            }
-        }
-
-        private void ResizeAddToAttachmentsAndAssignImageSource(MediaFile mediaFile)
-        {
-            if (mediaFile == null)
-                return;
-
-            _imageSource = null;
-
-            var newImageStream = _imageCompressor.ResizeImage(mediaFile.Source, 0.2f);
-            AttachmentsStreams.Add(_imageCompressor.ToArray(newImageStream));
-            _imageSource = ImageSource.FromStream(() =>
-            {
-                newImageStream.Position = 0;
-                return newImageStream;
-            });
-
-            Attachments.Add(_imageSource);
-        }
-
-        private static CameraMediaStorageOptions GetCameraMediaStorageOptions()
-        {
-            return new CameraMediaStorageOptions
-            {
-                DefaultCamera = CameraDevice.Rear,
-                MaxPixelDimension = 400
-            };
-        }
-
         public void Dispose()
         {
             Notes.Clear();
-            Attachments.Clear();
-            AttachmentsStreams.Clear();
             CustomFields.Clear();
             DataLoaded = false;
         }
 
-        public void OnAppearing()
+        public async void OnAppearing()
         {
 #pragma warning disable 4014
             _analyticsService.Screen("Job Details");
 #pragma warning restore 4014
+
+            if(JobNumber > 0)
+               await LoadJobeDetails(JobNumber);
         }
 
         public void OnDisappearing()

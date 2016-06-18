@@ -155,29 +155,10 @@
             </customcontrols:RepeaterView.ItemTemplate>
           </customcontrols:RepeaterView>
 
-          <Label FontSize="14" TextColor="Gray" HorizontalOptions="Start" VerticalTextAlignment="Center" Text="NEW NOTE / IMAGE" />
-          <StackLayout Spacing="10" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-            <Editor HorizontalOptions="FillAndExpand" Text="{Binding NewNoteText}" HeightRequest="60" />
-            <customcontrols:SvgImage FileName="take-photo" WidthRequest="44">
-              <customcontrols:SvgImage.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding AddNewNoteImage}" />
-              </customcontrols:SvgImage.GestureRecognizers>
-            </customcontrols:SvgImage>
-          </StackLayout>
-          <ScrollView Orientation="Horizontal">
-            <customcontrols:RepeaterView Spacing="10" Orientation="Horizontal" x:TypeArguments="ImageSource" ItemsSource="{Binding Attachments}">
-              <customcontrols:RepeaterView.ItemTemplate>
-                <DataTemplate>
-                  <Image Source="{Binding}" HeightRequest="100" WidthRequest="100" />
-                </DataTemplate>
-              </customcontrols:RepeaterView.ItemTemplate>
-            </customcontrols:RepeaterView>
-          </ScrollView>
-          <Button TextColor="White" Text="Submit Note" BackgroundColor="Navy" IsVisible="{Binding CanAddNote}" Command="{Binding AddNote}" BorderColor="Black" BorderWidth="1" />
-
-          <BoxView IsVisible="{Binding ShowActionButton}" HeightRequest="1" BackgroundColor="Silver" />
-          <Label IsVisible="{Binding ShowActionButton}" FontSize="14" TextColor="Gray" HorizontalOptions="Center" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text="ACTIONS" />
-          <Button TextColor="White" Text="{Binding ActionText}" BackgroundColor="Teal" IsVisible="{Binding ShowActionButton}" Command="{Binding StartFinishJob}" BorderColor="Black" BorderWidth="1" />
+          <BoxView HeightRequest="1" BackgroundColor="Silver" />
+          <Label FontSize="14" TextColor="Gray" HorizontalOptions="Center" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text="ACTIONS" />
+          <Button TextColor="White" Text="{Binding ActionText}" BackgroundColor="Teal" IsVisible="{Binding CanStartOrFinish}" Command="{Binding StartFinishJob}" BorderColor="Black" BorderWidth="1" />
+          <Button TextColor="White" Text="New Note / Photo" BackgroundColor="Navy" Command="{Binding AddNote}" BorderColor="Black" BorderWidth="1" />
         </StackLayout>
       </StackLayout>
     </ScrollView>

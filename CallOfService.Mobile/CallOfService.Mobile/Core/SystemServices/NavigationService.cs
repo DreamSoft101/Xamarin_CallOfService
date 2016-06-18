@@ -44,6 +44,12 @@ namespace CallOfService.Mobile.Core.SystemServices
             return Navigation.PushModalAsync(CreateAndBind<LoginPage>(vm));
         }
 
+        public static Task ShowModal<TPage, TViewModel>() where TPage : Page, new()
+        {
+            var vm = DependencyResolver.Resolve<TViewModel>();
+            return Navigation.PushModalAsync(CreateAndBind<TPage>(vm));
+        }
+
         public static async Task NavigateBack()
         {
             var page = await Navigation.PopAsync();

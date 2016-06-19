@@ -1,5 +1,4 @@
 ﻿using System;
-using System;
 using System.ComponentModel;
 using Android.Content;
 using Android.Views;

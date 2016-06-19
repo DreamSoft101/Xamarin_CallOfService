@@ -97,7 +97,9 @@ namespace CallOfService.Mobile.Proxies
             for (int index = 0; index < attachments.Count; index++)
             {
                 var data = attachments[index];
-                steamContents.Add(new Tuple<StreamContent, string, string>(new StreamContent(new MemoryStream(data)), $"S{index + 1}", $"{jobNumber} - {Guid.NewGuid()}.jpg"));
+				var imageContent = new StreamContent(new MemoryStream(data));
+				imageContent.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("image/jpeg");
+                steamContents.Add(new Tuple<StreamContent, string, string>(imageContent, $"S{index + 1}", $"{jobNumber}-{Guid.NewGuid()}.jpg"));
             }
 
             return await PostFormDataAsync(url, formContents, steamContents, 5);

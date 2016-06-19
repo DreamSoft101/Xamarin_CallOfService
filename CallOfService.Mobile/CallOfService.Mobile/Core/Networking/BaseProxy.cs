@@ -210,14 +210,17 @@ namespace CallOfService.Mobile.Core.Networking
 
                     try
                     {
-                        var responseMessage = await Policy
-                            .Handle<WebException>()
-                            .WaitAndRetryAsync
-                            (
-                                retryCount: 5,
-                                sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))
-                            )
-                            .ExecuteAsync(async () => await Client.PostAsync(url, formData));
+						var responseMessage = await Policy
+							.Handle<WebException>()
+							.WaitAndRetryAsync
+							(
+								retryCount: 5,
+								sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))
+							)
+							.ExecuteAsync(async () =>
+							{
+								return await Client.PostAsync(url, formData);
+							});
 
                         LogResponse(responseMessage, string.Empty);
                         if (responseMessage.StatusCode == HttpStatusCode.OK)

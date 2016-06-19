@@ -48,6 +48,7 @@ namespace CallOfService.Mobile.Features.JobDetails
             {
                 return new Command(async () =>
                 {
+					this.Publish(new ViewJobDetails(JobNumber));
                     await NavigationService.Navigation.PopModalAsync(true);
                 });
             }

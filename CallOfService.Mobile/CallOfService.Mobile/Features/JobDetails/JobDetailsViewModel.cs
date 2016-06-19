@@ -394,14 +394,14 @@ namespace CallOfService.Mobile.Features.JobDetails
 			CrossConnectivity.Current.ConnectivityChanged -= HandleConnectivityChangedEventHandler;
         }
 
-        public async void OnAppearing()
+        public void OnAppearing()
         {
 #pragma warning disable 4014
             _analyticsService.Screen("Job Details");
 #pragma warning restore 4014
 
-            if(JobNumber > 0)
-               await LoadJobeDetails(JobNumber);
+            //if(JobNumber > 0)
+            //   await LoadJobeDetails(JobNumber);
 
 			IsOnline = CrossConnectivity.Current.IsConnected;
         }

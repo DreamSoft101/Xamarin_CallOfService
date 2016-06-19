@@ -82,6 +82,7 @@ namespace CallOfService.Mobile.Features.JobDetails
                         Attachments.Clear();
                         AttachmentsStreams.Clear();
                         NewNoteText = string.Empty;
+						this.Publish(new ViewJobDetails(JobNumber));
                         await NavigationService.Navigation.PopModalAsync(true);
                     }
                     else
@@ -147,7 +148,7 @@ namespace CallOfService.Mobile.Features.JobDetails
 #pragma warning disable 4014
                 _analyticsService.Track("Error Selecting a photo", new Properties
                 {
-                    {"exception", ex.Message}
+                    {"exception", ex}
                 });
 #pragma warning restore 4014
                 _userDialogs.ShowError("Error while attaching photo, please try again.");
@@ -179,7 +180,7 @@ namespace CallOfService.Mobile.Features.JobDetails
 #pragma warning disable 4014
                 _analyticsService.Track("Error Taking a photo", new Properties
                 {
-                    {"exception", ex.Message}
+                    {"exception", ex}
                 });
 #pragma warning restore 4014
                 _userDialogs.ShowError("Error while taking photo, please try selecting existing photo.");
@@ -194,23 +195,45 @@ namespace CallOfService.Mobile.Features.JobDetails
 
             _imageSource = null;
 
-            var newImageStream = _imageCompressor.ResizeImage(mediaFile.GetStream(), 0.2f);
-            mediaFile.Dispose();
-            AttachmentsStreams.Add(_imageCompressor.ToArray(newImageStream));
-            _imageSource = ImageSource.FromStream(() =>
-            {
-                newImageStream.Position = 0;
-                return newImageStream;
-            });
+			try
+			{
+				var newImageStream = _imageCompressor.ResizeImage(mediaFile.GetStream(), 0.5f);
+				mediaFile.Dispose();
+				AttachmentsStreams.Add(_imageCompressor.ToArray(newImageStream));
+				_imageSource = ImageSource.FromStream(() =>
+			    {
+				   newImageStream.Position = 0;
+				   return newImageStream;
+			    });
+			}
+			catch (Exception e)
+			{
+				_logger.WriteError(e);
+#pragma warning disable 4014
+				_analyticsService.Track("Error Compressing a photo", new Properties
+				{
+					{"exception", e}
+				});
+#pragma warning restore 4014
+
+				_imageSource = ImageSource.FromStream(() =>
+				{
+					var stream = mediaFile.GetStream();
+					mediaFile.Dispose();
+					return stream;
+				});
+			}
 
             Attachments.Add(_imageSource);
         }
 
-        private static StoreCameraMediaOptions GetCameraMediaStorageOptions()
+        private StoreCameraMediaOptions GetCameraMediaStorageOptions()
         {
             return new StoreCameraMediaOptions
             {
-                DefaultCamera = CameraDevice.Rear
+                DefaultCamera = CameraDevice.Rear,
+                Directory = "Notes",
+                Name = $"{JobNumber}-{Guid.NewGuid()}-Note.jpg"
             };
         }
 

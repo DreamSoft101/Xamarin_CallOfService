@@ -17,6 +17,7 @@ using PropertyChanged;
 using CallOfService.Mobile.Core;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
+using Plugin.Connectivity;
 using Segment.Model;
 
 namespace CallOfService.Mobile.Features.JobDetails
@@ -24,9 +25,8 @@ namespace CallOfService.Mobile.Features.JobDetails
     [ImplementPropertyChanged]
     public class JobDetailsViewModel : IViewAwareViewModel
     {
-        private readonly IAppointmentService _appointmentService;
+		private readonly IAppointmentService _appointmentService;
         private readonly IUserDialogs _userDialogs;
-        private ImageSource _imageSource;
         private readonly IAnalyticsService _analyticsService;
         private readonly IImageCompressor _imageCompressor;
         private readonly ILogger _logger;
@@ -42,6 +42,9 @@ namespace CallOfService.Mobile.Features.JobDetails
             CustomFields = new ObservableCollection<CustomFieldViewModel>();
             this.Subscribe<ViewJobDetails>(async m => await LoadJobeDetails(m.JobId));
             DataLoaded = false;
+
+			IsOnline = CrossConnectivity.Current.IsConnected;
+			CrossConnectivity.Current.ConnectivityChanged += HandleConnectivityChangedEventHandler;
         }
 
         public ICommand NavigateBack
@@ -54,6 +57,9 @@ namespace CallOfService.Mobile.Features.JobDetails
                 });
             }
         }
+
+		public bool IsOnline { get; set; } = true;
+		public bool IsOffline { get { return !IsOnline; } }
 
         public bool DataLoaded { get; set; }
 
@@ -308,6 +314,11 @@ namespace CallOfService.Mobile.Features.JobDetails
             }
         }
 
+		private void HandleConnectivityChangedEventHandler(object sender, Plugin.Connectivity.Abstractions.ConnectivityChangedEventArgs e)
+		{
+			IsOnline = e.IsConnected;
+		}
+
         private async Task LoadJobeDetails(int jobId)
         {
             _userDialogs.ShowLoading("Loading Job Details");
@@ -379,6 +390,8 @@ namespace CallOfService.Mobile.Features.JobDetails
             Notes.Clear();
             CustomFields.Clear();
             DataLoaded = false;
+
+			CrossConnectivity.Current.ConnectivityChanged -= HandleConnectivityChangedEventHandler;
         }
 
         public async void OnAppearing()
@@ -389,6 +402,8 @@ namespace CallOfService.Mobile.Features.JobDetails
 
             if(JobNumber > 0)
                await LoadJobeDetails(JobNumber);
+
+			IsOnline = CrossConnectivity.Current.IsConnected;
         }
 
         public void OnDisappearing()

@@ -157,8 +157,9 @@
 
           <BoxView HeightRequest="1" BackgroundColor="Silver" />
           <Label FontSize="14" TextColor="Gray" HorizontalOptions="Center" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text="ACTIONS" />
-          <Button TextColor="White" Text="{Binding ActionText}" BackgroundColor="Teal" IsVisible="{Binding CanStartOrFinish}" Command="{Binding StartFinishJob}" BorderColor="Black" BorderWidth="1" />
-          <Button TextColor="White" Text="New Note / Photo" BackgroundColor="Navy" Command="{Binding AddNote}" BorderColor="Black" BorderWidth="1" />
+          <Button IsEnabled="{Binding IsOnline}" TextColor="White" Text="{Binding ActionText}" BackgroundColor="Teal" IsVisible="{Binding CanStartOrFinish}" Command="{Binding StartFinishJob}" BorderColor="Black" BorderWidth="1" />
+          <Button IsEnabled="{Binding IsOnline}" TextColor="White" Text="New Note / Photo" BackgroundColor="Navy" Command="{Binding AddNote}" BorderColor="Black" BorderWidth="1" />
+	      <Label IsVisible="{Binding IsOffline}" FontSize="14" TextColor="Maroon" HorizontalOptions="Center" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Text="App Offline" />
         </StackLayout>
       </StackLayout>
     </ScrollView>

@@ -32,7 +32,6 @@ namespace CallOfService.Mobile.Droid.Services
 
         public Stream ResizeImage(Stream data, float percentage)
         {
-
 			var originalImageMetaData = GetImageMetaData(data);
 
 			float originalHeight = 0;

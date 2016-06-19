@@ -80,7 +80,7 @@ namespace CallOfService.Mobile.Features.JobDetails
                     {
                         _userDialogs.HideLoading();
                         Attachments.Clear();
-                        AttachmentsStreams.Clear();
+                        AttachmentsStreams?.Clear();
                         NewNoteText = string.Empty;
 						this.Publish(new ViewJobDetails(JobNumber));
                         await NavigationService.Navigation.PopModalAsync(true);
@@ -216,6 +216,7 @@ namespace CallOfService.Mobile.Features.JobDetails
 				});
 #pragma warning restore 4014
 
+				AttachmentsStreams.Add(_imageCompressor.ToArray(mediaFile.GetStream()));
 				_imageSource = ImageSource.FromStream(() =>
 				{
 					var stream = mediaFile.GetStream();

@@ -115,7 +115,12 @@ namespace CallOfService.Mobile.Core.Networking
 
         protected async Task<string> PostStringAsync(string url, StringContent postStringContent, int timeOutMinutes = 1, bool useTokenExpiryHandler = true)
         {
-            if (!IsOnline())                return null;            try            {                CreateHttpClient(timeOutMinutes, useTokenExpiryHandler);
+            if (!IsOnline())
+                return null;
+
+            try
+            {
+                CreateHttpClient(timeOutMinutes, useTokenExpiryHandler);
 
                 Client.DefaultRequestHeaders.Add("Accept", "application/json");
 
@@ -128,13 +133,33 @@ namespace CallOfService.Mobile.Core.Networking
                  )
                  .ExecuteAsync(async () => await Client.PostAsync(url, postStringContent));
 
-                LogResponse(responseMessage, string.Empty);                if (responseMessage.StatusCode == HttpStatusCode.OK)                    return null;                else                {                    var responseString = await responseMessage.Content.ReadAsStringAsync();                    Logger.WriteError(responseString);
-                    return responseString;                }            }            catch (Exception e)            {                Logger.WriteError(e);                return null;            }
+                LogResponse(responseMessage, string.Empty);
+                if (responseMessage.StatusCode == HttpStatusCode.OK)
+                    return null;
+                else
+                {
+                    var responseString = await responseMessage.Content.ReadAsStringAsync();
+                    Logger.WriteError(responseString);
+                    return responseString;
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.WriteError(e);
+                return null;
+            }
         }
 
         protected async Task<bool> PostAsync(string url, StringContent postStringContent, int timeOutMinutes = 1, bool useTokenExpiryHandler = true)
         {
-            if (!IsOnline())                return false;            try            {                CreateHttpClient(timeOutMinutes, useTokenExpiryHandler);                                Client.DefaultRequestHeaders.Add("Accept", "application/json");
+            if (!IsOnline())
+                return false;
+
+            try
+            {
+                CreateHttpClient(timeOutMinutes, useTokenExpiryHandler);
+                
+                Client.DefaultRequestHeaders.Add("Accept", "application/json");
 
                 var responseMessage = await Policy
                  .Handle<WebException>()
@@ -145,12 +170,31 @@ namespace CallOfService.Mobile.Core.Networking
                  )
                  .ExecuteAsync(async () => await Client.PostAsync(url, postStringContent));
 
-                LogResponse(responseMessage, string.Empty);                if (responseMessage.StatusCode == HttpStatusCode.OK)                    return true;                else                {                    var responseString = await responseMessage.Content.ReadAsStringAsync();                    Logger.WriteError(responseString);                }                return false;            }            catch (Exception e)            {                Logger.WriteError(e);                return false;            }
+                LogResponse(responseMessage, string.Empty);
+                if (responseMessage.StatusCode == HttpStatusCode.OK)
+                    return true;
+                else
+                {
+                    var responseString = await responseMessage.Content.ReadAsStringAsync();
+                    Logger.WriteError(responseString);
+                }
+                return false;
+            }
+            catch (Exception e)
+            {
+                Logger.WriteError(e);
+                return false;
+            }
         }
 
         protected async Task<bool> PostFormDataAsync(string url, IDictionary<StringContent, string> formContents, IList<Tuple<StreamContent, string, string>> attachements, int timeOutMinutes = 1)
         {
-            if (!IsOnline())                return false;            try            {                CreateHttpClient(10);
+            if (!IsOnline())
+                return false;
+
+            try
+            {
+                CreateHttpClient(10);
                 Client.DefaultRequestHeaders.Add("Accept", "application/json");
                 using (var formData = new MultipartFormDataContent("form-data"))
                 {
@@ -190,7 +234,13 @@ namespace CallOfService.Mobile.Core.Networking
                         Logger.WriteError(e);
                         return false;
                     }
-                }            }            catch (Exception e)            {                Logger.WriteError(e);                return false;            }
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.WriteError(e);
+                return false;
+            }
         }
 
         protected bool IsOnline()

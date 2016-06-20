@@ -70,11 +70,8 @@ namespace CallOfService.Mobile.Features.JobDetails
 				{
 					if (!CanAddNote)
 						return;
-					
-#pragma warning disable 4014
-                    _analyticsService.Track("Adding note");
-#pragma warning restore 4014
 
+                    _analyticsService.Track("Adding note");
                     _userDialogs.ShowLoading("Adding note");
                     var noteSaved = await _appointmentService.SubmitNote(JobNumber, NewNoteText, AttachmentsStreams, DateTime.Now);
                     if (noteSaved)
@@ -111,9 +108,7 @@ namespace CallOfService.Mobile.Features.JobDetails
             {
                 return new Command(() =>
                 {
-#pragma warning disable 4014
                     _analyticsService.Track("Attaching Image");
-#pragma warning restore 4014
 
                     var options = new List<ActionSheetOption>
                     {
@@ -146,12 +141,12 @@ namespace CallOfService.Mobile.Features.JobDetails
             catch (Exception ex)
             {
                 _logger.WriteError(ex);
-#pragma warning disable 4014
+
                 _analyticsService.Track("Error Selecting a photo", new Properties
                 {
                     {"exception", ex}
                 });
-#pragma warning restore 4014
+
                 _userDialogs.ShowError("Error while attaching photo, please try again.");
 
                 HasAttachment = Attachments.Any();
@@ -160,9 +155,7 @@ namespace CallOfService.Mobile.Features.JobDetails
 
         private async Task TakeAPhoto()
         {
-#pragma warning disable 4014
             _analyticsService.Track("Taking a photo");
-#pragma warning restore 4014
 
             try
             {
@@ -178,12 +171,10 @@ namespace CallOfService.Mobile.Features.JobDetails
             catch (Exception ex)
             {
                 _logger.WriteError(ex);
-#pragma warning disable 4014
                 _analyticsService.Track("Error Taking a photo", new Properties
                 {
                     {"exception", ex}
                 });
-#pragma warning restore 4014
                 _userDialogs.ShowError("Error while taking photo, please try selecting existing photo.");
                 HasAttachment = Attachments.Any();
             }
@@ -199,7 +190,7 @@ namespace CallOfService.Mobile.Features.JobDetails
 			try
 			{
 				var newImageStream = _imageCompressor.ResizeImage(mediaFile.GetStream(), 0.5f);
-				mediaFile.Dispose();
+				//mediaFile.Dispose();
 				AttachmentsStreams.Add(_imageCompressor.ToArray(newImageStream));
 				_imageSource = ImageSource.FromStream(() =>
 			    {
@@ -209,21 +200,30 @@ namespace CallOfService.Mobile.Features.JobDetails
 			}
 			catch (Exception e)
 			{
-				_logger.WriteError(e);
-#pragma warning disable 4014
-				_analyticsService.Track("Error Compressing a photo", new Properties
-				{
-					{"exception", e}
-				});
-#pragma warning restore 4014
+			    try
+			    {
+			        _logger.WriteError(e);
+			        _analyticsService.Track("Error Compressing a photo", new Properties
+			        {
+			            {"exception", e}
+			        });
 
-				AttachmentsStreams.Add(_imageCompressor.ToArray(mediaFile.GetStream()));
-				_imageSource = ImageSource.FromStream(() =>
-				{
-					var stream = mediaFile.GetStream();
-					mediaFile.Dispose();
-					return stream;
-				});
+			        AttachmentsStreams.Add(_imageCompressor.ToArray(mediaFile.GetStream()));
+			        _imageSource = ImageSource.FromStream(() =>
+			        {
+			            var stream = mediaFile.GetStream();
+			            //mediaFile.Dispose();
+			            return stream;
+			        });
+			    }
+			    catch (Exception ex)
+			    {
+                    _logger.WriteError(ex);
+                    _analyticsService.Track("Error attaching a photo", new Properties
+                    {
+                        {"exception", ex}
+                    });
+                }
 			}
 
             Attachments.Add(_imageSource);
@@ -241,15 +241,13 @@ namespace CallOfService.Mobile.Features.JobDetails
 
         public void Dispose()
         {
-            Attachments.Clear();
-            AttachmentsStreams.Clear();
+            Attachments?.Clear();
+            AttachmentsStreams?.Clear();
         }
 
         public void OnAppearing()
         {
-#pragma warning disable 4014
             _analyticsService.Screen("Job Note");
-#pragma warning restore 4014
         }
 
         public void OnDisappearing()

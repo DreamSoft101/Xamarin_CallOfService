@@ -21,9 +21,7 @@ namespace CallOfService.Mobile.Features.Calendar
 
         public void OnAppearing()
         {
-#pragma warning disable 4014
             _analyticsService.Screen("Calendar");
-#pragma warning restore 4014
         }
 
         public void OnDisappearing()

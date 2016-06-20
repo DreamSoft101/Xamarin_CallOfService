@@ -62,9 +62,7 @@ namespace CallOfService.Mobile.Features.Dashboard
 
             var analyticsService = DependencyResolver.Resolve<IAnalyticsService>();
             await analyticsService.Identify();
-#pragma warning disable 4014
             analyticsService.Track("Loading App");
-#pragma warning restore 4014
 
             CrossConnectivity.Current.ConnectivityChanged += (sender, args) =>
             {

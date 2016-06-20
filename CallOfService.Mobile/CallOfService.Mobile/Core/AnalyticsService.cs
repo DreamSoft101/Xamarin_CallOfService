@@ -57,7 +57,7 @@ namespace CallOfService.Mobile.Core
             }
         }
 
-        public async Task Track(string eventName, Properties properties = null, Options options = null)
+        public async void Track(string eventName, Properties properties = null, Options options = null)
         {
             try
             {
@@ -76,7 +76,7 @@ namespace CallOfService.Mobile.Core
             }
         }
 
-        public async Task Screen(string screenName, Properties properties = null, Options options = null)
+        public async void Screen(string screenName, Properties properties = null, Options options = null)
         {
             try
             {
@@ -104,8 +104,8 @@ namespace CallOfService.Mobile.Core
     public interface IAnalyticsService
     {
         Task Identify();
-        Task Track(string eventName, Properties properties = null, Options options = null);
-        Task Screen(string screenName, Properties properties = null, Options options = null);
+        void Track(string eventName, Properties properties = null, Options options = null);
+        void Screen(string screenName, Properties properties = null, Options options = null);
         void Initialize();
     }
 }

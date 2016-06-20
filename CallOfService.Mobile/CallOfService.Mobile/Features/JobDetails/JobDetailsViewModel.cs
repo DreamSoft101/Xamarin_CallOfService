@@ -15,10 +15,7 @@ using CallOfService.Mobile.Core.SystemServices;
 using CallOfService.Mobile.Messages;
 using PropertyChanged;
 using CallOfService.Mobile.Core;
-using Plugin.Media;
-using Plugin.Media.Abstractions;
 using Plugin.Connectivity;
-using Segment.Model;
 
 namespace CallOfService.Mobile.Features.JobDetails
 {
@@ -28,22 +25,20 @@ namespace CallOfService.Mobile.Features.JobDetails
 		private readonly IAppointmentService _appointmentService;
         private readonly IUserDialogs _userDialogs;
         private readonly IAnalyticsService _analyticsService;
-        private readonly IImageCompressor _imageCompressor;
-        private readonly ILogger _logger;
 
-        public JobDetailsViewModel(IAppointmentService appointmentService, IUserDialogs userDialogs, IImageCompressor imageCompressor, IAnalyticsService analyticsService, ILogger logger)
+        public JobDetailsViewModel(IAppointmentService appointmentService, IUserDialogs userDialogs, IAnalyticsService analyticsService)
         {
             _appointmentService = appointmentService;
             _userDialogs = userDialogs;
-            _imageCompressor = imageCompressor;
             _analyticsService = analyticsService;
-            _logger = logger;
             Notes = new ObservableCollection<NoteViewModel>();
             CustomFields = new ObservableCollection<CustomFieldViewModel>();
             this.Subscribe<ViewJobDetails>(async m => await LoadJobeDetails(m.JobId));
             DataLoaded = false;
 
-			IsOnline = CrossConnectivity.Current.IsConnected;
+            HasPaddingTop = Device.OS == TargetPlatform.iOS;
+
+            IsOnline = CrossConnectivity.Current.IsConnected;
 			CrossConnectivity.Current.ConnectivityChanged += HandleConnectivityChangedEventHandler;
         }
 
@@ -58,8 +53,10 @@ namespace CallOfService.Mobile.Features.JobDetails
             }
         }
 
-		public bool IsOnline { get; set; } = true;
-		public bool IsOffline { get { return !IsOnline; } }
+		public bool IsOnline { get; set; }
+		public bool IsOffline => !IsOnline;
+
+        public bool HasPaddingTop { get; set; }
 
         public bool DataLoaded { get; set; }
 
@@ -155,9 +152,7 @@ namespace CallOfService.Mobile.Features.JobDetails
                     if (PhoneNumbers != null && PhoneNumbers.Count > 0)
                     {
 
-#pragma warning disable 4014
                         _analyticsService.Track("Calling");
-#pragma warning restore 4014
 
                         var options = new List<ActionSheetOption>();
                         foreach (var phoneNumber in PhoneNumbers)
@@ -182,10 +177,7 @@ namespace CallOfService.Mobile.Features.JobDetails
                 {
                     if (PhoneNumbers != null && PhoneNumbers.Count > 0)
                     {
-
-#pragma warning disable 4014
                         _analyticsService.Track("Sending SMS");
-#pragma warning restore 4014
 
                         var options = new List<ActionSheetOption>();
                         foreach (var phoneNumber in PhoneNumbers)
@@ -210,10 +202,7 @@ namespace CallOfService.Mobile.Features.JobDetails
                 {
                     if (Emails != null && Emails.Count > 0)
                     {
-
-#pragma warning disable 4014
                         _analyticsService.Track("Emailing");
-#pragma warning restore 4014
 
                         var options = new List<ActionSheetOption>();
                         foreach (var email in Emails)
@@ -236,10 +225,7 @@ namespace CallOfService.Mobile.Features.JobDetails
             {
                 return new Command(() =>
                 {
-
-#pragma warning disable 4014
                     _analyticsService.Track("Directions");
-#pragma warning restore 4014
 
                     // Windows Phone doesn't like ampersands in the names and the normal URI escaping doesn't help
                     var name = Location.Replace("&", "and"); // var name = Uri.EscapeUriString(place.Name);
@@ -268,9 +254,7 @@ namespace CallOfService.Mobile.Features.JobDetails
                 {
                     if (Status == "Scheduled")
                     {
-#pragma warning disable 4014
                         _analyticsService.Track("Starting Job");
-#pragma warning restore 4014
 
                         _userDialogs.ShowLoading("Starting Job");
                         var started = await _appointmentService.StartJob(JobNumber);
@@ -289,9 +273,7 @@ namespace CallOfService.Mobile.Features.JobDetails
                     }
                     else if (Status == "In Progress")
                     {
-#pragma warning disable 4014
                         _analyticsService.Track("Finishing Job");
-#pragma warning restore 4014
                         _userDialogs.ShowLoading("Finishing Job");
                         var finished = await _appointmentService.FinishJob(JobNumber);
                         if (finished)
@@ -387,8 +369,8 @@ namespace CallOfService.Mobile.Features.JobDetails
 
         public void Dispose()
         {
-            Notes.Clear();
-            CustomFields.Clear();
+            Notes?.Clear();
+            CustomFields?.Clear();
             DataLoaded = false;
 
 			CrossConnectivity.Current.ConnectivityChanged -= HandleConnectivityChangedEventHandler;
@@ -396,9 +378,7 @@ namespace CallOfService.Mobile.Features.JobDetails
 
         public void OnAppearing()
         {
-#pragma warning disable 4014
             _analyticsService.Screen("Job Details");
-#pragma warning restore 4014
 
             //if(JobNumber > 0)
             //   await LoadJobeDetails(JobNumber);

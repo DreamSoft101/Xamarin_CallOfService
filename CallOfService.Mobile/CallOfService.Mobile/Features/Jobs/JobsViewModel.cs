@@ -32,9 +32,7 @@ namespace CallOfService.Mobile.Features.Jobs
             });
             this.Subscribe<NewDateSelected>(m =>
             {
-#pragma warning disable 4014
                 _analyticsService.Track("Date Selected");
-#pragma warning restore 4014
 
                 Date = m.DateTime;
                 OnAppearing();
@@ -91,9 +89,7 @@ namespace CallOfService.Mobile.Features.Jobs
             {
                 return new Command(async () =>
                 {
-#pragma warning disable 4014
                     _analyticsService.Track("Refreshing Jobs");
-#pragma warning restore 4014
 
                     IsRefreshing = true;
                     await _appointmentService.RetrieveAndSaveAppointments();
@@ -110,9 +106,7 @@ namespace CallOfService.Mobile.Features.Jobs
 
         public async void OnAppearing()
         {
-#pragma warning disable 4014
             _analyticsService.Screen("Jobs");
-#pragma warning restore 4014
 
             IsRefreshing = true;
             var appointments = await _appointmentService.AppointmentsByDay(Date);

@@ -7,7 +7,7 @@
              xmlns:jobDetails="clr-namespace:CallOfService.Mobile.Features.JobDetails;assembly=CallOfService.Mobile"
              x:Class="CallOfService.Mobile.Features.JobDetails.JobDetailsPage">
   <StackLayout BackgroundColor="#EDEDED" Spacing="0" IsVisible="{Binding DataLoaded}">
-    <BoxView HeightRequest="20" BackgroundColor="#44b6ae" />
+    <BoxView IsVisible="{Binding HasPaddingTop}" HeightRequest="20" BackgroundColor="#44b6ae" />
     <ScrollView>
       <StackLayout Spacing="5">
         <AbsoluteLayout HeightRequest="300">

@@ -1,9 +1,12 @@
 using Acr.UserDialogs;
 using Android.App;
 using Android.Content.PM;
+using Android.Gms.Gcm;
 using Android.OS;
+using Android.Widget;
 using CallOfService.Mobile.Core.DI;
 using CallOfService.Mobile.Droid.Core.DI;
+using CallOfService.Mobile.Droid.Services;
 using HockeyApp.Android;
 using TwinTechs.Droid;
 
@@ -26,6 +29,16 @@ namespace CallOfService.Mobile.Droid
             LoadApplication(new App());
 
             CrashManager.Register(this, "635a7d2e041a42fca3421315597b6e5e");
+
+            Toast.MakeText(this, "Starting location check service ...", ToastLength.Short).Show();
+            var pt = new PeriodicTask.Builder()
+                .SetPeriod(600) // in seconds; minimum is 30 seconds
+                .SetService(Java.Lang.Class.FromType(typeof(LocationService)))
+                .SetRequiredNetwork(0)
+                .SetTag("com.callofservice.mobile") // package name
+                .Build();
+
+            GcmNetworkManager.GetInstance(this).Schedule(pt);
         }
     }
 }

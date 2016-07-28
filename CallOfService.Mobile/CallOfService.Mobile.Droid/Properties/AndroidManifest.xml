@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto" package="com.callofservice.mobile" android:versionCode="6" android:versionName="1.6">
-	<uses-sdk android:minSdkVersion="15" />
+	<uses-sdk android:minSdkVersion="16" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
@@ -9,6 +9,6 @@
 	<uses-permission android:name="android.permission.CALL_PHONE" />
 	<uses-permission android:name="android.permission.CAMERA" />
 	<application android:label="Call of Service" android:icon="@drawable/icon">
-    <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyDwSOIXf8vGJ6fuU0_TUHuY2BAIXi9UZAE" />
-  </application>
+		<meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyDwSOIXf8vGJ6fuU0_TUHuY2BAIXi9UZAE" />
+	</application>
 </manifest>

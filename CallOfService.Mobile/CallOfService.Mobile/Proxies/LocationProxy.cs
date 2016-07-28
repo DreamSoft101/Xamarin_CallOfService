@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,5 +25,24 @@ namespace CallOfService.Mobile.Proxies
 
             return await PostAsync(url, stringContent);
         }
+
+        public async Task<Availability> GetAvailability()
+        {
+            var url = $"{UrlConstants.Availability}";
+            return await GetAsync<Availability>(url);
+        }
+    }
+
+    public class Availability
+    {
+        public DayAvailability[] Availabilities { get; set; }
+    }
+
+    public class DayAvailability
+    {
+        public string DayOfWeek { get; set; }
+        public TimeSpan? From { get; set; }
+        public TimeSpan? To { get; set; }
+        public bool IsAvailable { get; set; }
     }
 }

@@ -7213,6 +7213,9 @@ namespace CallOfService.Mobile.Droid
 			// aapt resource value: 0x7f070092
 			public const int full_date_format = 2131165330;
 			
+			// aapt resource value: 0x7f070093
+			public const int google_app_id = 2131165331;
+			
 			// aapt resource value: 0x7f070048
 			public const int hockeyapp_crash_dialog_app_name_fallback = 2131165256;
 			

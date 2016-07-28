@@ -12,5 +12,6 @@ namespace CallOfService.Mobile.Core.Networking
         public const string FinishJob = "job/finish";
         public const string NewNoteUrl = "jobnote";
         public const string SendLocation = "workerlocation";
+        public const string Availability = "workeravailability";
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Newtonsoft.Json;
 using SQLite.Net.Attributes;
 using System.Collections.Generic;
@@ -99,6 +99,8 @@ namespace CallOfService.Mobile.Domain
     {
         public string FormattedAddress { get; set; }
         public TypeInfo[] AddressTypes { get; set; }
+        public double? Latitude { get; set; }
+        public double? Longitude { get; set; }
     }
 
     public class TypeInfo

@@ -1,4 +1,4 @@
-﻿using SQLite.Net.Attributes;
+using SQLite.Net.Attributes;
 
 namespace CallOfService.Mobile.Domain
 {
@@ -25,5 +25,4 @@ namespace CallOfService.Mobile.Domain
         public UserProfile()
         { }
     }
-    
 }

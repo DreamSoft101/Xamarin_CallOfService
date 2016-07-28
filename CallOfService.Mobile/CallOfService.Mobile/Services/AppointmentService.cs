@@ -55,7 +55,9 @@ namespace CallOfService.Mobile.Services
 			if (job == null) {
 				return await _appointmentRepo.GetJobById(jobId);
 			}
-            var point = await _appointmentProxy.GetJobLocation(job.Location);
+            var point = job.Location.Latitude == null || job.Location.Longitude == null 
+                ? await _appointmentProxy.GetJobLocation(job.Location) 
+                : new GpsPoint { Lng = job.Location.Longitude.Value.ToString(), Lat = job.Location.Latitude .Value.ToString(), IsValid = true};
             job.Point = point;
             await _appointmentRepo.SaveJob(job);
             return job;

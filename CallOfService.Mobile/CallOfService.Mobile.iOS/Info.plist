@@ -2,56 +2,54 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleDisplayName</key>
-	<string>Call Of Service</string>
-	<key>CFBundleIdentifier</key>
-	<string>com.callofservice.mobile</string>
-	<key>CFBundleShortVersionString</key>
-	<string>1.5</string>
-	<key>CFBundleVersion</key>
-	<string>1.5</string>
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
-	<key>MinimumOSVersion</key>
-	<string>8.1</string>
-	<key>UIRequiresFullScreen</key>
-	<string>YES</string>
 	<key>UIDeviceFamily</key>
 	<array>
 		<integer>1</integer>
 		<integer>2</integer>
 	</array>
-	<key>UIMainStoryboardFile~ipad</key>
-	<string>Main</string>
-	<key>UIRequiredDeviceCapabilities</key>
-	<array>
-		<string>armv7</string>
-	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
+	<key>MinimumOSVersion</key>
+	<string>7.1</string>
+	<key>CFBundleDisplayName</key>
+	<string>Call Of Service</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.callofservice.mobile</string>
+	<key>CFBundleVersion</key>
+	<string>1.6</string>
+	<key>CFBundleIconFiles</key>
+	<array/>
+	<key>CFBundleShortVersionString</key>
+	<string>1.6</string>
+	<key>UIMainStoryboardFile</key>
+	<string>Main</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+	</array>
+	<key>XSAppIconAssets</key>
+	<string>Resources/Images.xcassets/AppIcons.appiconset</string>
+	<key>XSLaunchImageAssets</key>
+	<string>Resources/Images.xcassets/LaunchImages.launchimage</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Can we use your location</string>
+	<string>We need to use your location to update dashboard with your location</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We are using your location</string>
 	<key>CFBundleName</key>
 	<string>Call Of Service</string>
-	<key>UIMainStoryboardFile</key>
+	<key>UIMainStoryboardFile~ipad</key>
 	<string>Main</string>
-	<key>XSAppIconAssets</key>
-	<string>Resources/Images.xcassets/AppIcons.appiconset</string>
-	<key>XSLaunchImageAssets</key>
-	<string>Resources/Images.xcassets/LaunchImage.launchimage</string>
 </dict>
 </plist>

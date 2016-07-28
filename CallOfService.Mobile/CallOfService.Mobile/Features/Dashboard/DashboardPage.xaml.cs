@@ -1,4 +1,4 @@
-﻿using CallOfService.Mobile.Core.DI;
+using CallOfService.Mobile.Core.DI;
 using CallOfService.Mobile.Core.SystemServices;
 using CallOfService.Mobile.Features.Calendar;
 using CallOfService.Mobile.Features.Jobs;
@@ -69,9 +69,9 @@ namespace CallOfService.Mobile.Features.Dashboard
                 var userDialogs = DependencyResolver.Resolve<IUserDialogs>();
 
                 if (!args.IsConnected)
-                    userDialogs.WarnToast("Connection went offline.");
+                    userDialogs.Toast("Connection went offline.");
                 else
-                    userDialogs.InfoToast("Connection is back.");
+                    userDialogs.Toast("Connection is back.");
             };
 
             var appointmentService = DependencyResolver.Resolve<IAppointmentService>();

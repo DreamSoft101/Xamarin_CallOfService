@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using CallOfService.Mobile.Core.Security;
 using CallOfService.Mobile.Database.Repos.Abstracts;
 using CallOfService.Mobile.Domain;

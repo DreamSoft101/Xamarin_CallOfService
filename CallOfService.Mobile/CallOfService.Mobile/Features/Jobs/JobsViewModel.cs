@@ -106,7 +106,7 @@ namespace CallOfService.Mobile.Features.Jobs
 
         public async void OnAppearing()
         {
-            _analyticsService.Screen("Jobs");
+            //_analyticsService.Screen("Jobs");
 
             IsRefreshing = true;
             var appointments = await _appointmentService.AppointmentsByDay(Date);

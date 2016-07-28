@@ -1,4 +1,4 @@
-﻿using Autofac;
+using Autofac;
 using CallOfService.Mobile.Core.Security;
 using CallOfService.Mobile.Core.SystemServices;
 using CallOfService.Mobile.Database;
@@ -32,6 +32,7 @@ namespace CallOfService.Mobile.Core.DI
         {
             builder.RegisterType<LoginProxy>().As<ILoginProxy>().SingleInstance();
             builder.RegisterType<AppointmentProxy>().As<IAppointmentProxy>().SingleInstance();
+            builder.RegisterType<LocationProxy>().As<ILocationProxy>().SingleInstance();
         }
 
         private void RegisterRepos(ContainerBuilder builder)
@@ -56,6 +57,7 @@ namespace CallOfService.Mobile.Core.DI
             builder.RegisterType<UserService>().As<IUserService>().SingleInstance();
             builder.RegisterType<CredentialManager>().As<ICredentialManager>().SingleInstance();
             builder.RegisterType<AnalyticsService>().As<IAnalyticsService>().SingleInstance();
+            builder.RegisterType<LocationService>().As<ILocationService>().SingleInstance();
         }
 
         private void RegisterViewModels(ContainerBuilder builder)

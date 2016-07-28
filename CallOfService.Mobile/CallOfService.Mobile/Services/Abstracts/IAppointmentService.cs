@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using CallOfService.Mobile.Domain;
-using Xamarin.Forms;
 
 namespace CallOfService.Mobile.Services.Abstracts
 {

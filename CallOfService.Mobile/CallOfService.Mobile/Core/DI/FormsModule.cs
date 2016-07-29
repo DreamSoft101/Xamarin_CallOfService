@@ -57,6 +57,7 @@ namespace CallOfService.Mobile.Core.DI
             builder.RegisterType<UserService>().As<IUserService>().SingleInstance();
             builder.RegisterType<CredentialManager>().As<ICredentialManager>().SingleInstance();
             builder.RegisterType<AnalyticsService>().As<IAnalyticsService>().SingleInstance();
+            builder.RegisterType<LocationService>().As<ILocationService>().SingleInstance();
         }
 
         private void RegisterViewModels(ContainerBuilder builder)

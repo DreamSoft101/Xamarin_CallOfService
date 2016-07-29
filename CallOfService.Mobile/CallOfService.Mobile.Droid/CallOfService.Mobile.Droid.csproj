@@ -308,7 +308,7 @@
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ImageCompressor.cs" />
-    <Compile Include="Services\LocationService.cs" />
+    <Compile Include="Services\LocationTaskService.cs" />
     <Compile Include="SplashScreen.cs" />
   </ItemGroup>
   <ItemGroup>

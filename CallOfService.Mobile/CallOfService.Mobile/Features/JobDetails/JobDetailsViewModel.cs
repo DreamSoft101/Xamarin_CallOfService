@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -364,7 +364,6 @@ namespace CallOfService.Mobile.Features.JobDetails
             Emails = job.Emails.Select(e => e.Value).ToList();
             DataLoaded = true;
             _userDialogs.HideLoading();
-
         }
 
         public void Dispose()

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using CallOfService.Mobile.Messages;
 using CallOfService.Mobile.UI;
 using PubSub;

@@ -35,21 +35,7 @@ namespace CallOfService.Mobile.Droid.Services
 
                         if (!string.IsNullOrEmpty(userCredentials?.Token))
                         {
-                            await locationService.SendCurrentLocationUpdate(position =>
-                            {
-                                LastReportedPosition = position;
-
-                                var builder = new Notification.Builder(Application.Context)
-                                      .SetContentTitle("Location Update Interval")
-                                      .SetContentText($"Location update has been sent: Lat={LastReportedPosition.Latitude}, Lng={LastReportedPosition.Longitude}")
-                                      .SetSmallIcon(Resource.Drawable.icon);
-                                var notification = builder.Build();
-                                var notificationManager = (NotificationManager)GetSystemService(NotificationService);
-
-                                var notificationId = Guid.NewGuid().GetHashCode(); //(Math.Abs(LastReportedPosition.Latitude + LastReportedPosition.Longitude)).GetHashCode();
-                                notificationManager.Notify(notificationId, notification);
-
-                            }, LastReportedPosition);
+                            await locationService.SendCurrentLocationUpdate(null, LastReportedPosition);
                         }
                     }
                     catch (Exception e)

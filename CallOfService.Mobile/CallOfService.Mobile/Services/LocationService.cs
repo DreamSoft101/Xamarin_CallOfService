@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using CallOfService.Mobile.Proxies.Abstratcs;
 using CallOfService.Mobile.Services.Abstracts;
@@ -17,15 +18,17 @@ namespace CallOfService.Mobile.Services
             _locationProxy = locationProxy;
         }
 
-        public async Task<bool> SendCurrentLocationUpdate(Action<Position> resultingPositionAction = null, Position lastReportedPosition = null, int timeoutInMillisecondsSeconds = 10000)
+        public async Task<bool> SendCurrentLocationUpdate(Action<Position> resultingPositionAction = null, Position lastReportedPosition = null, double accuracy = 50, bool force = false, int timeoutInMillisecondsSeconds = 10000)
         {
             try
             {
                 var locator = CrossGeolocator.Current;
                 if (locator.IsGeolocationAvailable && locator.IsGeolocationEnabled)
                 {
-                    //locator.DesiredAccuracy = 50;
+                    if (!force && await IsOutsideWorkingHours())
+                        return false;
 
+                    locator.DesiredAccuracy = accuracy;
                     var currentLocation = await locator.GetPositionAsync(timeoutInMillisecondsSeconds);
 
                     if (lastReportedPosition == null ||
@@ -45,6 +48,43 @@ namespace CallOfService.Mobile.Services
             return false;
         }
 
+        private async Task<bool> IsOutsideWorkingHours()
+        {
+            var defaultDayStart = TimeSpan.FromHours(6);
+            var defaultDayEnd = TimeSpan.FromHours(20);
+
+            var now = DateTime.Now;
+            var currentTimeOfDay = now.TimeOfDay;
+            try
+            {
+                var availability = await _locationProxy.GetAvailability();
+                if (availability?.Availabilities == null || !availability.Availabilities.Any())
+                    return IsWithinRange(currentTimeOfDay, defaultDayStart, defaultDayEnd);
+
+                var todaysAvailability = availability.Availabilities.SingleOrDefault(a => a.DayOfWeek.ToLower() == now.DayOfWeek.ToString().ToLower());
+                if (todaysAvailability?.From == null || todaysAvailability?.To == null)
+                    return IsWithinRange(currentTimeOfDay, defaultDayStart, defaultDayEnd);
+
+                if (!todaysAvailability.IsAvailable)
+                    return false;
+
+                if (currentTimeOfDay >= todaysAvailability.From && currentTimeOfDay <= todaysAvailability.To)
+                    return true;
+
+                return false;
+            }
+            catch (Exception e)
+            {
+                //If no availability info then default to 6am to 8pm
+                return IsWithinRange(currentTimeOfDay, defaultDayStart, defaultDayEnd);
+            }
+        }
+
+        private bool IsWithinRange(TimeSpan value, TimeSpan from, TimeSpan to)
+        {
+            return value >= from && value <= to;
+        }
+
         public EventHandler<PositionEventArgs> LocationUpdated { get; set; }
         public async Task<bool> StartListening()
         {
@@ -57,7 +97,7 @@ namespace CallOfService.Mobile.Services
 
                 locator.PositionChanged += Locator_PositionChanged;
 
-                return await locator.StartListeningAsync(60000, 10);
+                return await locator.StartListeningAsync(TimeSpan.FromMinutes(5).Milliseconds, 10);// Update every 5 minutes and 10 meters
             }
             return false;
         }
@@ -66,7 +106,7 @@ namespace CallOfService.Mobile.Services
         {
             try
             {
-                LocationUpdated.Invoke(this, e);
+                LocationUpdated?.Invoke(this, e);
                 await _locationProxy.SendLocation(e.Position.Latitude, e.Position.Longitude);
             }
             catch (Exception ex)

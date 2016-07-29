@@ -24,19 +24,19 @@ namespace CallOfService.Mobile.Proxies
             return await PostAsync(url, stringContent);
         }
 
-        public async Task<Availability> GetAvailability()
+        public async Task<AvailabilitiesInfo> GetAvailability()
         {
             var url = $"{UrlConstants.Availability}";
-            return await GetAsync<Availability>(url);
+            return await GetAsync<AvailabilitiesInfo>(url);
         }
     }
 
-    public class Availability
+    public class AvailabilitiesInfo
     {
-        public DayAvailability[] Availabilities { get; set; }
+        public AvailabilityInfo[] Availabilities { get; set; }
     }
 
-    public class DayAvailability
+    public class AvailabilityInfo
     {
         public string DayOfWeek { get; set; }
         public TimeSpan? From { get; set; }

@@ -18,14 +18,14 @@ namespace CallOfService.Mobile.Services
             _locationProxy = locationProxy;
         }
 
-        public async Task<bool> SendCurrentLocationUpdate(Action<Position> resultingPositionAction = null, Position lastReportedPosition = null, double accuracy = 50, bool force = false, int timeoutInMillisecondsSeconds = 10000)
+        public async Task<bool> SendCurrentLocationUpdate(Action<Position> resultingPositionAction = null, Position lastReportedPosition = null, double accuracy = 50, bool disableWorkingHoursCheck = false, int timeoutInMillisecondsSeconds = 10000)
         {
             try
             {
                 var locator = CrossGeolocator.Current;
                 if (locator.IsGeolocationAvailable && locator.IsGeolocationEnabled)
                 {
-                    if (!force && await IsOutsideWorkingHours())
+                    if (!disableWorkingHoursCheck && await IsOutsideWorkingHours())
                         return false;
 
                     locator.DesiredAccuracy = accuracy;
@@ -97,7 +97,7 @@ namespace CallOfService.Mobile.Services
 
                 locator.PositionChanged += Locator_PositionChanged;
 
-                return await locator.StartListeningAsync(TimeSpan.FromMinutes(5).Milliseconds, 10);// Update every 5 minutes and 10 meters
+                return await locator.StartListeningAsync(TimeSpan.FromMinutes(5).Milliseconds, 50);// Update every 5 minutes and 50 meters
             }
             return false;
         }

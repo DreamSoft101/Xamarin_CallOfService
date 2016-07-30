@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -27,15 +27,17 @@ namespace CallOfService.Mobile.Features.JobDetails
         private readonly IAnalyticsService _analyticsService;
         private readonly IImageCompressor _imageCompressor;
         private readonly ILogger _logger;
+        private readonly ILocationService _locationService;
 
-        public JobNoteViewModel(IAppointmentService appointmentService, IUserDialogs userDialogs, IImageCompressor imageCompressor, IAnalyticsService analyticsService, ILogger logger)
+        public JobNoteViewModel(IAppointmentService appointmentService, IUserDialogs userDialogs, IImageCompressor imageCompressor, IAnalyticsService analyticsService, ILogger logger, ILocationService locationService)
         {
             _appointmentService = appointmentService;
             _userDialogs = userDialogs;
             _imageCompressor = imageCompressor;
             _analyticsService = analyticsService;
             _logger = logger;
-			NewNoteText = string.Empty;
+            _locationService = locationService;
+            NewNoteText = string.Empty;
             Attachments = new ObservableCollection<ImageSource>();
             AttachmentsStreams = new List<byte[]>();
 
@@ -80,7 +82,9 @@ namespace CallOfService.Mobile.Features.JobDetails
                         Attachments.Clear();
                         AttachmentsStreams?.Clear();
                         NewNoteText = string.Empty;
-						this.Publish(new ViewJobDetails(JobNumber));
+                        await _locationService.SendCurrentLocationUpdate(disableWorkingHoursCheck: true);
+
+                        this.Publish(new ViewJobDetails(JobNumber));
                         await NavigationService.Navigation.PopModalAsync(true);
                     }
                     else

@@ -25,12 +25,14 @@ namespace CallOfService.Mobile.Features.JobDetails
 		private readonly IAppointmentService _appointmentService;
         private readonly IUserDialogs _userDialogs;
         private readonly IAnalyticsService _analyticsService;
+        private readonly ILocationService _locationService;
 
-        public JobDetailsViewModel(IAppointmentService appointmentService, IUserDialogs userDialogs, IAnalyticsService analyticsService)
+        public JobDetailsViewModel(IAppointmentService appointmentService, IUserDialogs userDialogs, IAnalyticsService analyticsService, ILocationService locationService)
         {
             _appointmentService = appointmentService;
             _userDialogs = userDialogs;
             _analyticsService = analyticsService;
+            _locationService = locationService;
             Notes = new ObservableCollection<NoteViewModel>();
             CustomFields = new ObservableCollection<CustomFieldViewModel>();
             this.Subscribe<ViewJobDetails>(async m => await LoadJobeDetails(m.JobId));
@@ -255,11 +257,11 @@ namespace CallOfService.Mobile.Features.JobDetails
                     if (Status == "Scheduled")
                     {
                         _analyticsService.Track("Starting Job");
-
                         _userDialogs.ShowLoading("Starting Job");
                         var started = await _appointmentService.StartJob(JobNumber);
                         if (started)
                         {
+                            await _locationService.SendCurrentLocationUpdate(disableWorkingHoursCheck:true);
                             _userDialogs.ShowSuccess("Job Started");
                             await Task.Delay(100);
                             _userDialogs.HideLoading();
@@ -278,6 +280,7 @@ namespace CallOfService.Mobile.Features.JobDetails
                         var finished = await _appointmentService.FinishJob(JobNumber);
                         if (finished)
                         {
+                            await _locationService.SendCurrentLocationUpdate(disableWorkingHoursCheck: true);
                             _userDialogs.ShowSuccess("Job Finished");
                             await Task.Delay(100);
                             _userDialogs.HideLoading();

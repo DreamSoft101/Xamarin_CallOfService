@@ -1,16 +1,14 @@
-using System;
 using Acr.UserDialogs;
 using Android.App;
 using Android.Content.PM;
-using Android.Gms.Gcm;
+using Android.Locations;
 using Android.OS;
+using Android.Util;
 using Android.Widget;
 using CallOfService.Mobile.Core.DI;
 using CallOfService.Mobile.Droid.Core.DI;
 using CallOfService.Mobile.Droid.Services;
-using CallOfService.Mobile.Services.Abstracts;
 using HockeyApp.Android;
-using Plugin.Geolocator.Abstractions;
 using TwinTechs.Droid;
 
 namespace CallOfService.Mobile.Droid
@@ -33,20 +31,51 @@ namespace CallOfService.Mobile.Droid
 
             CrashManager.Register(this, "635a7d2e041a42fca3421315597b6e5e");
 
-            try
+            LocationApp.Current.LocationServiceConnected += (sender, e) =>
             {
-                var pt = new PeriodicTask.Builder()
-                    .SetPeriod(1800) // 30 minutes. Number is in seconds; minimum is 30 seconds
-                    .SetService(Java.Lang.Class.FromType(typeof(LocationTaskService)))
-                    .SetRequiredNetwork(0)
-                    .SetTag("com.callofservice.mobile") // package name
-                    .Build();
-                GcmNetworkManager.GetInstance(this).Schedule(pt);
-            }
-            catch (Exception e)
+                Log.Debug("MainActivity", "ServiceConnected Event Raised");
+                LocationApp.Current.LocationService.LocationSentToServer += HandleLocationSentToServer;
+                LocationApp.Current.LocationService.LocationChanged += HandleLocationChanged;
+                LocationApp.Current.LocationService.ProviderDisabled += HandleProviderDisabled;
+                LocationApp.Current.LocationService.ProviderEnabled += HandleProviderEnabled;
+                LocationApp.Current.LocationService.StatusChanged += HandleStatusChanged;
+            };
+            LocationApp.StartLocationService();
+        }
+
+        protected override void OnDestroy()
+        {
+            Log.Debug("MainActivity", "OnDestroy");
+            base.OnDestroy();
+        }
+
+        public void HandleLocationSentToServer(object sender, LocationChangedEventArgs e)
+        {
+            Log.Debug("MainActivity", "Location sent to server toast");
+            RunOnUiThread(() =>
             {
-                //Toast.MakeText(this, "Error while scheduling location update", ToastLength.Long).Show();
-            }
+                Toast.MakeText(this, "Current location sent to Call of Service", ToastLength.Long).Show();
+            });
+        }
+
+        public void HandleLocationChanged(object sender, LocationChangedEventArgs e)
+        {
+            Log.Debug("MainActivity", "Location updated");
+        }
+
+        public void HandleProviderDisabled(object sender, ProviderDisabledEventArgs e)
+        {
+            Log.Debug("MainActivity", "Location provider disabled event raised");
+        }
+
+        public void HandleProviderEnabled(object sender, ProviderEnabledEventArgs e)
+        {
+            Log.Debug("MainActivity", "Location provider enabled event raised");
+        }
+
+        public void HandleStatusChanged(object sender, StatusChangedEventArgs e)
+        {
+            Log.Debug("MainActivity", "Location status changed, event raised");
         }
     }
 }

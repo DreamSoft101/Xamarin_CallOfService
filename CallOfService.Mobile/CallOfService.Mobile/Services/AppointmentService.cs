@@ -15,13 +15,14 @@ namespace CallOfService.Mobile.Services
         private readonly IAppointmentProxy _appointmentProxy;
         private readonly IUserService _userService;
         private readonly IAppointmentRepo _appointmentRepo;
+        private readonly ILocationService _locationService;
 
-        public AppointmentService(IAppointmentProxy appointmentProxy, IUserService userService,
-            IAppointmentRepo appointmentRepo)
+        public AppointmentService(IAppointmentProxy appointmentProxy, IUserService userService, IAppointmentRepo appointmentRepo, ILocationService locationService)
         {
             _appointmentProxy = appointmentProxy;
             _userService = userService;
             _appointmentRepo = appointmentRepo;
+            _locationService = locationService;
         }
 
         public async Task<bool> RetrieveAndSaveAppointments()
@@ -40,7 +41,7 @@ namespace CallOfService.Mobile.Services
 
         public Task<List<Appointment>> AppointmentsByDay(DateTime date)
         {
-            //TODO Needs to get the appointments  from the server
+            //TODO Needs to get the appointments  from the server ?
             return _appointmentRepo.AppointmentsByDay(date);
         }
 
@@ -82,19 +83,22 @@ namespace CallOfService.Mobile.Services
             return new Uri(url);
         }
 
-        public Task<bool> StartJob(int jobId)
+        public async Task<bool> StartJob(int jobId)
         {
-            return _appointmentProxy.StartJob(jobId);
+            var position = await _locationService.GetCurrentLocation(timeoutInMillisecondsSeconds: 5000);
+            return await _appointmentProxy.StartJob(jobId, position?.Latitude, position?.Longitude);
         }
 
-        public Task<bool> FinishJob(int jobId)
+        public async Task<bool> FinishJob(int jobId)
         {
-            return _appointmentProxy.FinishJob(jobId);
+            var position = await _locationService.GetCurrentLocation(timeoutInMillisecondsSeconds: 5000);
+            return await _appointmentProxy.FinishJob(jobId, position?.Latitude, position?.Longitude);
         }
 
-		public Task<bool> SubmitNote(int jobNumber, string newNoteText, List<byte[]> attachments, DateTime now)
+		public async Task<bool> SubmitNote(int jobNumber, string newNoteText, List<byte[]> attachments, DateTime now)
         {
-            return _appointmentProxy.AddNote(jobNumber, newNoteText, attachments, now);
+            var position = await _locationService.GetCurrentLocation(timeoutInMillisecondsSeconds: 5000);
+            return await _appointmentProxy.AddNote(jobNumber, newNoteText, attachments, now, position?.Latitude, position?.Longitude);
         }
     }
 }

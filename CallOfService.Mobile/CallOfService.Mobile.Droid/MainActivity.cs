@@ -46,6 +46,7 @@ namespace CallOfService.Mobile.Droid
         protected override void OnDestroy()
         {
             Log.Debug("MainActivity", "OnDestroy");
+            LocationApp.StopLocationService();
             base.OnDestroy();
         }
 

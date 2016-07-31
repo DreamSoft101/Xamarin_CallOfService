@@ -25,14 +25,12 @@ namespace CallOfService.Mobile.Features.JobDetails
 		private readonly IAppointmentService _appointmentService;
         private readonly IUserDialogs _userDialogs;
         private readonly IAnalyticsService _analyticsService;
-        private readonly ILocationService _locationService;
 
-        public JobDetailsViewModel(IAppointmentService appointmentService, IUserDialogs userDialogs, IAnalyticsService analyticsService, ILocationService locationService)
+        public JobDetailsViewModel(IAppointmentService appointmentService, IUserDialogs userDialogs, IAnalyticsService analyticsService)
         {
             _appointmentService = appointmentService;
             _userDialogs = userDialogs;
             _analyticsService = analyticsService;
-            _locationService = locationService;
             Notes = new ObservableCollection<NoteViewModel>();
             CustomFields = new ObservableCollection<CustomFieldViewModel>();
             this.Subscribe<ViewJobDetails>(async m => await LoadJobeDetails(m.JobId));
@@ -231,17 +229,17 @@ namespace CallOfService.Mobile.Features.JobDetails
 
                     // Windows Phone doesn't like ampersands in the names and the normal URI escaping doesn't help
                     var name = Location.Replace("&", "and"); // var name = Uri.EscapeUriString(place.Name);
-                    var loc = string.Format("{0},{1}", GpsPoint.Lat, GpsPoint.Lng);
+                    var loc = $"{GpsPoint.Lat},{GpsPoint.Lng}";
                     var request = Device.OnPlatform(
-                                      // iOS doesn't like %s or spaces in their URLs, so manually replace spaces with +s
-                                      string.Format("http://maps.apple.com/maps?q={0}&sll={1}", Location.Replace(' ', '+'), loc),
+                        // iOS doesn't like %s or spaces in their URLs, so manually replace spaces with +s
+                        $"http://maps.apple.com/maps?q={Location.Replace(' ', '+')}&sll={loc}",
 
-                                      // pass the address to Android if we have it
-                                      string.Format("geo:0,0?q={0})", loc),
+                        // pass the address to Android if we have it
+                        $"geo:0,0?q={loc})",
 
-                                      // WinPhone
-                                      string.Format("bingmaps:?cp={0}&q={1}", loc, name)
-                                  );
+                        // WinPhone
+                        $"bingmaps:?cp={loc}&q={name}"
+                        );
 
                     Device.OpenUri(new Uri(request));
                 });
@@ -261,16 +259,13 @@ namespace CallOfService.Mobile.Features.JobDetails
                         var started = await _appointmentService.StartJob(JobNumber);
                         if (started)
                         {
-                            await _locationService.SendCurrentLocationUpdate(disableWorkingHoursCheck:true);
-                            _userDialogs.ShowSuccess("Job Started");
-                            await Task.Delay(100);
                             _userDialogs.HideLoading();
+                            _userDialogs.ShowSuccess("Job Started");
                         }
                         else
                         {
                             _userDialogs.HideLoading();
                             _userDialogs.ShowError("Error Starting Job");
-                            await Task.Delay(3000);
                         }
                     }
                     else if (Status == "In Progress")
@@ -280,17 +275,14 @@ namespace CallOfService.Mobile.Features.JobDetails
                         var finished = await _appointmentService.FinishJob(JobNumber);
                         if (finished)
                         {
-                            await _locationService.SendCurrentLocationUpdate(disableWorkingHoursCheck: true);
-                            _userDialogs.ShowSuccess("Job Finished");
-                            await Task.Delay(100);
                             _userDialogs.HideLoading();
+                            _userDialogs.ShowSuccess("Job Finished");
                             CanStartOrFinish = false;
                         }
                         else
                         {
                             _userDialogs.HideLoading();
                             _userDialogs.ShowError("Error Finishing Job");
-                            await Task.Delay(3000);
                         }
                     }
 
@@ -313,7 +305,6 @@ namespace CallOfService.Mobile.Features.JobDetails
             {
                 _userDialogs.HideLoading();
                 _userDialogs.ShowError("Error while loading job details");
-                await Task.Delay(3000);
                 await NavigationService.NavigateBack();
                 return;
             }

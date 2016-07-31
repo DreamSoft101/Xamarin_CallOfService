@@ -10,8 +10,8 @@ namespace CallOfService.Mobile.Proxies.Abstratcs
         Task<List<Appointment>> GetAppointments(int userId);
         Task<Job> GetJobById(int jobId);
         Task<GpsPoint> GetJobLocation(AddressInfo location);
-        Task<bool> StartJob(int jobId);
-        Task<bool> FinishJob(int jobId);
-		Task<bool> AddNote(int jobNumber, string newNoteText, List<byte[]> attachments, DateTime now);
+        Task<bool> StartJob(int jobId, double? latitude, double? longitude);
+        Task<bool> FinishJob(int jobId, double? latitude, double? longitude);
+		Task<bool> AddNote(int jobNumber, string newNoteText, List<byte[]> attachments, DateTime now, double? latitude, double? longitude);
     }
 }

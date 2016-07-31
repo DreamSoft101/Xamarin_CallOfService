@@ -66,23 +66,23 @@ namespace CallOfService.Mobile.Proxies
             }
         }
 
-        public async Task<bool> StartJob(int jobId)
+        public async Task<bool> StartJob(int jobId, double? latitude, double? longitude)
         {
             var url = $"{UrlConstants.StartJob}";
-            var stringContent = new StringContent(JsonConvert.SerializeObject(new { Id = jobId }), Encoding.UTF8, "application/json");
+            var stringContent = new StringContent(JsonConvert.SerializeObject(new { Id = jobId, latitude, longitude }), Encoding.UTF8, "application/json");
 
             return await PostAsync(url, stringContent);
         }
 
-        public async Task<bool> FinishJob(int jobId)
+        public async Task<bool> FinishJob(int jobId, double? latitude, double? longitude)
         {
             var url = $"{UrlConstants.FinishJob}";
-            var stringContent = new StringContent(JsonConvert.SerializeObject(new { Id = jobId }), Encoding.UTF8, "application/json");
+            var stringContent = new StringContent(JsonConvert.SerializeObject(new { Id = jobId, latitude, longitude }), Encoding.UTF8, "application/json");
 
             return await PostAsync(url, stringContent);
         }
 
-		public async Task<bool> AddNote(int jobNumber, string newNoteText, List<byte[]> attachments, DateTime now)
+		public async Task<bool> AddNote(int jobNumber, string newNoteText, List<byte[]> attachments, DateTime now, double? latitude, double? longitude)
 		{
 		    var url = UrlConstants.NewNoteUrl;
 
@@ -90,8 +90,10 @@ namespace CallOfService.Mobile.Proxies
 		    {
 		        {new StringContent(jobNumber.ToString(), Encoding.UTF8), "Id"},
 		        {new StringContent(newNoteText, Encoding.UTF8), "Note"},
-		        {new StringContent(GetTime(now).ToString(), Encoding.UTF8), "Timestamp"}
-		    };
+		        {new StringContent(GetTime(now).ToString(), Encoding.UTF8), "Timestamp"},
+                {new StringContent(latitude?.ToString(), Encoding.UTF8), "Latitude"},
+                {new StringContent(longitude?.ToString(), Encoding.UTF8), "Longitude"}
+            };
 
 		    var steamContents = new List<Tuple<StreamContent, string, string>>();
             for (int index = 0; index < attachments.Count; index++)

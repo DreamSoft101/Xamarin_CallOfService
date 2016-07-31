@@ -6,8 +6,8 @@ namespace CallOfService.Mobile.Services.Abstracts
 {
     public interface ILocationService
     {
-        Task<bool> SendCurrentLocationUpdate(Action<Position> resultingPositionAction = null, Position lastReportedPosition = null, double accuracy = 50, bool disableWorkingHoursCheck = false, int timeoutInMillisecondsSeconds = 10000);
-        Task<bool> StartListening();
-        EventHandler<PositionEventArgs> LocationUpdated { get; set; }
+        Task<bool> SendCurrentLocationIfUpdated(double accuracy = 50, bool disableWorkingHoursCheck = false, int timeoutInMillisecondsSeconds = 10000, Action<Position> resultingPositionAction = null);
+        Task<Position> GetCurrentLocation(double accuracy = 50, int timeoutInMillisecondsSeconds = 10000);
+        Task<bool> SendLocatoinIfUpdated(double latitude, double longitude, bool disableWorkingHoursCheck = false);
     }
 }

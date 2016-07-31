@@ -27,16 +27,14 @@ namespace CallOfService.Mobile.Features.JobDetails
         private readonly IAnalyticsService _analyticsService;
         private readonly IImageCompressor _imageCompressor;
         private readonly ILogger _logger;
-        private readonly ILocationService _locationService;
 
-        public JobNoteViewModel(IAppointmentService appointmentService, IUserDialogs userDialogs, IImageCompressor imageCompressor, IAnalyticsService analyticsService, ILogger logger, ILocationService locationService)
+        public JobNoteViewModel(IAppointmentService appointmentService, IUserDialogs userDialogs, IImageCompressor imageCompressor, IAnalyticsService analyticsService, ILogger logger)
         {
             _appointmentService = appointmentService;
             _userDialogs = userDialogs;
             _imageCompressor = imageCompressor;
             _analyticsService = analyticsService;
             _logger = logger;
-            _locationService = locationService;
             NewNoteText = string.Empty;
             Attachments = new ObservableCollection<ImageSource>();
             AttachmentsStreams = new List<byte[]>();
@@ -82,7 +80,6 @@ namespace CallOfService.Mobile.Features.JobDetails
                         Attachments.Clear();
                         AttachmentsStreams?.Clear();
                         NewNoteText = string.Empty;
-                        await _locationService.SendCurrentLocationUpdate(disableWorkingHoursCheck: true);
 
                         this.Publish(new ViewJobDetails(JobNumber));
                         await NavigationService.Navigation.PopModalAsync(true);
@@ -91,7 +88,6 @@ namespace CallOfService.Mobile.Features.JobDetails
                     {
                         _userDialogs.HideLoading();
                         _userDialogs.ShowError("Error saving note please try again");
-                        await Task.Delay(3000);
                     }
                 });
             }

@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
@@ -7,12 +6,11 @@ using Android.Locations;
 using Android.OS;
 using Android.Util;
 using CallOfService.Mobile.Core.DI;
-using CallOfService.Mobile.Proxies.Abstratcs;
 using CallOfService.Mobile.Services.Abstracts;
 
 namespace CallOfService.Mobile.Droid.Services
 {
-    [Service]
+    [Service()]
     public class LocationTaskService : Service, ILocationListener
     {
         protected LocationManager LocationManager = Application.Context.GetSystemService("location") as LocationManager;
@@ -26,8 +24,6 @@ namespace CallOfService.Mobile.Droid.Services
         private IBinder binder;
         public override IBinder OnBind(Intent intent)
         {
-            Log.Debug("LocationTaskService", "Client now bound to service");
-
             binder = new LocationTaskServiceBinder(this);
             return binder;
         }
@@ -42,27 +38,18 @@ namespace CallOfService.Mobile.Droid.Services
             var locationProvider = LocationManager.GetBestProvider(locationCriteria, true);
 
             Log.Debug("LocationTaskService", $"You are about to get location updates via {locationProvider}");
-            LocationManager.RequestLocationUpdates(locationProvider, TimeSpan.FromMinutes(15).Milliseconds, 50, this); // ToDo: Replace with TimeSpan.FromMinutes(15).Milliseconds after testing
-            Log.Debug("LocationTaskService", "Now sending location updates");
-        }
-
-        public override void OnCreate()
-        {
-            base.OnCreate();
-            Log.Debug("LocationTaskService", "OnCreate called in the Location Service");
+            LocationManager.RequestLocationUpdates(locationProvider, TimeSpan.FromMinutes(15).Milliseconds, 50, this);
         }
 
         public override void OnDestroy()
         {
             base.OnDestroy();
-            Log.Debug("LocationTaskService", "Service has been terminated");
 
             LocationManager.RemoveUpdates(this);
         }
 
         public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
         {
-            Log.Debug("LocationTaskService", "LocationService started");
             return StartCommandResult.Sticky;
         }
 
@@ -74,24 +61,15 @@ namespace CallOfService.Mobile.Droid.Services
             {
                 try
                 {
-                    var locationProxy = DependencyResolver.Resolve<ILocationProxy>();
-                    var userService = DependencyResolver.Resolve<IUserService>();
-                    var userCredentials = userService.GetUserCredentials();
-
-                    if (!string.IsNullOrEmpty(userCredentials?.Token) && await IsWithinWorkingHours(locationProxy))
-                    {
-                        await locationProxy.SendLocation(location.Latitude, location.Longitude);
-                        LocationSentToServer(this, new LocationChangedEventArgs(location));
-                    }
+                    var locationService = DependencyResolver.Resolve<ILocationService>();
+                    var updated = await locationService.SendLocatoinIfUpdated(location.Latitude, location.Longitude);
+                    if(updated) LocationSentToServer(this, new LocationChangedEventArgs(location));
                 }
                 catch (Exception e)
                 {
                     Log.Debug("LocationTaskService", $"Exception while sending location update: {e}");
                 }
             });
-
-            Log.Debug("LocationTaskService", $"Latitude is {location.Latitude}");
-            Log.Debug("LocationTaskService", $"Longitude is {location.Longitude}");
         }
 
         public void OnProviderDisabled(string provider)
@@ -110,43 +88,6 @@ namespace CallOfService.Mobile.Droid.Services
         {
             Log.Debug("LocationTaskService", $"Provider {provider} has changed its status to {status}");
             StatusChanged(this, new StatusChangedEventArgs(provider, status, extras));
-        }
-
-        private static async Task<bool> IsWithinWorkingHours(ILocationProxy locationProxy)
-        {
-            var defaultDayStart = TimeSpan.FromHours(6);
-            var defaultDayEnd = TimeSpan.FromHours(20);
-
-            var now = DateTime.Now;
-            var currentTimeOfDay = now.TimeOfDay;
-            try
-            {
-                var availability = await locationProxy.GetAvailability();
-                if (availability?.Availabilities == null || !availability.Availabilities.Any())
-                    return IsWithinRange(currentTimeOfDay, defaultDayStart, defaultDayEnd);
-
-                var todaysAvailability = availability.Availabilities.SingleOrDefault(a => a.DayOfWeek.ToLower() == now.DayOfWeek.ToString().ToLower());
-                if (todaysAvailability?.From == null || todaysAvailability.To == null)
-                    return IsWithinRange(currentTimeOfDay, defaultDayStart, defaultDayEnd);
-
-                if (!todaysAvailability.IsAvailable)
-                    return false;
-
-                if (currentTimeOfDay >= todaysAvailability.From && currentTimeOfDay <= todaysAvailability.To)
-                    return true;
-
-                return false;
-            }
-            catch (Exception e)
-            {
-                Log.Debug("LocationTaskService", $"Exception while checking working hours: {e}");
-                return IsWithinRange(currentTimeOfDay, defaultDayStart, defaultDayEnd);
-            }
-        }
-
-        private static bool IsWithinRange(TimeSpan value, TimeSpan from, TimeSpan to)
-        {
-            return value >= from && value <= to;
         }
     }
 
@@ -181,10 +122,8 @@ namespace CallOfService.Mobile.Droid.Services
                 Binder = serviceBinder;
                 Binder.IsBound = true;
 
-                // raise the service bound event
-                ServiceConnected(this, new ServiceConnectedEventArgs() { Binder = service });
+                ServiceConnected(this, new ServiceConnectedEventArgs { Binder = service });
 
-                // begin updating the location in the Service
                 serviceBinder.Service.StartLocationUpdates();
             }
         }
@@ -192,7 +131,6 @@ namespace CallOfService.Mobile.Droid.Services
         public void OnServiceDisconnected(ComponentName name)
         {
             Binder.IsBound = false;
-            Log.Debug("ServiceConnection", "Service unbound");
         }
     }
 
@@ -238,10 +176,8 @@ namespace CallOfService.Mobile.Droid.Services
         {
             new Task(() =>
             {
-                Log.Debug("LocationApp", "Calling StartService");
                 Application.Context.StartService(new Intent(Application.Context, typeof(LocationTaskService)));
 
-                Log.Debug("LocationApp", "Calling service binding");
                 var locationServiceIntent = new Intent(Application.Context, typeof(LocationTaskService));
                 Application.Context.BindService(locationServiceIntent, LocationServiceConnection, Bind.AutoCreate);
             }).Start();
@@ -249,18 +185,12 @@ namespace CallOfService.Mobile.Droid.Services
 
         public static void StopLocationService()
         {
-            Log.Debug("LocationApp", "StopLocationService");
             if (LocationServiceConnection != null)
             {
-                Log.Debug("LocationApp", "Unbinding from LocationService");
                 Application.Context.UnbindService(LocationServiceConnection);
             }
 
-            if (Current.LocationService != null)
-            {
-                Log.Debug("LocationApp", "Stopping the LocationService");
-                Current.LocationService.StopSelf();
-            }
+            Current.LocationService?.StopSelf();
         }
     }
 }

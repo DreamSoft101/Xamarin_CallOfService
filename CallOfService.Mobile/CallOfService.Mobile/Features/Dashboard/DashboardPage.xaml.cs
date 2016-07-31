@@ -1,4 +1,3 @@
-using System;
 using CallOfService.Mobile.Core.DI;
 using CallOfService.Mobile.Core.SystemServices;
 using CallOfService.Mobile.Features.Calendar;
@@ -11,7 +10,6 @@ using System.Threading.Tasks;
 using Acr.UserDialogs;
 using CallOfService.Mobile.Core;
 using Plugin.Connectivity;
-using Plugin.Geolocator.Abstractions;
 using Page = Xamarin.Forms.Page;
 
 namespace CallOfService.Mobile.Features.Dashboard
@@ -79,8 +77,6 @@ namespace CallOfService.Mobile.Features.Dashboard
             var appointmentService = DependencyResolver.Resolve<IAppointmentService>();
             await appointmentService.RetrieveAndSaveAppointments();
 
-            //StartLocationUpdateRegistration(dialog);
-
             base.OnAppearing();
 
             Children.Clear();
@@ -97,26 +93,5 @@ namespace CallOfService.Mobile.Features.Dashboard
 
             _shouldInit = false;
         }
-
-        //private void StartLocationUpdateRegistration(IUserDialogs dialog)
-        //{
-        //    var locationService = DependencyResolver.Resolve<ILocationService>();
-
-        //    Task.Run(async () =>
-        //    {
-        //        try
-        //        {
-        //            var locationSentSuccessfully = await locationService.SendCurrentLocationUpdate();
-        //            dialog.Toast(!locationSentSuccessfully ? "Errro while sending current location" : "Current location sent successfully");
-
-        //            var locationUpdateRegisteredSuccessfully = await locationService.StartListening();
-        //            dialog.Toast(!locationUpdateRegisteredSuccessfully ? "Errro while registering location update" : "Location update registered successully");
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            dialog.Toast("Errro while registering location update");
-        //        }
-        //    });
-        //}
     }
 }

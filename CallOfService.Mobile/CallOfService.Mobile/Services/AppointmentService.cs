@@ -39,10 +39,10 @@ namespace CallOfService.Mobile.Services
             return false;
         }
 
-        public Task<List<Appointment>> AppointmentsByDay(DateTime date)
+        public async Task<List<Appointment>> AppointmentsByDay(DateTime date)
         {
-            //TODO Needs to get the appointments  from the server ?
-            return _appointmentRepo.AppointmentsByDay(date);
+            await RetrieveAndSaveAppointments();
+            return await _appointmentRepo.AppointmentsByDay(date);
         }
 
         public Task<Appointment> GetAppointmentByJobId(int jobId)

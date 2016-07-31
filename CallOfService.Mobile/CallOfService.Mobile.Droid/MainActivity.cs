@@ -22,10 +22,7 @@ namespace CallOfService.Mobile.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(bundle);
-            UserDialogs.Init(() =>
-            {
-               return this;
-            });
+            UserDialogs.Init(() => this);
             global::Xamarin.Forms.Forms.Init(this, bundle);
             global::Xamarin.FormsMaps.Init(this, bundle);
             SvgImageRenderer.Init();

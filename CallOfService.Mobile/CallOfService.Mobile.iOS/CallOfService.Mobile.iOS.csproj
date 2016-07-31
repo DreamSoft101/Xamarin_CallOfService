@@ -104,6 +104,7 @@
     <Compile Include="Renders\Calendar\StyleDescriptor.cs" />
     <Compile Include="Renders\SvgImageRenderer.cs" />
     <Compile Include="Services\ImageCompressor.cs" />
+    <Compile Include="Services\LocationApp.cs" />
     <ImageAsset Include="Resources\Images.xcassets\LaunchImages.launchimage\Default-568h@2x.png">
       <InProject>false</InProject>
     </ImageAsset>

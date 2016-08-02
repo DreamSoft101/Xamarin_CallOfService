@@ -20,9 +20,11 @@ namespace CallOfService.Mobile.Proxies
         {
         }
 
-        public async Task<List<Appointment>> GetAppointments(int userId)
+        public async Task<List<Appointment>> GetAppointments(int userId, DateTime? date = null, string view = "year")
         {
-            var url = $"{UrlConstants.AppointmentsUrl}?View=year&UserId={userId}&date={DateTime.Now.ToString("yyyy-MM-dd")}";
+            if (date == null)
+                date = DateTime.Now;
+            var url = $"{UrlConstants.AppointmentsUrl}?View=year&UserId={userId}&date={date.Value.ToString("yyyy-MM-dd")}";
             return await GetAsync<List<Appointment>>(url);
         }
 

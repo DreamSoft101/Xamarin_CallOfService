@@ -7,7 +7,7 @@ namespace CallOfService.Mobile.Proxies.Abstratcs
 {
     public interface IAppointmentProxy
     {
-        Task<List<Appointment>> GetAppointments(int userId);
+        Task<List<Appointment>> GetAppointments(int userId, DateTime? date = null, string view = "year");
         Task<Job> GetJobById(int jobId);
         Task<GpsPoint> GetJobLocation(AddressInfo location);
         Task<bool> StartJob(int jobId, double? latitude, double? longitude);

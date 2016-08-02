@@ -1,8 +1,11 @@
+using System;
 using Acr.UserDialogs;
 using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.Locations;
 using Android.OS;
+using Android.Runtime;
 using Android.Util;
 using Android.Widget;
 using CallOfService.Mobile.Core.DI;
@@ -40,14 +43,20 @@ namespace CallOfService.Mobile.Droid
                 LocationApp.Current.LocationService.ProviderEnabled += HandleProviderEnabled;
                 LocationApp.Current.LocationService.StatusChanged += HandleStatusChanged;
             };
-            LocationApp.StartLocationService();
+            StartLocatoinService();
         }
 
         protected override void OnDestroy()
         {
             Log.Debug("MainActivity", "OnDestroy");
-            LocationApp.StopLocationService();
+            //LocationApp.StopLocationService();
             base.OnDestroy();
+        }
+
+        private void StartLocatoinService()
+        {
+            LocationApp.StopLocationService();
+            LocationApp.StartLocationService();
         }
 
         public void HandleLocationSentToServer(object sender, LocationChangedEventArgs e)

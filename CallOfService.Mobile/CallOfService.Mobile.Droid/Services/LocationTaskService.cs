@@ -38,7 +38,7 @@ namespace CallOfService.Mobile.Droid.Services
             var locationProvider = LocationManager.GetBestProvider(locationCriteria, true);
 
             Log.Debug("LocationTaskService", $"You are about to get location updates via {locationProvider}");
-            LocationManager.RequestLocationUpdates(locationProvider, TimeSpan.FromMinutes(15).Milliseconds, 50, this);
+            LocationManager.RequestLocationUpdates(locationProvider, TimeSpan.FromMinutes(9).Milliseconds, 50, this);
         }
 
         public override void OnDestroy()
@@ -155,7 +155,8 @@ namespace CallOfService.Mobile.Droid.Services
             get
             {
                 if (LocationServiceConnection.Binder == null)
-                    throw new Exception("Service not bound yet");
+                    return null;
+                    //throw new Exception("Service not bound yet");
                 return LocationServiceConnection.Binder.Service;
             }
         }
@@ -187,7 +188,14 @@ namespace CallOfService.Mobile.Droid.Services
         {
             if (LocationServiceConnection != null)
             {
-                Application.Context.UnbindService(LocationServiceConnection);
+                try
+                {
+                    Application.Context.UnbindService(LocationServiceConnection);
+                }
+                catch (Exception e)
+                {
+                    Log.Debug("LocationTaskService", $"Exception while stopping service: {e}");
+                }
             }
 
             Current.LocationService?.StopSelf();

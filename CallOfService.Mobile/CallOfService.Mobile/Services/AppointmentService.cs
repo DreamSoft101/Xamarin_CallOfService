@@ -25,13 +25,14 @@ namespace CallOfService.Mobile.Services
             _locationService = locationService;
         }
 
-        public async Task<bool> RetrieveAndSaveAppointments()
+        public async Task<bool> RetrieveAndSaveAppointments(DateTime? date = null)
         {
             var currentUser = await _userService.GetCurrentUser();
-            var appointments = await _appointmentProxy.GetAppointments(currentUser.UserId);
+            var appointments = await _appointmentProxy.GetAppointments(currentUser.UserId, date);
             if (appointments != null)
             {
 				appointments.ForEach(a => a.UpdateDates());
+                //ToDo: Diff and check last updated instead of delete all and re-insert
                 await _appointmentRepo.DeleteAll();
                 await _appointmentRepo.SaveAppointment(appointments);
                 return true;
@@ -41,7 +42,7 @@ namespace CallOfService.Mobile.Services
 
         public async Task<List<Appointment>> AppointmentsByDay(DateTime date)
         {
-            await RetrieveAndSaveAppointments();
+            await RetrieveAndSaveAppointments(date);
             return await _appointmentRepo.AppointmentsByDay(date);
         }
 

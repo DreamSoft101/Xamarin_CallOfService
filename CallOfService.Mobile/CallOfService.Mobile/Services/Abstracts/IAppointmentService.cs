@@ -7,7 +7,7 @@ namespace CallOfService.Mobile.Services.Abstracts
 {
     public interface IAppointmentService
     {
-        Task<bool> RetrieveAndSaveAppointments();
+        Task<bool> RetrieveAndSaveAppointments(DateTime? date = null);
         Task<List<Appointment>> AppointmentsByDay(DateTime date);
         Task<Appointment> GetAppointmentByJobId(int jobId);
         Task<Job> GetJobById(int jobId);

@@ -46,12 +46,15 @@ namespace CallOfService.Mobile.Features.Jobs
         public bool HasAppointments { get; set; }
         public bool HasNoAppointments { get; set; }
 
+        public bool CanNavigate => !IsRefreshing;
+
         public ICommand GoToNextDay
         {
             get
             {
                 return new Command(() =>
                 {
+                    _analyticsService.Track("Navigate to next day");
                     Date = Date.AddDays(1);
                     OnAppearing();
                 });
@@ -64,6 +67,7 @@ namespace CallOfService.Mobile.Features.Jobs
             {
                 return new Command(() =>
                 {
+                    _analyticsService.Track("Navigate to prev day");
                     Date = Date.AddDays(-1);
                     OnAppearing();
                 });
@@ -87,14 +91,10 @@ namespace CallOfService.Mobile.Features.Jobs
         {
             get
             {
-                return new Command(async () =>
+                return new Command(() =>
                 {
                     _analyticsService.Track("Refreshing Jobs");
-
-                    IsRefreshing = true;
-                    await _appointmentService.RetrieveAndSaveAppointments();
                     OnAppearing();
-                    IsRefreshing = false;
                 });
             }
         }
@@ -106,6 +106,9 @@ namespace CallOfService.Mobile.Features.Jobs
 
         public async void OnAppearing()
         {
+            if (IsRefreshing)
+                return;
+
             IsRefreshing = true;
             var appointments = await _appointmentService.AppointmentsByDay(Date);
             Appointments.Clear();

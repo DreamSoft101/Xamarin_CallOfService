@@ -56,5 +56,18 @@ namespace CallOfService.Mobile
                 });
             }
         }
+
+        public ICommand ShowSettingsCommand
+        {
+            get
+            {
+                return new Command(() =>
+                {
+                    _userDialogs.ShowLoading("Loading ...");
+                    this.Publish(new NavigateToSettings());
+                    _userDialogs.HideLoading();
+                });
+            }
+        }
     }
 }

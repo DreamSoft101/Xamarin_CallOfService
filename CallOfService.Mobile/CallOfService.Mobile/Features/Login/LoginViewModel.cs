@@ -1,5 +1,7 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 using Acr.UserDialogs;
+using CallOfService.Mobile.Core.Networking;
 using CallOfService.Mobile.Core.SystemServices;
 using CallOfService.Mobile.Services.Abstracts;
 using CallOfService.Mobile.UI;
@@ -46,6 +48,53 @@ namespace CallOfService.Mobile.Features.Login
                     }
                     else
                         ShowErrorMessage = true;
+                });
+            }
+        }
+
+        public ICommand ChangeServerUrlCommand
+        {
+            get
+            {
+                return new Command(async () =>
+                {
+                    var currentUrlString = Helpers.Settings.ServerUrl;
+                    var currentUrl = new Uri(currentUrlString);
+                    var currentDomain = currentUrl.Host;
+
+                    var result = await _userDialogs.PromptAsync(new PromptConfig
+                    {
+                        Title = "Server Host",
+                        Message = "Only for custom plans",
+                        Text = currentDomain,
+                        //Placeholder = "Placeholder",
+                        InputType = InputType.Default,
+                        OkText = "Save",
+                        CancelText = "Cancel/Reset"
+                    });
+                    
+                    if (!result.Ok)
+                        Helpers.Settings.ServerUrl = UrlConstants.BaseUrlDefault;
+                    else if (result.Value.ToLower() != Helpers.Settings.ServerUrl)
+                    {
+                        var domain = result.Value.ToLower();
+                        var baseUrl = $"https://{domain}/api/";
+                        try
+                        {
+                            new Uri(baseUrl);
+                        }
+                        catch (Exception)
+                        {
+                            _userDialogs.ShowError("Provided host is not valid.");
+                        }
+                        var isValid = await BaseProxy.IsValidBaseUrl(baseUrl);
+                        if(isValid)
+                            Helpers.Settings.ServerUrl = baseUrl;
+                        else
+                        {
+                            _userDialogs.ShowError("Provided host is not valid.");
+                        }
+                    }
                 });
             }
         }

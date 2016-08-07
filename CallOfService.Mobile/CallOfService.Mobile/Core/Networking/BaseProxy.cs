@@ -14,43 +14,15 @@ namespace CallOfService.Mobile.Core.Networking
 {
     public class BaseProxy
     {
-        protected readonly ILogger Logger;
         private readonly IUserService _userService;
+        protected readonly ILogger Logger;
         protected HttpClient Client;
 
         public BaseProxy(ILogger logger, IUserService userService)
         {
             Logger = logger;
             _userService = userService;
-            CreateHttpClient();
-        }
-
-        protected void CreateHttpClient(int minutes = 1, bool useTokenExpirationHandler = true, bool emptyBaseUrl = false)
-        {
-            var serverUri = new Uri(UrlConstants.BaseUrl);
-
-            HttpClient httpClient;
-
-            if (useTokenExpirationHandler)
-                httpClient = new HttpClient(new TokenExpirationHandler())
-                {
-                    BaseAddress = emptyBaseUrl ? null : serverUri,
-                    Timeout = new TimeSpan(0, minutes, 0),
-                };
-            else
-                httpClient = new HttpClient(new NativeMessageHandler())
-                {
-                    BaseAddress = emptyBaseUrl ? null : serverUri,
-                    Timeout = new TimeSpan(0, minutes, 0),
-                };
-
-            var userCredentials = _userService.GetUserCredentials();
-            if (userCredentials != null)
-            {
-                httpClient.DefaultRequestHeaders.Add("Token-Id", userCredentials.Token);
-            }
-
-			Client = httpClient;
+            //CreateHttpClient();
         }
 
         protected async Task<T> GetAsync<T>(string url, int timeOutMinutes = 1, T defaultValue = null) where T : class
@@ -251,7 +223,6 @@ namespace CallOfService.Mobile.Core.Networking
             return CrossConnectivity.Current.IsConnected;
         }
 
-
         protected void LogResponse(HttpResponseMessage responseMessage, string content, bool logSuccessfulResponse = true)
         {
             if (responseMessage.StatusCode != HttpStatusCode.Created &&
@@ -277,6 +248,65 @@ namespace CallOfService.Mobile.Core.Networking
         protected void LogRequest(string requestPayload)
         {
             Logger.WriteInfo(requestPayload);
+        }
+
+        private void CreateHttpClient(int minutes = 1, bool useTokenExpirationHandler = true, bool emptyBaseUrl = false)
+        {
+            var serverUri = new Uri(Helpers.Settings.ServerUrl);
+            //var serverUri = new Uri(UrlConstants.BaseUrlDefault);
+
+            HttpClient httpClient;
+
+            if (useTokenExpirationHandler)
+                httpClient = new HttpClient(new TokenExpirationHandler())
+                {
+                    BaseAddress = emptyBaseUrl ? null : serverUri,
+                    Timeout = new TimeSpan(0, minutes, 0),
+                };
+            else
+                httpClient = new HttpClient(new NativeMessageHandler())
+                {
+                    BaseAddress = emptyBaseUrl ? null : serverUri,
+                    Timeout = new TimeSpan(0, minutes, 0),
+                };
+
+            var userCredentials = _userService.GetUserCredentials();
+            if (userCredentials != null)
+            {
+                httpClient.DefaultRequestHeaders.Add("Token-Id", userCredentials.Token);
+            }
+
+            Client = httpClient;
+        }
+
+        public static async Task<bool> IsValidBaseUrl(string baseUrl)
+        {
+            try
+            {
+                var healthUrl = $"{baseUrl}/{UrlConstants.HealthUrl}";
+                var httpClient = new HttpClient(new NativeMessageHandler())
+                {
+                    BaseAddress = new Uri(healthUrl),
+                    Timeout = TimeSpan.FromSeconds(10)
+                };
+                httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+
+                var responseMessage = await Policy
+                 .Handle<WebException>()
+                 .WaitAndRetryAsync
+                 (
+                   retryCount: 5,
+                   sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))
+                 )
+                 .ExecuteAsync(async () => await httpClient.GetAsync(healthUrl));
+
+                var responseString = await responseMessage.Content.ReadAsStringAsync();
+                return responseString == "\"Healthy\"";
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

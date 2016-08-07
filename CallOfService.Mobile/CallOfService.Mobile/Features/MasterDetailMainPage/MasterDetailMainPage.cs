@@ -16,14 +16,14 @@ namespace CallOfService.Mobile
 
 			NavigationPage.SetHasNavigationBar(this, false);
 
-			var mainMenuPage = new MainMenuPage()
+			var mainMenuPage = new MainMenuPage
 			{
 				Title = "Call of Service",
 				Icon = "MenuIcon.png",
 				BindingContext = DependencyResolver.Resolve<MainMenuViewModel>()
 			};
 
-			MasterBehavior = MasterBehavior.Default;
+			MasterBehavior = MasterBehavior.Popover;
 			IsPresented = false;
 			Master = mainMenuPage;
 			Detail = new NavigationPage(new DashboardPage())

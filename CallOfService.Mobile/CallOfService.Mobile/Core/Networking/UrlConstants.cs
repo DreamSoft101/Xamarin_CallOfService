@@ -2,7 +2,8 @@ namespace CallOfService.Mobile.Core.Networking
 {
     public class UrlConstants
     {
-        public static string BaseUrl = "https://dashboard.callofservice.com/api/";
+        public const string BaseUrlDefault = "https://dashboard.callofservice.com/api/";
+        public const string HealthUrl = "health";
         public const string LoginUrl = "auth/login";
 		public const string LogoutUrl = "auth/logout";
         public const string AppointmentsUrl = "appointments";

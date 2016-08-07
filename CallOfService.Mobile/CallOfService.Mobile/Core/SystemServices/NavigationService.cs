@@ -6,6 +6,7 @@ using CallOfService.Mobile.Features.Welcome;
 using Xamarin.Forms;
 using CallOfService.Mobile.Features.Login;
 using System.Linq;
+using CallOfService.Mobile.Features.Settings;
 
 namespace CallOfService.Mobile.Core.SystemServices
 {
@@ -67,9 +68,14 @@ namespace CallOfService.Mobile.Core.SystemServices
             return MainNavigation.PushAsync(CreateAndBind<MasterDetailMainPage>(new object()));
         }
 
-        public static Task NaviGateToLoginPage()
+        public static Task NavigateToLoginPage()
         {
             return MainNavigation.PushAsync(CreateAndBind<LoginPage>(DependencyResolver.Resolve<LoginViewModel>()));
+        }
+
+        public static Task NavigateToSettingsPage()
+        {
+            return MainNavigation.PushAsync(CreateAndBind<SettingsPage>(DependencyResolver.Resolve<SettingsViewModel>()));
         }
 
         public static bool IsJobDetailsPresent()

@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CallOfService.Mobile.Core;
 using CallOfService.Mobile.Core.DI;
@@ -25,10 +21,13 @@ namespace CallOfService.Mobile
             this.Subscribe<Logout>(async m =>
             {
                 NavigationService.MainNavigation = NavigationService.Navigation;
-                await NavigationService.NaviGateToLoginPage();
-                //var loginPage = new LoginPage { BindingContext = DependencyResolver.Resolve<LoginViewModel> () };
-                //MainPage = new NavigationPage (loginPage);
-                //NavigationService.Navigation = MainPage.Navigation;
+                await NavigationService.NavigateToLoginPage();
+            });
+
+            this.Subscribe<NavigateToSettings>(async m =>
+            {
+                NavigationService.MainNavigation = NavigationService.Navigation;
+                await NavigationService.NavigateToSettingsPage();
             });
         }
 

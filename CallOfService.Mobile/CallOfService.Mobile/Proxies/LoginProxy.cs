@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using CallOfService.Mobile.Core.Networking;
@@ -22,7 +23,14 @@ namespace CallOfService.Mobile.Proxies
             var stringContent = new StringContent(JsonConvert.SerializeObject(new {username = userName, password = password}), Encoding.UTF8, "application/json");
             var responseString = await PostStringAsync(url, stringContent, 1, false);
 
-            return string.IsNullOrEmpty(responseString) ? null : JsonConvert.DeserializeObject<UserToken>(responseString);
+            try
+            {
+                return string.IsNullOrEmpty(responseString) ? null : JsonConvert.DeserializeObject<UserToken>(responseString);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public async Task<bool> Logout()

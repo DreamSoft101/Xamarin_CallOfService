@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Acr.UserDialogs;
-using CallOfService.Mobile.Core.DI;
-using CallOfService.Mobile.Core.SystemServices;
-using CallOfService.Mobile.Messages;
-using CallOfService.Mobile.Services.Abstracts;
-using PubSub;
+﻿using System.Collections.Generic;
 using Xamarin.Forms;
 
 namespace CallOfService.Mobile
@@ -20,11 +13,11 @@ namespace CallOfService.Mobile
             ListViewMenu.BackgroundColor = Color.FromHex("#F5F5F5");
 
             ListViewMenu.ItemsSource = new List<MenuItem>
-                {
-                    new MenuItem { Text = "Log Out" },
-                    new MenuItem { Text = "Jobs" }
-                };
-
+            {
+                new MenuItem {Text = "Log Out"},
+                new MenuItem {Text = "Jobs"},
+                //new MenuItem {Text = "Settings"}
+            };
 
             ListViewMenu.SelectedItem = null;
 
@@ -41,6 +34,10 @@ namespace CallOfService.Mobile
                 {
                     ((MainMenuViewModel)BindingContext).ShowJobsCommand.Execute(null);
                 }
+                //else if (((MenuItem)e.SelectedItem).Text == "Settings")
+                //{
+                //    ((MainMenuViewModel)BindingContext).ShowSettingsCommand.Execute(null);
+                //}
 
                 ListViewMenu.SelectedItem = null;
             };

@@ -30,11 +30,11 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.callofservice.mobile</string>
 	<key>CFBundleVersion</key>
-	<string>1.7</string>
+	<string>1.8</string>
 	<key>CFBundleIconFiles</key>
 	<array/>
 	<key>CFBundleShortVersionString</key>
-	<string>1.7</string>
+	<string>1.8</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIBackgroundModes</key>

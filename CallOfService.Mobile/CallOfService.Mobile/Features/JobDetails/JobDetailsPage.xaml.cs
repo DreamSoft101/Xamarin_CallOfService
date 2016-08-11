@@ -22,6 +22,7 @@ namespace CallOfService.Mobile.Features.JobDetails
                 });
 
                 var latlongdegrees = 360 / (Math.Pow(2, 15));
+
                 Map.MoveToRegion(new MapSpan(m.GpsPoint.Position, latlongdegrees, latlongdegrees));
             });
         }

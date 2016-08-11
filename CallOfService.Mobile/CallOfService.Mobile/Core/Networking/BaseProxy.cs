@@ -22,7 +22,6 @@ namespace CallOfService.Mobile.Core.Networking
         {
             Logger = logger;
             _userService = userService;
-            //CreateHttpClient();
         }
 
         protected async Task<T> GetAsync<T>(string url, int timeOutMinutes = 1, T defaultValue = null) where T : class
@@ -50,7 +49,8 @@ namespace CallOfService.Mobile.Core.Networking
             }
             catch (Exception e)
             {
-                Logger.WriteError(e);
+                var message = $"Error while requesting url: {url}";
+                Logger.WriteError(message, exception: e);
                 return defaultValue;
             }
         }
@@ -80,7 +80,8 @@ namespace CallOfService.Mobile.Core.Networking
             }
             catch (Exception e)
             {
-                Logger.WriteError(e);
+                var message = $"Error while requesting url: {url}";
+                Logger.WriteError(message, exception: e);
                 return null;
             }
         }
@@ -117,7 +118,8 @@ namespace CallOfService.Mobile.Core.Networking
             }
             catch (Exception e)
             {
-                Logger.WriteError(e);
+                var message = $"Error while posting url: {url}";
+                Logger.WriteError(message, exception: e);
                 return null;
             }
         }
@@ -154,7 +156,8 @@ namespace CallOfService.Mobile.Core.Networking
             }
             catch (Exception e)
             {
-                Logger.WriteError(e);
+                var message = $"Error while posting url: {url}";
+                Logger.WriteError(message, exception: e);
                 return false;
             }
         }
@@ -206,14 +209,16 @@ namespace CallOfService.Mobile.Core.Networking
                     }
                     catch (Exception e)
                     {
-                        Logger.WriteError(e);
+                        var message = $"Error while posting url: {url}";
+                        Logger.WriteError(message, exception: e);
                         return false;
                     }
                 }
             }
             catch (Exception e)
             {
-                Logger.WriteError(e);
+                var message = $"Error while posting url: {url}";
+                Logger.WriteError(message, exception: e);
                 return false;
             }
         }
@@ -223,7 +228,7 @@ namespace CallOfService.Mobile.Core.Networking
             return CrossConnectivity.Current.IsConnected;
         }
 
-        protected void LogResponse(HttpResponseMessage responseMessage, string content, bool logSuccessfulResponse = true)
+        protected void LogResponse(HttpResponseMessage responseMessage, string content, bool logSuccessfulResponse = false)
         {
             if (responseMessage.StatusCode != HttpStatusCode.Created &&
                 responseMessage.StatusCode != HttpStatusCode.OK)
@@ -253,8 +258,6 @@ namespace CallOfService.Mobile.Core.Networking
         private void CreateHttpClient(int minutes = 1, bool useTokenExpirationHandler = true, bool emptyBaseUrl = false)
         {
             var serverUri = new Uri(Helpers.Settings.ServerUrl);
-            //var serverUri = new Uri(UrlConstants.BaseUrlDefault);
-
             HttpClient httpClient;
 
             if (useTokenExpirationHandler)

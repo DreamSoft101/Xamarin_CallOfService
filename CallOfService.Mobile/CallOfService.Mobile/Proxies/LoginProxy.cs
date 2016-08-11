@@ -27,8 +27,9 @@ namespace CallOfService.Mobile.Proxies
             {
                 return string.IsNullOrEmpty(responseString) ? null : JsonConvert.DeserializeObject<UserToken>(responseString);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.WriteError("Exceptoin while logging in", exception: e);
                 return null;
             }
         }

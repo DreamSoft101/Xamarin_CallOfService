@@ -6,6 +6,7 @@ using Android.Locations;
 using Android.OS;
 using Android.Util;
 using CallOfService.Mobile.Core.DI;
+using CallOfService.Mobile.Core.SystemServices;
 using CallOfService.Mobile.Services.Abstracts;
 
 namespace CallOfService.Mobile.Droid.Services
@@ -37,7 +38,6 @@ namespace CallOfService.Mobile.Droid.Services
             };
             var locationProvider = LocationManager.GetBestProvider(locationCriteria, true);
 
-            Log.Debug("LocationTaskService", $"You are about to get location updates via {locationProvider}");
             LocationManager.RequestLocationUpdates(locationProvider, TimeSpan.FromMinutes(9).Milliseconds, 50, this);
         }
 
@@ -67,26 +67,31 @@ namespace CallOfService.Mobile.Droid.Services
                 }
                 catch (Exception e)
                 {
-                    Log.Debug("LocationTaskService", $"Exception while sending location update: {e}");
+                    try
+                    {
+                        var logger = DependencyResolver.Resolve<ILogger>();
+                        logger.WriteWarning("Exception while handling location changed", exception: e);
+                    }
+                    catch
+                    {
+
+                    }
                 }
             });
         }
 
         public void OnProviderDisabled(string provider)
         {
-            Log.Debug("LocationTaskService", $"Provider {provider} is disabled");
             ProviderDisabled(this, new ProviderDisabledEventArgs(provider));
         }
 
         public void OnProviderEnabled(string provider)
         {
-            Log.Debug("LocationTaskService", $"Provider {provider} is enabled");
             ProviderEnabled(this, new ProviderEnabledEventArgs(provider));
         }
 
         public void OnStatusChanged(string provider, Availability status, Bundle extras)
         {
-            Log.Debug("LocationTaskService", $"Provider {provider} has changed its status to {status}");
             StatusChanged(this, new StatusChangedEventArgs(provider, status, extras));
         }
     }
@@ -123,6 +128,16 @@ namespace CallOfService.Mobile.Droid.Services
                 Binder.IsBound = true;
 
                 ServiceConnected(this, new ServiceConnectedEventArgs { Binder = service });
+
+                try
+                {
+                    var logger = DependencyResolver.Resolve<ILogger>();
+                    logger.WriteInfo("Starting location service...");
+                }
+                catch
+                {
+
+                }
 
                 serviceBinder.Service.StartLocationUpdates();
             }
@@ -167,7 +182,6 @@ namespace CallOfService.Mobile.Droid.Services
 
             LocationServiceConnection.ServiceConnected += (sender, e) => 
             {
-                Log.Debug("LocationApp", "Service Connected");
                 // we will use this event to notify MainActivity when to start updating the UI
                 LocationServiceConnected(this, e);
             };
@@ -194,7 +208,15 @@ namespace CallOfService.Mobile.Droid.Services
                 }
                 catch (Exception e)
                 {
-                    Log.Debug("LocationTaskService", $"Exception while stopping service: {e}");
+                    try
+                    {
+                        var logger = DependencyResolver.Resolve<ILogger>();
+                        logger.WriteWarning("Exception while stopping location service", exception: e);
+                    }
+                    catch
+                    {
+                        
+                    }
                 }
             }
 

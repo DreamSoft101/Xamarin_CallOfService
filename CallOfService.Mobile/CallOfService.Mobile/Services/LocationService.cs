@@ -42,7 +42,7 @@ namespace CallOfService.Mobile.Services
             }
             catch (Exception e)
             {
-                _logger.WriteError(e);
+                _logger.WriteError("Exceptoin while getting current location", exception: e);
             }
 
             return null;
@@ -102,13 +102,13 @@ namespace CallOfService.Mobile.Services
             }
             catch (Exception e)
             {
-                _logger.WriteError(e);
+                _logger.WriteError("Exceptoin while sending current location", exception: e);
                 return false;
             }
             return false;
         }
 
-        public static async Task<bool> IsWithinWorkingHours(ILocationProxy locationProxy, ILogger logger)
+        public async Task<bool> IsWithinWorkingHours(ILocationProxy locationProxy, ILogger logger)
         {
             var defaultDayStart = TimeSpan.FromHours(6);
             var defaultDayEnd = TimeSpan.FromHours(20);
@@ -135,7 +135,7 @@ namespace CallOfService.Mobile.Services
             }
             catch (Exception e)
             {
-                logger.WriteError(e);
+                _logger.WriteError("Exceptoin while checking working hours", exception: e);
                 return IsWithinRange(currentTimeOfDay, defaultDayStart, defaultDayEnd);
             }
         }

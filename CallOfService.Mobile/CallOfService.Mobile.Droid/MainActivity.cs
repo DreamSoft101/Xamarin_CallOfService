@@ -67,7 +67,6 @@ namespace CallOfService.Mobile.Droid
 
         protected override void OnDestroy()
         {
-            Log.Debug("MainActivity", "OnDestroy");
             //LocationApp.StopLocationService();
             base.OnDestroy();
         }
@@ -80,7 +79,6 @@ namespace CallOfService.Mobile.Droid
 
         public void HandleLocationSentToServer(object sender, LocationChangedEventArgs e)
         {
-            Log.Debug("MainActivity", "Location sent to server toast");
             RunOnUiThread(() =>
             {
                 Toast.MakeText(this, "Current location sent to Call of Service", ToastLength.Long).Show();
@@ -89,22 +87,18 @@ namespace CallOfService.Mobile.Droid
 
         public void HandleLocationChanged(object sender, LocationChangedEventArgs e)
         {
-            Log.Debug("MainActivity", "Location updated");
         }
 
         public void HandleProviderDisabled(object sender, ProviderDisabledEventArgs e)
         {
-            Log.Debug("MainActivity", "Location provider disabled event raised");
         }
 
         public void HandleProviderEnabled(object sender, ProviderEnabledEventArgs e)
         {
-            Log.Debug("MainActivity", "Location provider enabled event raised");
         }
 
         public void HandleStatusChanged(object sender, StatusChangedEventArgs e)
         {
-            Log.Debug("MainActivity", "Location status changed, event raised");
         }
     }
 }

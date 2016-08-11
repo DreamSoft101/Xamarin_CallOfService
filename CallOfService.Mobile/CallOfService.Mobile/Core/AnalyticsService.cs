@@ -53,7 +53,7 @@ namespace CallOfService.Mobile.Core
             }
             catch (Exception e)
             {
-                _logger.WriteWarning(e);
+                _logger.WriteWarning("Exceptoin while identifying user to segment", exception: e);
             }
         }
 
@@ -72,7 +72,7 @@ namespace CallOfService.Mobile.Core
             }
             catch (Exception e)
             {
-                _logger.WriteError(e);
+                _logger.WriteError("Exceptoin while tracking user action to segment", exception: e);
             }
         }
 
@@ -91,7 +91,7 @@ namespace CallOfService.Mobile.Core
             }
             catch (Exception e)
             {
-                _logger.WriteWarning(e);
+                _logger.WriteWarning("Exceptoin while tracking page visit user to segment", exception: e);
             }
         }
 

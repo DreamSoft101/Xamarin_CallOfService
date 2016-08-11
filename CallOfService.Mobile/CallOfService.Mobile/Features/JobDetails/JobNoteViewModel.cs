@@ -140,7 +140,7 @@ namespace CallOfService.Mobile.Features.JobDetails
             }
             catch (Exception ex)
             {
-                _logger.WriteError(ex);
+                _logger.WriteError("Exceptoin while selecting a photo", exception: ex);
 
                 _analyticsService.Track("Error Selecting a photo", new Properties
                 {
@@ -170,7 +170,7 @@ namespace CallOfService.Mobile.Features.JobDetails
             }
             catch (Exception ex)
             {
-                _logger.WriteError(ex);
+                _logger.WriteError("Exceptoin while taking a photo", exception: ex);
                 _analyticsService.Track("Error Taking a photo", new Properties
                 {
                     {"exception", ex}
@@ -202,7 +202,7 @@ namespace CallOfService.Mobile.Features.JobDetails
 			{
 			    try
 			    {
-			        _logger.WriteError(e);
+			        _logger.WriteError("Exceptoin while manipulating photo", exception: e);
 			        _analyticsService.Track("Error Compressing a photo", new Properties
 			        {
 			            {"exception", e}
@@ -218,7 +218,7 @@ namespace CallOfService.Mobile.Features.JobDetails
 			    }
 			    catch (Exception ex)
 			    {
-                    _logger.WriteError(ex);
+                    _logger.WriteError("Exceptoin while manipulating photo", exception: ex);
                     _analyticsService.Track("Error attaching a photo", new Properties
                     {
                         {"exception", ex}

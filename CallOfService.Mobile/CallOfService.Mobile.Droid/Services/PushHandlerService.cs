@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using WindowsAzure.Messaging;
+using CallOfService.Mobile.Core.DI;
+using CallOfService.Mobile.Core.SystemServices;
 
 [assembly: Permission(Name = "@PACKAGE_NAME@.permission.C2D_MESSAGE")]
 [assembly: UsesPermission(Name = "@PACKAGE_NAME@.permission.C2D_MESSAGE")]
@@ -42,12 +44,10 @@ namespace CallOfService.Mobile.Droid.Services
 
         public PushHandlerService() : base(NotificationConstants.SenderId)
         {
-            Log.Info(PushHandlerBroadcastReceiver.TAG, "PushHandlerService() constructor");
         }
 
         protected override void OnRegistered(Context context, string registrationId)
         {
-            Log.Verbose(PushHandlerBroadcastReceiver.TAG, "GCM Registered: " + registrationId);
             RegistrationID = registrationId;
 
             CreateNotification("PushHandlerService-GCM Registered...", "The device has been Registered!");
@@ -59,7 +59,15 @@ namespace CallOfService.Mobile.Droid.Services
             }
             catch (Exception ex)
             {
-                Log.Error(PushHandlerBroadcastReceiver.TAG, ex.Message);
+                try
+                {
+                    var logger = DependencyResolver.Resolve<ILogger>();
+                    logger.WriteError("Exception while un-registering Gcm Service", exception: ex);
+                }
+                catch
+                {
+
+                }
             }
 
             var tags = new List<string> { "SampleFieldWorker-1" };
@@ -71,14 +79,20 @@ namespace CallOfService.Mobile.Droid.Services
             }
             catch (Exception ex)
             {
-                Log.Error(PushHandlerBroadcastReceiver.TAG, ex.Message);
+                try
+                {
+                    var logger = DependencyResolver.Resolve<ILogger>();
+                    logger.WriteError("Exception while registering Gcm service", exception: ex);
+                }
+                catch
+                {
+
+                }
             }
         }
 
         protected override void OnMessage(Context context, Intent intent)
         {
-            Log.Info(PushHandlerBroadcastReceiver.TAG, "GCM Message Received!");
-
             var msg = new StringBuilder();
 
             if (intent != null && intent.Extras != null)
@@ -100,21 +114,35 @@ namespace CallOfService.Mobile.Droid.Services
 
         protected override void OnUnRegistered(Context context, string registrationId)
         {
-            Log.Verbose(PushHandlerBroadcastReceiver.TAG, "GCM Unregistered: " + registrationId);
-
             CreateNotification("GCM Unregistered...", "The device has been unregistered!");
         }
 
         protected override bool OnRecoverableError(Context context, string errorId)
         {
-            Log.Warn(PushHandlerBroadcastReceiver.TAG, "Recoverable Error: " + errorId);
+            try
+            {
+                var logger = DependencyResolver.Resolve<ILogger>();
+                logger.WriteWarning("Recoverable error while handling Gcm message", $"Error Id: {errorId}");
+            }
+            catch
+            {
+
+            }
 
             return base.OnRecoverableError(context, errorId);
         }
 
         protected override void OnError(Context context, string errorId)
         {
-            Log.Error(PushHandlerBroadcastReceiver.TAG, "GCM Error: " + errorId);
+            try
+            {
+                var logger = DependencyResolver.Resolve<ILogger>();
+                logger.WriteError("Error while handling Gcm message", $"Error Id: {errorId}");
+            }
+            catch
+            {
+
+            }
         }
 
         private void CreateNotification(string title, string desc)

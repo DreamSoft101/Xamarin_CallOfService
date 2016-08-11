@@ -63,6 +63,7 @@ namespace CallOfService.Mobile.Droid
 			global::AndroidHUD.Resource.Styleable.ProgressWheel_ahText = global::CallOfService.Mobile.Droid.Resource.Styleable.ProgressWheel_ahText;
 			global::AndroidHUD.Resource.Styleable.ProgressWheel_ahTextColor = global::CallOfService.Mobile.Droid.Resource.Styleable.ProgressWheel_ahTextColor;
 			global::AndroidHUD.Resource.Styleable.ProgressWheel_ahTextSize = global::CallOfService.Mobile.Droid.Resource.Styleable.ProgressWheel_ahTextSize;
+			global::Gcm.Client.Resource.String.library_name = global::CallOfService.Mobile.Droid.Resource.String.library_name;
 			global::HockeyApp.Resource.Color.hockeyapp_background_header = global::CallOfService.Mobile.Droid.Resource.Color.hockeyapp_background_header;
 			global::HockeyApp.Resource.Color.hockeyapp_background_light = global::CallOfService.Mobile.Droid.Resource.Color.hockeyapp_background_light;
 			global::HockeyApp.Resource.Color.hockeyapp_background_white = global::CallOfService.Mobile.Droid.Resource.Color.hockeyapp_background_white;

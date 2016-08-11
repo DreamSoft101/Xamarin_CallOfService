@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Polly;
 using SQLite.Net.Async;
 
 namespace CallOfService.Mobile.Database
@@ -17,47 +18,130 @@ namespace CallOfService.Mobile.Database
 
         public Task CreateTable()
         {
-            return _sqLiteAsyncConnection.CreateTableAsync<T>();
+            var result = Policy
+                  .Handle<Exception>()
+                  .WaitAndRetryAsync
+                  (
+                    retryCount: 3,
+                    sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(1),
+                    onRetryAsync: (exception, span, retryCount, context) => retryCount == 2 ? _sqLiteAsyncConnection.DropTableAsync<T>() : Task.Delay(1)
+                  )
+                  .ExecuteAsync(() => _sqLiteAsyncConnection.CreateTableAsync<T>());
+
+            return result;
         }
 
         public Task<List<T>> GetAllAsync()
         {
-            return _sqLiteAsyncConnection.Table<T>().ToListAsync();
+            var result = Policy
+                 .Handle<Exception>()
+                 .WaitAndRetryAsync
+                 (
+                   retryCount: 3,
+                   sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(1)
+                 )
+                 .ExecuteAsync(() => _sqLiteAsyncConnection.Table<T>().ToListAsync());
+
+            return result;
         }
 
         public Task<T> GetById(long primaryKey)
         {
-            return _sqLiteAsyncConnection.GetAsync<T>(primaryKey);
+            var result = Policy
+                 .Handle<Exception>()
+                 .WaitAndRetryAsync
+                 (
+                   retryCount: 3,
+                   sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(1)
+                 )
+                 .ExecuteAsync(() => _sqLiteAsyncConnection.GetAsync<T>(primaryKey));
+
+            return result;
         }
 
         public Task<List<T>> Get(Expression<Func<T, bool>> predicate)
         {
-            return _sqLiteAsyncConnection.Table<T>().Where(predicate).ToListAsync();
+            var result = Policy
+                 .Handle<Exception>()
+                 .WaitAndRetryAsync
+                 (
+                   retryCount: 3,
+                   sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(1)
+                 )
+                 .ExecuteAsync(() => _sqLiteAsyncConnection.Table<T>().Where(predicate).ToListAsync());
+
+            return result;
         }
 
         public Task<int> Add(T obj)
         {
-            return _sqLiteAsyncConnection.InsertAsync(obj);
+            var result = Policy
+                 .Handle<Exception>()
+                 .WaitAndRetryAsync
+                 (
+                   retryCount: 3,
+                   sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(1)
+                 )
+                 .ExecuteAsync(() => _sqLiteAsyncConnection.InsertAsync(obj));
+
+            return result;
         }
 
         public Task<int> Add(List<T> objects)
         {
-            return _sqLiteAsyncConnection.InsertAllAsync(objects);
+            var result = Policy
+                 .Handle<Exception>()
+                 .WaitAndRetryAsync
+                 (
+                   retryCount: 3,
+                   sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(1)
+                 )
+                 .ExecuteAsync(() => _sqLiteAsyncConnection.InsertAllAsync(objects));
+
+            return result;
         }
 
         public Task<int> Update(T obj)
         {
-            return _sqLiteAsyncConnection.UpdateAsync(obj);
+            var result = Policy
+                .Handle<Exception>()
+                .WaitAndRetryAsync
+                (
+                  retryCount: 3,
+                  sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(1)
+                )
+                .ExecuteAsync(() => _sqLiteAsyncConnection.UpdateAsync(obj));
+
+            return result;
         }
 
         public Task<int> Delete(long primaryKey)
         {
-            return _sqLiteAsyncConnection.DeleteAsync<T>(primaryKey);
+            var result = Policy
+               .Handle<Exception>()
+               .WaitAndRetryAsync
+               (
+                 retryCount: 3,
+                 sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(1)
+               )
+               .ExecuteAsync(() => _sqLiteAsyncConnection.DeleteAsync<T>(primaryKey));
+
+            return result;
         }
 
         public Task DeleteAll()
         {
-            return _sqLiteAsyncConnection.DeleteAllAsync<T>();
+            var result = Policy
+              .Handle<Exception>()
+              .WaitAndRetryAsync
+              (
+                retryCount: 3,
+                sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(1),
+                onRetryAsync: (exception, span, retryCount, context) => retryCount == 2 ? CreateTable() : Task.Delay(1)
+              )
+              .ExecuteAsync(() => _sqLiteAsyncConnection.DeleteAllAsync<T>());
+
+            return result;
         }
 
         public async Task ResetTableData(List<T> objects)
@@ -69,13 +153,30 @@ namespace CallOfService.Mobile.Database
 
         public Task<int> ResetTableIndex()
         {
-            return _sqLiteAsyncConnection.ExecuteAsync($"delete from sqlite_sequence where name='{TableName()}'");
+            var result = Policy
+              .Handle<Exception>()
+              .WaitAndRetryAsync
+              (
+                retryCount: 3,
+                sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(1)
+              )
+              .ExecuteAsync(() => _sqLiteAsyncConnection.ExecuteAsync($"delete from sqlite_sequence where name='{TableName()}'"));
+
+            return result;
         }
 
         public Task<int> GetTableIndex()
         {
-            return _sqLiteAsyncConnection.ExecuteScalarAsync<int>(
-                $"Select seq from sqlite_sequence where name='{TableName()}'");
+            var result = Policy
+              .Handle<Exception>()
+              .WaitAndRetryAsync
+              (
+                retryCount: 3,
+                sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(1)
+              )
+              .ExecuteAsync(() => _sqLiteAsyncConnection.ExecuteScalarAsync<int>($"Select seq from sqlite_sequence where name='{TableName()}'"));
+
+            return result;
         }
 
         public string TableName()

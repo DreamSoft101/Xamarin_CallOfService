@@ -5,13 +5,11 @@ using CallOfService.Mobile.Core.Networking;
 using CallOfService.Mobile.Core.SystemServices;
 using CallOfService.Mobile.Services.Abstracts;
 using CallOfService.Mobile.UI;
-using PropertyChanged;
 using Xamarin.Forms;
 
 namespace CallOfService.Mobile.Features.Login
 {
-    [ImplementPropertyChanged]
-    public class LoginViewModel : IViewAwareViewModel
+    public class LoginViewModel : ViewModelBase
     {
         private readonly ILoginService _loginService;
         private readonly IUserDialogs _userDialogs;
@@ -23,11 +21,33 @@ namespace CallOfService.Mobile.Features.Login
             Relogin = false;
         }
 
-        public bool Relogin { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
+        private bool _relogin;
+        public bool Relogin
+        {
+            get { return _relogin; }
+            set { SetPropertyValue(ref _relogin, value); }
+        }
 
-        public bool ShowErrorMessage { get; set; }
+        private string _userName;
+        public string Username
+        {
+            get { return _userName; }
+            set { SetPropertyValue(ref _userName, value); }
+        }
+
+        private string _password;
+        public string Password
+        {
+            get { return _password; }
+            set { SetPropertyValue(ref _password, value); }
+        }
+
+        private bool _showErrorMessage;
+        public bool ShowErrorMessage
+        {
+            get { return _showErrorMessage; }
+            set { SetPropertyValue(ref _showErrorMessage, value); }
+        }
 
         public ICommand LoginCommand
         {
@@ -97,18 +117,6 @@ namespace CallOfService.Mobile.Features.Login
                     }
                 });
             }
-        }
-
-        public void Dispose()
-        {
-        }
-
-        public void OnAppearing()
-        {
-        }
-
-        public void OnDisappearing()
-        {
         }
     }
 }

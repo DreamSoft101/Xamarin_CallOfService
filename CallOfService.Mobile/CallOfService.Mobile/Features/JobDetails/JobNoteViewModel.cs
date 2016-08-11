@@ -5,12 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Acr.UserDialogs;
 using CallOfService.Mobile.Services.Abstracts;
-using CallOfService.Mobile.UI;
 using Xamarin.Forms;
 using System.Windows.Input;
 using CallOfService.Mobile.Core.SystemServices;
-using PropertyChanged;
 using CallOfService.Mobile.Core;
+using CallOfService.Mobile.UI;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
 using PubSub;
@@ -18,8 +17,7 @@ using Segment.Model;
 
 namespace CallOfService.Mobile.Features.JobDetails
 {
-    [ImplementPropertyChanged]
-    public class JobNoteViewModel : IViewAwareViewModel
+    public class JobNoteViewModel : ViewModelBase
     {
         private readonly IAppointmentService _appointmentService;
         private readonly IUserDialogs _userDialogs;
@@ -54,11 +52,40 @@ namespace CallOfService.Mobile.Features.JobDetails
             }
         }
 
-        public string Title { get; set; }
-        public int JobNumber { get; set; }
-        public string PageTitle { get; set; }
-        public string NewNoteText { get; set; }
-        public bool HasAttachment { get; set; }
+        private string _title;
+        public string Title
+        {
+            get { return _title; }
+            set { SetPropertyValue(ref _title, value); }
+        }
+
+        private int _jobNumber;
+        public int JobNumber
+        {
+            get { return _jobNumber; }
+            set { SetPropertyValue(ref _jobNumber, value); }
+        }
+
+        private string _pageTitle;
+        public string PageTitle
+        {
+            get { return _pageTitle; }
+            set { SetPropertyValue(ref _pageTitle, value); }
+        }
+
+        private string _newNoteText;
+        public string NewNoteText
+        {
+            get { return _newNoteText; }
+            set { SetPropertyValue(ref _newNoteText, value); RaisePropertyChanged("CanAddNote"); }
+        }
+
+        private bool _hasAttachment;
+        public bool HasAttachment
+        {
+            get { return _hasAttachment; }
+            set { SetPropertyValue(ref _hasAttachment, value); RaisePropertyChanged("CanAddNote"); }
+        }
 
         public bool CanAddNote => !string.IsNullOrWhiteSpace(NewNoteText) || Attachments.Any() || HasAttachment;
 
@@ -239,19 +266,15 @@ namespace CallOfService.Mobile.Features.JobDetails
             };
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             Attachments?.Clear();
             AttachmentsStreams?.Clear();
         }
 
-        public void OnAppearing()
+        public override void OnAppearing()
         {
             _analyticsService.Screen("Job Note");
-        }
-
-        public void OnDisappearing()
-        {
         }
     }
 }

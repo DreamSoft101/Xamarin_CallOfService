@@ -1,10 +1,8 @@
 ﻿using CallOfService.Mobile.UI;
-using PropertyChanged;
 
 namespace CallOfService.Mobile.Features.Settings
 {
-    [ImplementPropertyChanged]
-    public class SettingsViewModel : IViewAwareViewModel
+    public class SettingsViewModel : ViewModelBase
     {
         public bool SendDeviceLocation
         {
@@ -19,18 +17,6 @@ namespace CallOfService.Mobile.Features.Settings
 
                 Helpers.Settings.EnableLocation = value;
             }
-        }
-
-        public void Dispose()
-        {
-        }
-
-        public void OnAppearing()
-        {
-        }
-
-        public void OnDisappearing()
-        {
         }
     }
 }

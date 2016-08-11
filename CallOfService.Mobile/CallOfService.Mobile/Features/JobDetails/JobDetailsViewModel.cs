@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading.Tasks;
 using Acr.UserDialogs;
@@ -13,14 +14,12 @@ using Xamarin.Forms;
 using System.Windows.Input;
 using CallOfService.Mobile.Core.SystemServices;
 using CallOfService.Mobile.Messages;
-using PropertyChanged;
 using CallOfService.Mobile.Core;
 using Plugin.Connectivity;
 
 namespace CallOfService.Mobile.Features.JobDetails
 {
-    [ImplementPropertyChanged]
-    public class JobDetailsViewModel : IViewAwareViewModel
+    public class JobDetailsViewModel : ViewModelBase
     {
 		private readonly IAppointmentService _appointmentService;
         private readonly IUserDialogs _userDialogs;
@@ -33,6 +32,8 @@ namespace CallOfService.Mobile.Features.JobDetails
             _analyticsService = analyticsService;
             Notes = new ObservableCollection<NoteViewModel>();
             CustomFields = new ObservableCollection<CustomFieldViewModel>();
+            PhoneNumbers = new ObservableCollection<string>();
+            Emails = new ObservableCollection<string>();
             this.Subscribe<ViewJobDetails>(async m => await LoadJobeDetails(m.JobId));
             DataLoaded = false;
 
@@ -53,83 +54,185 @@ namespace CallOfService.Mobile.Features.JobDetails
             }
         }
 
-		public bool IsOnline { get; set; }
+        private bool _isOnline;
+        public bool IsOnline
+        {
+            get { return _isOnline; }
+            set { SetPropertyValue(ref _isOnline, value); RaisePropertyChanged("IsOffline"); }
+        }
+
 		public bool IsOffline => !IsOnline;
 
-        public bool HasPaddingTop { get; set; }
-
-        public bool DataLoaded { get; set; }
-
-        public DateTime Date { get; set; }
-
-        public TimeSpan StartTime { get; set; }
-
-        public TimeSpan EndTime { get; set; }
-
-        public string TimeRangeFormat { get; set; }
-
-        public string DateTimeFormat { get; set; }
-
-        public string Location { get; set; }
-
-        public string Title { get; set; }
-
-        public string Description { get; set; }
-
-        public string CustomerName { get; set; }
-
-        public string Contact { get; set; }
-
-        public bool ShowMap { get; set; }
-
-        public bool HasContact
+        private bool _hasPaddingTop;
+        public bool HasPaddingTop
         {
-            get { return !string.IsNullOrEmpty(Contact); }
+            get { return _hasPaddingTop; }
+            set { SetPropertyValue(ref _hasPaddingTop, value); }
         }
 
-        public bool HasNoContact
+        private bool _dataLoaded;
+        public bool DataLoaded
         {
-            get { return !HasContact; }
+            get { return _dataLoaded; }
+            set { SetPropertyValue(ref _dataLoaded, value); }
         }
 
-        public bool HasDescription
+        private DateTime _date;
+        public DateTime Date
         {
-            get { return !string.IsNullOrEmpty(Description); }
+            get { return _date; }
+            set { SetPropertyValue(ref _date, value); }
         }
 
-        public int JobNumber { get; set; }
-
-        public string Status { get; set; }
-
-        public string Strata { get; set; }
-
-        public ObservableCollection<NoteViewModel> Notes { get; set; }
-
-        public ObservableCollection<CustomFieldViewModel> CustomFields { get; set; }
-
-        public bool HasCustomFields
+        private TimeSpan _startTime;
+        public TimeSpan StartTime
         {
-            get { return CustomFields != null && CustomFields.Any(); }
+            get { return _startTime; }
+            set { SetPropertyValue(ref _startTime, value); }
         }
 
-        public bool HasNotes
+        private TimeSpan _endTime;
+        public TimeSpan EndTime
         {
-            get { return Notes != null && Notes.Any(); }
+            get { return _endTime; }
+            set { SetPropertyValue(ref _endTime, value); }
         }
 
-        public string Custom { get; set; }
+        private string _timeRangeFormat;
+        public string TimeRangeFormat
+        {
+            get { return _timeRangeFormat; }
+            set { SetPropertyValue(ref _timeRangeFormat, value); }
+        }
 
-        public GpsPoint GpsPoint { get; set; }
+        private string _dateTimeFormat;
+        public string DateTimeFormat
+        {
+            get { return _dateTimeFormat; }
+            set { SetPropertyValue(ref _dateTimeFormat, value); }
+        }
 
-        public string PageTitle { get; set; }
+        private string _location;
+        public string Location
+        {
+            get { return _location; }
+            set { SetPropertyValue(ref _location, value); }
+        }
 
-        public string ActionText { get; set; }
+        private string _title;
+        public string Title
+        {
+            get { return _title; }
+            set { SetPropertyValue(ref _title, value); RaisePropertyChanged("HasDescription"); }
+        }
 
-        public bool CanStartOrFinish { get; set; }
+        private string _description;
+        public string Description
+        {
+            get { return _description; }
+            set { SetPropertyValue(ref _description, value); }
+        }
 
-        public List<string> PhoneNumbers { get; set; }
+        private string _customerName;
+        public string CustomerName
+        {
+            get { return _customerName; }
+            set { SetPropertyValue(ref _customerName, value); }
+        }
 
-        public List<string> Emails { get; set; }
+        private string _contact;
+        public string Contact
+        {
+            get { return _contact; }
+            set { SetPropertyValue(ref _contact, value); RaisePropertyChanged("HasContact"); RaisePropertyChanged("HasNoContact"); }
+        }
+
+        private bool _showMap;
+        public bool ShowMap
+        {
+            get { return _showMap; }
+            set { SetPropertyValue(ref _showMap, value); }
+        }
+
+        public bool HasContact => !string.IsNullOrEmpty(Contact);
+
+        public bool HasNoContact => !HasContact;
+
+        public bool HasDescription => !string.IsNullOrEmpty(Description);
+
+        private int _jobNumber;
+        public int JobNumber
+        {
+            get { return _jobNumber; }
+            set { SetPropertyValue(ref _jobNumber, value); }
+        }
+
+        private string _status;
+        public string Status
+        {
+            get { return _status; }
+            set { SetPropertyValue(ref _status, value); }
+        }
+
+        private ObservableCollection<NoteViewModel> _notes;
+        public ObservableCollection<NoteViewModel> Notes
+        {
+            get { return _notes; }
+            set { SetPropertyValue(ref _notes, value); RaisePropertyChanged("HasNotes");}
+        }
+
+        private ObservableCollection<CustomFieldViewModel> _customFields;
+        public ObservableCollection<CustomFieldViewModel> CustomFields
+        {
+            get { return _customFields; }
+            set { SetPropertyValue(ref _customFields, value); RaisePropertyChanged("HasCustomFields"); }
+        }
+
+        public bool HasCustomFields => CustomFields != null && CustomFields.Any();
+
+        public bool HasNotes => Notes != null && Notes.Any();
+
+        private GpsPoint _gpsPoint;
+        public GpsPoint GpsPoint
+        {
+            get { return _gpsPoint; }
+            set { SetPropertyValue(ref _gpsPoint, value); }
+        }
+
+        private string _pageTitle;
+        public string PageTitle
+        {
+            get { return _pageTitle; }
+            set { SetPropertyValue(ref _pageTitle, value); }
+        }
+
+        private string _actionText;
+        public string ActionText
+        {
+            get { return _actionText; }
+            set { SetPropertyValue(ref _actionText, value); }
+        }
+
+        private bool _canStartOrFinish;
+        public bool CanStartOrFinish
+        {
+            get { return _canStartOrFinish; }
+            set { SetPropertyValue(ref _canStartOrFinish, value); }
+        }
+
+        private ObservableCollection<string> _phoneNumbers;
+        public ObservableCollection<string> PhoneNumbers
+        {
+            get { return _phoneNumbers; }
+            set { SetPropertyValue(ref _phoneNumbers, value); }
+        }
+
+        private ObservableCollection<string> _emails;
+        public ObservableCollection<string> Emails
+        {
+            get { return _emails; }
+            set { SetPropertyValue(ref _emails, value); }
+        }
 
         public ICommand AddNote
         {
@@ -354,13 +457,23 @@ namespace CallOfService.Mobile.Features.JobDetails
             else
                 CanStartOrFinish = false;
 
-            PhoneNumbers = job.PhoneNumbers.Select(p => p.Number).ToList();
-            Emails = job.Emails.Select(e => e.Value).ToList();
+            PhoneNumbers.Clear();
+            foreach (var phone in job.PhoneNumbers)
+            {
+                PhoneNumbers.Add(phone.Number);
+            }
+
+            Emails.Clear();
+            foreach (var email in job.Emails)
+            {
+                Emails.Add(email.Value);
+            }
+
             DataLoaded = true;
             _userDialogs.HideLoading();
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             Notes?.Clear();
             CustomFields?.Clear();
@@ -369,23 +482,19 @@ namespace CallOfService.Mobile.Features.JobDetails
 			CrossConnectivity.Current.ConnectivityChanged -= HandleConnectivityChangedEventHandler;
         }
 
-        public void OnAppearing()
+        public override void OnAppearing()
         {
             _analyticsService.Screen("Job Details");
-
-            //if(JobNumber > 0)
-            //   await LoadJobeDetails(JobNumber);
 
 			IsOnline = CrossConnectivity.Current.IsConnected;
         }
 
-        public void OnDisappearing()
+        public override void OnDisappearing()
         {
         }
     }
 
-    [ImplementPropertyChanged]
-    public class NoteViewModel
+    public class NoteViewModel: ViewModelBase
     {
         private readonly IAppointmentService _appointmentService;
 
@@ -395,9 +504,26 @@ namespace CallOfService.Mobile.Features.JobDetails
             ThumbnilImageSources = new ObservableCollection<ImageSource>();
         }
 
-        public string Description { get; set; }
-        public DateTime Date { get; set; }
-        public string DateFormat { get; set; }
+        private string _description;
+        public string Description
+        {
+            get { return _description;}
+            set { SetPropertyValue(ref _description, value); }
+        }
+
+        private DateTime _date;
+        public DateTime Date
+        {
+            get { return _date; }
+            set { SetPropertyValue(ref _date, value); }
+        }
+
+        private string _dateFormat;
+        public string DateFormat
+        {
+            get { return _dateFormat; }
+            set { SetPropertyValue(ref _dateFormat, value); }
+        }
 
         public ObservableCollection<ImageSource> ThumbnilImageSources { get; set; }
 
@@ -416,10 +542,20 @@ namespace CallOfService.Mobile.Features.JobDetails
         }
     }
 
-    [ImplementPropertyChanged]
-    public class CustomFieldViewModel
+    public class CustomFieldViewModel : ViewModelBase
     {
-        public string Label { get; set; }
-        public string Value { get; set; }
+        private string _label;
+        public string Label
+        {
+            get { return _label; }
+            set { SetPropertyValue(ref _label, value); }
+        }
+
+        private string _value;
+        public string Value
+        {
+            get { return _value; }
+            set { SetPropertyValue(ref _value, value); }
+        }
     }
 }

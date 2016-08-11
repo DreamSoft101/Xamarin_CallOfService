@@ -12,14 +12,14 @@ namespace CallOfService.Mobile.UI
 
         protected override void OnAppearing()
         {
-            var viewAwareViewModel = BindingContext as IViewAwareViewModel;
+            var viewAwareViewModel = BindingContext as ViewModelBase;
             viewAwareViewModel?.OnAppearing();
             base.OnAppearing();
         }
 
         protected override void OnDisappearing()
         {
-            var viewAwareViewModel = BindingContext as IViewAwareViewModel;
+            var viewAwareViewModel = BindingContext as ViewModelBase;
             viewAwareViewModel?.OnDisappearing();
             base.OnDisappearing();
         }

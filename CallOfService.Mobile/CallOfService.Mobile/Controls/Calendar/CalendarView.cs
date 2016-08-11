@@ -35,9 +35,7 @@ namespace CallOfService.Mobile
 				"MinDate",
 				typeof(DateTime),
 				typeof(CalendarView),
-				FirstDayOfMonth(DateTime.Today),
-				BindingMode.OneWay,
-				null, null, null, null);
+				FirstDayOfMonth(DateTime.Today));
 
 
 		/// <summary>
@@ -65,9 +63,7 @@ namespace CallOfService.Mobile
 				"MaxDate",
 				typeof(DateTime),
 				typeof(CalendarView),
-				LastDayOfMonth(DateTime.Today),
-				BindingMode.OneWay,
-				null, null, null, null);
+				LastDayOfMonth(DateTime.Today));
 
 
 		/// <summary>
@@ -120,8 +116,7 @@ namespace CallOfService.Mobile
 				typeof(DateTime?),
 				typeof(CalendarView),
 				null,
-				BindingMode.TwoWay,
-				null, null, null, null);
+				BindingMode.TwoWay);
 
 
 		/// <summary>
@@ -152,8 +147,7 @@ namespace CallOfService.Mobile
 				typeof(DateTime),
 				typeof(CalendarView),
 				DateTime.Now,
-				BindingMode.TwoWay,
-				null, null, null, null);
+				BindingMode.TwoWay);
 
 
 		/// <summary>
@@ -179,7 +173,7 @@ namespace CallOfService.Mobile
 		/// <summary>
 		/// The date label font property
 		/// </summary>
-		public static readonly BindableProperty DateLabelFontProperty = BindableProperty.Create("DateLabelFont", typeof(Font), typeof(CalendarView), Font.Default, BindingMode.OneWay, null, null, null, null);
+		public static readonly BindableProperty DateLabelFontProperty = BindableProperty.Create("DateLabelFont", typeof(Font), typeof(CalendarView), Font.Default);
 
 		/**
 		 * Font used by the calendar dates and day labels
@@ -207,7 +201,7 @@ namespace CallOfService.Mobile
 		/// <summary>
 		/// The month title font property
 		/// </summary>
-		public static readonly BindableProperty MonthTitleFontProperty = BindableProperty.Create("MonthTitleFont", typeof(Font), typeof(CalendarView), Font.Default, BindingMode.OneWay, null, null, null, null);
+		public static readonly BindableProperty MonthTitleFontProperty = BindableProperty.Create("MonthTitleFont", typeof(Font), typeof(CalendarView), Font.Default);
 
 		/**
 		 * Font used by the month title
@@ -237,7 +231,7 @@ namespace CallOfService.Mobile
 		/// <summary>
 		/// The text color property
 		/// </summary>
-		public static readonly BindableProperty TextColorProperty = BindableProperty.Create("TextColor", typeof(Color), typeof(CalendarView), Color.Default, BindingMode.OneWay, null, null, null, null);
+		public static readonly BindableProperty TextColorProperty = BindableProperty.Create("TextColor", typeof(Color), typeof(CalendarView), Color.Default);
 
 		/**
 		 * Overall text color property. Default color is platform specific.
@@ -264,7 +258,7 @@ namespace CallOfService.Mobile
 		/// <summary>
 		/// The today date foreground color property
 		/// </summary>
-		public static readonly BindableProperty TodayDateForegroundColorProperty = BindableProperty.Create("TodayDateForegroundColor", typeof(Color), typeof(CalendarView), Color.Default, BindingMode.OneWay, null, null, null, null);
+		public static readonly BindableProperty TodayDateForegroundColorProperty = BindableProperty.Create("TodayDateForegroundColor", typeof(Color), typeof(CalendarView), Color.Default);
 
 		/**
 		 * Foreground color of today date. Default color is platform specific.
@@ -291,7 +285,7 @@ namespace CallOfService.Mobile
 		/// <summary>
 		/// The today date background color property
 		/// </summary>
-		public static readonly BindableProperty TodayDateBackgroundColorProperty = BindableProperty.Create("TodayDateBackgroundColor", typeof(Color), typeof(CalendarView), Color.Default, BindingMode.OneWay, null, null, null, null);
+		public static readonly BindableProperty TodayDateBackgroundColorProperty = BindableProperty.Create("TodayDateBackgroundColor", typeof(Color), typeof(CalendarView), Color.Default);
 
 		/**
 		 * Background color of today date. Default color is platform specific.
@@ -318,7 +312,7 @@ namespace CallOfService.Mobile
 		/// <summary>
 		/// The date foreground color property
 		/// </summary>
-		public static readonly BindableProperty DateForegroundColorProperty = BindableProperty.Create("DateForegroundColor", typeof(Color), typeof(CalendarView), Color.Default, BindingMode.OneWay, null, null, null, null);
+		public static readonly BindableProperty DateForegroundColorProperty = BindableProperty.Create("DateForegroundColor", typeof(Color), typeof(CalendarView), Color.Default);
 
 		/**
 		 * Foreground color of date in the calendar. Default color is platform specific.
@@ -345,7 +339,7 @@ namespace CallOfService.Mobile
 		/// <summary>
 		/// The date background color property
 		/// </summary>
-		public static readonly BindableProperty DateBackgroundColorProperty = BindableProperty.Create("DateBackgroundColor", typeof(Color), typeof(CalendarView), Color.Default, BindingMode.OneWay, null, null, null, null);
+		public static readonly BindableProperty DateBackgroundColorProperty = BindableProperty.Create("DateBackgroundColor", typeof(Color), typeof(CalendarView), Color.Default);
 
 		/**
 		 * Background color of date in the calendar. Default color is platform specific.
@@ -373,7 +367,7 @@ namespace CallOfService.Mobile
 		/// <summary>
 		/// The inactive date foreground color property
 		/// </summary>
-		public static readonly BindableProperty InactiveDateForegroundColorProperty = BindableProperty.Create("InactiveDateForegroundColor", typeof(Color), typeof(CalendarView), Color.Default, BindingMode.OneWay, null, null, null, null);
+		public static readonly BindableProperty InactiveDateForegroundColorProperty = BindableProperty.Create("InactiveDateForegroundColor", typeof(Color), typeof(CalendarView), Color.Default);
 
 		/**
 		 * Foreground color of date in the calendar which is outside of the current month. Default color is platform specific.
@@ -400,7 +394,7 @@ namespace CallOfService.Mobile
 		/// <summary>
 		/// The inactive date background color property
 		/// </summary>
-		public static readonly BindableProperty InactiveDateBackgroundColorProperty = BindableProperty.Create("InactiveDateBackgroundColor", typeof(Color), typeof(CalendarView), Color.Default, BindingMode.OneWay, null, null, null, null);
+		public static readonly BindableProperty InactiveDateBackgroundColorProperty = BindableProperty.Create("InactiveDateBackgroundColor", typeof(Color), typeof(CalendarView), Color.Default);
 
 		/**
 		 * Background color of date in the calendar  which is outside of the current month. Default color is platform specific.
@@ -428,7 +422,7 @@ namespace CallOfService.Mobile
 		/// <summary>
 		/// The highlighted date foreground color property
 		/// </summary>
-		public static readonly BindableProperty HighlightedDateForegroundColorProperty = BindableProperty.Create("HighlightedDateForegroundColor", typeof(Color), typeof(CalendarView), Color.Default, BindingMode.OneWay, null, null, null, null);
+		public static readonly BindableProperty HighlightedDateForegroundColorProperty = BindableProperty.Create("HighlightedDateForegroundColor", typeof(Color), typeof(CalendarView), Color.Default);
 
 		/**
 		 * Foreground color of highlighted date in the calendar. Default color is platform specific.
@@ -454,7 +448,7 @@ namespace CallOfService.Mobile
 		/// <summary>
 		/// The highlighted date background color property
 		/// </summary>
-		public static readonly BindableProperty HighlightedDateBackgroundColorProperty = BindableProperty.Create("HighlightedDateBackgroundColor", typeof(Color), typeof(CalendarView), Color.Default, BindingMode.OneWay, null, null, null, null);
+		public static readonly BindableProperty HighlightedDateBackgroundColorProperty = BindableProperty.Create("HighlightedDateBackgroundColor", typeof(Color), typeof(CalendarView), Color.Default);
 
 		/**
 		 * Background color of selected date in the calendar. Default color is platform specific.
@@ -482,7 +476,7 @@ namespace CallOfService.Mobile
 		/// <summary>
 		/// The today background style property
 		/// </summary>
-		public static readonly BindableProperty TodayBackgroundStyleProperty = BindableProperty.Create("TodayBackgroundStyle", typeof(BackgroundStyle), typeof(CalendarView), BackgroundStyle.Fill, BindingMode.OneWay, null, null, null, null);
+		public static readonly BindableProperty TodayBackgroundStyleProperty = BindableProperty.Create("TodayBackgroundStyle", typeof(BackgroundStyle), typeof(CalendarView), BackgroundStyle.Fill);
 
 		/**
 		 * Background style for today cell. It is only respected on iOS for now.
@@ -510,7 +504,7 @@ namespace CallOfService.Mobile
 		/// <summary>
 		/// The selection background style property
 		/// </summary>
-		public static readonly BindableProperty SelectionBackgroundStyleProperty = BindableProperty.Create("SelectionBackgroundStyle", typeof(BackgroundStyle), typeof(CalendarView), BackgroundStyle.Fill, BindingMode.OneWay, null, null, null, null);
+		public static readonly BindableProperty SelectionBackgroundStyleProperty = BindableProperty.Create("SelectionBackgroundStyle", typeof(BackgroundStyle), typeof(CalendarView), BackgroundStyle.Fill);
 
 		/**
 		 * Background style for selecting the cells. It is only respected on iOS for now.
@@ -538,7 +532,7 @@ namespace CallOfService.Mobile
 		/// <summary>
 		/// The selected date foreground color property
 		/// </summary>
-		public static readonly BindableProperty SelectedDateForegroundColorProperty = BindableProperty.Create("SelectedDateForegroundColor", typeof(Color), typeof(CalendarView), Color.Default, BindingMode.OneWay, null, null, null, null);
+		public static readonly BindableProperty SelectedDateForegroundColorProperty = BindableProperty.Create("SelectedDateForegroundColor", typeof(Color), typeof(CalendarView), Color.Default);
 
 		/**
 		 * Foreground color of selected date in the calendar. Default color is platform specific.
@@ -565,7 +559,7 @@ namespace CallOfService.Mobile
 		/// <summary>
 		/// The selected date background color property
 		/// </summary>
-		public static readonly BindableProperty SelectedDateBackgroundColorProperty = BindableProperty.Create("SelectedDateBackgroundColor", typeof(Color), typeof(CalendarView), Color.Default, BindingMode.OneWay, null, null, null, null);
+		public static readonly BindableProperty SelectedDateBackgroundColorProperty = BindableProperty.Create("SelectedDateBackgroundColor", typeof(Color), typeof(CalendarView), Color.Default);
 
 		/**
 		 * Background color of selected date in the calendar. Default color is platform specific.
@@ -594,7 +588,7 @@ namespace CallOfService.Mobile
 		/// <summary>
 		/// The day of week label foreground color property
 		/// </summary>
-		public static readonly BindableProperty DayOfWeekLabelForegroundColorProperty = BindableProperty.Create("DayOfWeekLabelForegroundColor", typeof(Color), typeof(CalendarView), Color.Default, BindingMode.OneWay, null, null, null, null);
+		public static readonly BindableProperty DayOfWeekLabelForegroundColorProperty = BindableProperty.Create("DayOfWeekLabelForegroundColor", typeof(Color), typeof(CalendarView), Color.Default);
 
 		/**
 		 * Foreground color of week day labels in the month header. Default color is platform specific.
@@ -620,7 +614,7 @@ namespace CallOfService.Mobile
 		/// <summary>
 		/// The day of week label background color property
 		/// </summary>
-		public static readonly BindableProperty DayOfWeekLabelBackgroundColorProperty = BindableProperty.Create("DayOfWeekLabelBackgroundColor", typeof(Color), typeof(CalendarView), Color.Default, BindingMode.OneWay, null, null, null, null);
+		public static readonly BindableProperty DayOfWeekLabelBackgroundColorProperty = BindableProperty.Create("DayOfWeekLabelBackgroundColor", typeof(Color), typeof(CalendarView), Color.Default);
 
 		/**
 		 * Background color of week day labels in the month header. Default color is platform specific.
@@ -649,7 +643,7 @@ namespace CallOfService.Mobile
 		/// <summary>
 		/// The month title foreground color property
 		/// </summary>
-		public static readonly BindableProperty MonthTitleForegroundColorProperty = BindableProperty.Create("MonthTitleForegroundColor", typeof(Color), typeof(CalendarView), Color.Default, BindingMode.OneWay, null, null, null, null);
+		public static readonly BindableProperty MonthTitleForegroundColorProperty = BindableProperty.Create("MonthTitleForegroundColor", typeof(Color), typeof(CalendarView), Color.Default);
 
 		/**
 		 * Foreground color of week day labels in the month header. Default color is platform specific.
@@ -677,7 +671,7 @@ namespace CallOfService.Mobile
 		/// <summary>
 		/// The month title background color property
 		/// </summary>
-		public static readonly BindableProperty MonthTitleBackgroundColorProperty = BindableProperty.Create("MonthTitleBackgroundColor", typeof(Color), typeof(CalendarView), Color.Default, BindingMode.OneWay, null, null, null, null);
+		public static readonly BindableProperty MonthTitleBackgroundColorProperty = BindableProperty.Create("MonthTitleBackgroundColor", typeof(Color), typeof(CalendarView), Color.Default);
 
 		/**
 		 * Background color of week day labels in the month header. Default color is platform specific.
@@ -704,7 +698,7 @@ namespace CallOfService.Mobile
 		/// <summary>
 		/// The date separator color property
 		/// </summary>
-		public static readonly BindableProperty DateSeparatorColorProperty = BindableProperty.Create("DateSeparatorColor", typeof(Color), typeof(CalendarView), Color.Default, BindingMode.OneWay, null, null, null, null);
+		public static readonly BindableProperty DateSeparatorColorProperty = BindableProperty.Create("DateSeparatorColor", typeof(Color), typeof(CalendarView), Color.Default);
 
 		/**
 		 * Color of separator between dates. Default color is platform specific.
@@ -733,7 +727,7 @@ namespace CallOfService.Mobile
 		/// <summary>
 		/// The show navigation arrows property
 		/// </summary>
-		public static readonly BindableProperty ShowNavigationArrowsProperty = BindableProperty.Create("ShowNavigationArrows", typeof(bool), typeof(CalendarView), false, BindingMode.OneWay, null, null, null, null);
+		public static readonly BindableProperty ShowNavigationArrowsProperty = BindableProperty.Create("ShowNavigationArrows", typeof(bool), typeof(CalendarView), false);
 
 		/**
 		 * Whether to show navigation arrows for going through months. The navigation arrows 
@@ -760,7 +754,7 @@ namespace CallOfService.Mobile
 		/// <summary>
 		/// The navigation arrows color property
 		/// </summary>
-		public static readonly BindableProperty NavigationArrowsColorProperty = BindableProperty.Create("NavigationArrowsColorProperty", typeof(Color), typeof(CalendarView), Color.Default, BindingMode.OneWay, null, null, null, null);
+		public static readonly BindableProperty NavigationArrowsColorProperty = BindableProperty.Create("NavigationArrowsColorProperty", typeof(Color), typeof(CalendarView), Color.Default);
 
 		/**
 		 * Color of the navigation colors (if shown). Default color is platform specific
@@ -788,7 +782,7 @@ namespace CallOfService.Mobile
 		/// <summary>
 		/// The should highlight days of week labels property
 		/// </summary>
-		public static readonly BindableProperty ShouldHighlightDaysOfWeekLabelsProperty = BindableProperty.Create("ShouldHighlightDaysOfWeekLabels", typeof(bool), typeof(CalendarView), false, BindingMode.OneWay, null, null, null, null);
+		public static readonly BindableProperty ShouldHighlightDaysOfWeekLabelsProperty = BindableProperty.Create("ShouldHighlightDaysOfWeekLabels", typeof(bool), typeof(CalendarView), false);
 
 		/**
 		 * Whether to highlight also the labels of week days when the entire column is highlighted.
@@ -817,7 +811,7 @@ namespace CallOfService.Mobile
 		/// <summary>
 		/// The highlighted days of week property
 		/// </summary>
-		public static readonly BindableProperty HighlightedDaysOfWeekProperty = BindableProperty.Create("HighlightedDaysOfWeek", typeof(DayOfWeek[]), typeof(CalendarView), new DayOfWeek[] { }, BindingMode.OneWay, null, null, null, null);
+		public static readonly BindableProperty HighlightedDaysOfWeekProperty = BindableProperty.Create("HighlightedDaysOfWeek", typeof(DayOfWeek[]), typeof(CalendarView), new DayOfWeek[] { });
 
 		/**
 		 * Background color of selected date in the calendar. Default color is platform specific.

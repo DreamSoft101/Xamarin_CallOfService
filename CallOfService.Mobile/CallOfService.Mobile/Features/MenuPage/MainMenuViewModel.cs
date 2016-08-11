@@ -1,5 +1,4 @@
 ﻿using System;
-using PropertyChanged;
 using System.Windows.Input;
 using Xamarin.Forms;
 using CallOfService.Mobile.Services.Abstracts;
@@ -7,11 +6,11 @@ using Acr.UserDialogs;
 using CallOfService.Mobile.Core.SystemServices;
 using PubSub;
 using CallOfService.Mobile.Messages;
+using CallOfService.Mobile.UI;
 
 namespace CallOfService.Mobile
 {
-    [ImplementPropertyChanged]
-    public class MainMenuViewModel
+    public class MainMenuViewModel : ViewModelBase
     {
         private readonly ILoginService _loginService;
         private readonly IUserDialogs _userDialogs;

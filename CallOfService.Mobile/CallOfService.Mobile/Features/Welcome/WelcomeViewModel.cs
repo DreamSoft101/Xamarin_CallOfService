@@ -4,14 +4,12 @@ using CallOfService.Mobile.Core.SystemServices;
 using CallOfService.Mobile.Messages;
 using CallOfService.Mobile.Services.Abstracts;
 using CallOfService.Mobile.UI;
-using PropertyChanged;
 using PubSub;
 using Xamarin.Forms;
 
 namespace CallOfService.Mobile.Features.Welcome
 {
-    [ImplementPropertyChanged]
-    public class WelcomeViewModel : IViewAwareViewModel
+    public class WelcomeViewModel : ViewModelBase
     {
         private readonly IUserService _userService;
         private readonly IAppointmentService _appointmentService;
@@ -33,9 +31,26 @@ namespace CallOfService.Mobile.Features.Welcome
             return (await _userService.GetCurrentUser()).FirstName;
         }
 
-        public bool FinishedLoadingAppointments { get; set; }
-        public string Message1 { get; set; }
-        public string Message2 { get; set; }
+        private bool _finishedLoadingAppointments;
+        public bool FinishedLoadingAppointments
+        {
+            get { return _finishedLoadingAppointments; }
+            set { SetPropertyValue(ref _finishedLoadingAppointments, value); }
+        }
+
+        private bool _message1;
+        public bool Message1
+        {
+            get { return _message1; }
+            set { SetPropertyValue(ref _message1, value); }
+        }
+
+        private bool _message2;
+        public bool Message2
+        {
+            get { return _message2; }
+            set { SetPropertyValue(ref _message2, value); }
+        }
 
         public ICommand NavigateToDashboard
         {
@@ -48,12 +63,8 @@ namespace CallOfService.Mobile.Features.Welcome
             }
         }
 
-        public void Dispose()
-        {
-
-        }
-
-        public void OnAppearing()
+     
+        public override void OnAppearing()
         {
             Task.Factory.StartNew(async () => await StartDownLoadingUserData());
         }
@@ -63,11 +74,6 @@ namespace CallOfService.Mobile.Features.Welcome
             var appointmentsLoaded = await _appointmentService.RetrieveAndSaveAppointments();
             if (appointmentsLoaded)
                 this.Publish(new FinishedLoadingAppointments());
-        }
-
-        public void OnDisappearing()
-        {
-
         }
     }
 }

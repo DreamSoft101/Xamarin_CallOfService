@@ -6,12 +6,5 @@
   <StackLayout VerticalOptions="Center" Padding="20">
     <Label x:Name="Message1" HorizontalOptions="Center" TextColor="White"></Label>
     <Label x:Name="Message2" HorizontalOptions="Center" TextColor="White"></Label>
-    <!--<Button Text="Start" 
-            IsVisible="{Binding ShowStartButton}" 
-            TextColor="White" 
-            BorderColor="White" 
-            BorderRadius="5" 
-            BorderWidth="2"
-            Command="{Binding NavigateToDashboard}"/>-->
   </StackLayout>
 </ui:BasePage>

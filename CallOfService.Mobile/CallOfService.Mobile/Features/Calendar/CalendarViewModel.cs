@@ -1,11 +1,9 @@
 ﻿using CallOfService.Mobile.Core;
 using CallOfService.Mobile.UI;
-using PropertyChanged;
 
 namespace CallOfService.Mobile.Features.Calendar
 {
-    [ImplementPropertyChanged]
-    public class CalendarViewModel : IViewAwareViewModel
+    public class CalendarViewModel : ViewModelBase
     {
         private readonly IAnalyticsService _analyticsService;
 
@@ -14,19 +12,9 @@ namespace CallOfService.Mobile.Features.Calendar
             _analyticsService = analyticsService;
         }
 
-        public void Dispose()
-        {
-            
-        }
-
-        public void OnAppearing()
+        public override void OnAppearing()
         {
             _analyticsService.Screen("Calendar");
-        }
-
-        public void OnDisappearing()
-        {
-            
         }
     }
 }

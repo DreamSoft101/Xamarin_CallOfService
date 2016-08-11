@@ -44,7 +44,7 @@ namespace CallOfService.Mobile.Core.Networking
                   .ExecuteAsync(async () => await Client.GetAsync(url));
 
                 var responseString = await responseMessage.Content.ReadAsStringAsync();
-                LogResponse(responseMessage, responseString, false);
+                LogResponse(responseMessage, responseString);
                 return JsonConvert.DeserializeObject<T>(responseString);
             }
             catch (Exception e)
@@ -75,7 +75,7 @@ namespace CallOfService.Mobile.Core.Networking
                  .ExecuteAsync(async () => await Client.GetAsync(url));
 
                 var responseString = await responseMessage.Content.ReadAsStringAsync();
-                LogResponse(responseMessage, responseString, false);
+                LogResponse(responseMessage, responseString);
                 return responseString;
             }
             catch (Exception e)

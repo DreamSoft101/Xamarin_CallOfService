@@ -4,7 +4,6 @@ using System.Linq;
 using System.Windows.Input;
 using CallOfService.Mobile.Services.Abstracts;
 using CallOfService.Mobile.UI;
-using PropertyChanged;
 using Xamarin.Forms;
 using PubSub;
 using CallOfService.Mobile.Core.SystemServices;
@@ -13,8 +12,7 @@ using CallOfService.Mobile.Messages;
 
 namespace CallOfService.Mobile.Features.Jobs
 {
-    [ImplementPropertyChanged]
-    public class JobsViewModel : IViewAwareViewModel
+    public class JobsViewModel : ViewModelBase
     {
         private readonly IAppointmentService _appointmentService;
         private readonly IAnalyticsService _analyticsService;
@@ -41,10 +39,34 @@ namespace CallOfService.Mobile.Features.Jobs
         }
 
         public ObservableCollection<AppointmentViewModel> Appointments { get; set; }
-        public DateTime Date { get; set; }
 
-        public bool HasAppointments { get; set; }
-        public bool HasNoAppointments { get; set; }
+        private DateTime _date;
+        public DateTime Date
+        {
+            get { return _date; }
+            set { SetPropertyValue(ref _date, value); }
+        }
+
+        private bool _hasAppointments;
+        public bool HasAppointments
+        {
+            get { return _hasAppointments; }
+            set { SetPropertyValue(ref _hasAppointments, value); }
+        }
+
+        private bool _hasNoAppointments;
+        public bool HasNoAppointments
+        {
+            get { return _hasNoAppointments; }
+            set { SetPropertyValue(ref _hasNoAppointments, value); }
+        }
+
+        private bool _isRefreshing;
+        public bool IsRefreshing
+        {
+            get { return _isRefreshing; }
+            set { SetPropertyValue(ref _isRefreshing, value); RaisePropertyChanged("CanNavigate");}
+        }
 
         public bool CanNavigate => !IsRefreshing;
 
@@ -74,8 +96,6 @@ namespace CallOfService.Mobile.Features.Jobs
             }
         }
 
-        public bool IsRefreshing { get; set; }
-
         public ICommand ShowCalendarView
         {
             get
@@ -99,12 +119,12 @@ namespace CallOfService.Mobile.Features.Jobs
             }
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             Appointments.Clear();
         }
 
-        public async void OnAppearing()
+        public override async void OnAppearing()
         {
             if (IsRefreshing)
                 return;
@@ -129,13 +149,9 @@ namespace CallOfService.Mobile.Features.Jobs
             HasNoAppointments = !HasAppointments;
             IsRefreshing = false;
         }
-
-        public void OnDisappearing()
-        {
-        }
     }
 
-    [ImplementPropertyChanged]
+    //Check if you need notify property changed
     public class AppointmentViewModel
     {
         public string Title { get; set; }
@@ -149,7 +165,7 @@ namespace CallOfService.Mobile.Features.Jobs
         public bool IsFinished { get; set; }
         public bool IsInProgress { get; set; }
         public bool IsCancelled { get; set; }
-        public bool IsScheduled { get { return !IsFinished && !IsInProgress && !IsCancelled; } }
+        public bool IsScheduled => !IsFinished && !IsInProgress && !IsCancelled;
 
         public ICommand ViewDetails { get { return new Command(() => this.Publish(new JobSelected(this))); } }
     }

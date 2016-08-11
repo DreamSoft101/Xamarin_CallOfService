@@ -88,26 +88,42 @@ namespace CallOfService.Mobile.Proxies
 		{
 		    var url = UrlConstants.NewNoteUrl;
 
-		    var formContents = new Dictionary<StringContent, string>
+		    try
 		    {
-		        {new StringContent(jobNumber.ToString(), Encoding.UTF8), "Id"},
-		        {new StringContent(newNoteText, Encoding.UTF8), "Note"},
-		        {new StringContent(GetTime(now).ToString(), Encoding.UTF8), "Timestamp"},
-                {new StringContent(latitude?.ToString(), Encoding.UTF8), "Latitude"},
-                {new StringContent(longitude?.ToString(), Encoding.UTF8), "Longitude"}
-            };
+		        var formContents = new Dictionary<StringContent, string>
+		        {
+		            {new StringContent(jobNumber.ToString(), Encoding.UTF8), "Id"},
+		            {new StringContent(GetTime(now).ToString(), Encoding.UTF8), "Timestamp"},
+		        };
 
-		    var steamContents = new List<Tuple<StreamContent, string, string>>();
-            for (int index = 0; index < attachments.Count; index++)
-            {
-                var data = attachments[index];
-				var imageContent = new StreamContent(new MemoryStream(data));
-				imageContent.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("image/jpeg");
-                steamContents.Add(new Tuple<StreamContent, string, string>(imageContent, $"S{index + 1}", $"{jobNumber}-{Guid.NewGuid()}.jpg"));
-            }
+		        if (!string.IsNullOrEmpty(newNoteText))
+		        {
+		            formContents.Add(new StringContent(newNoteText, Encoding.UTF8), "Note");
+		        }
 
-            return await PostFormDataAsync(url, formContents, steamContents, 5);
-        }
+		        if (latitude.HasValue && longitude.HasValue)
+		        {
+		            formContents.Add(new StringContent(latitude.ToString(), Encoding.UTF8), "Latitude");
+		            formContents.Add(new StringContent(longitude.ToString(), Encoding.UTF8), "Longitude");
+		        }
+
+		        var steamContents = new List<Tuple<StreamContent, string, string>>();
+		        for (int index = 0; index < attachments.Count; index++)
+		        {
+		            var data = attachments[index];
+		            var imageContent = new StreamContent(new MemoryStream(data));
+		            imageContent.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("image/jpeg");
+		            steamContents.Add(new Tuple<StreamContent, string, string>(imageContent, $"S{index + 1}", $"{jobNumber}-{Guid.NewGuid()}.jpg"));
+		        }
+
+		        return await PostFormDataAsync(url, formContents, steamContents, 5);
+		    }
+		    catch (Exception e)
+		    {
+		        Logger.WriteError("Exceptoin while sending note", exception:e);
+		        return await Task.FromResult(false);
+		    }
+		}
 
 		private long GetTime(DateTime datetime)
 		{

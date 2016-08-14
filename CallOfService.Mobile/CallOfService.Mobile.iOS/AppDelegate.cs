@@ -42,15 +42,15 @@ namespace CallOfService.Mobile.iOS
             LoadApplication(new App());
             SvgImageRenderer.Init();
 
-            try
-            {
-                LocationManager = new LocationApp();
-                LocationManager.StartLocationUpdates();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
+            //try
+            //{
+            //    LocationManager = new LocationApp();
+            //    LocationManager.StartLocationUpdates();
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine(e);
+            //}
 
             return base.FinishedLaunching(app, options);
         }

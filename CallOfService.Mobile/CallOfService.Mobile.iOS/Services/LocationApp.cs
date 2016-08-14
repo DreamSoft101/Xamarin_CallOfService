@@ -2,7 +2,6 @@ using System;
 using CallOfService.Mobile.Core.DI;
 using CallOfService.Mobile.Services.Abstracts;
 using CoreLocation;
-using Foundation;
 using UIKit;
 
 namespace CallOfService.Mobile.iOS.Services
@@ -42,7 +41,6 @@ namespace CallOfService.Mobile.iOS.Services
 
         public void StartLocationUpdates()
         {
-
             // We need the user's permission for our app to use the GPS in iOS. This is done either by the user accepting
             // the popover when the app is first launched, or by changing the permissions for the app in Settings
             if (CLLocationManager.LocationServicesEnabled)
@@ -52,7 +50,6 @@ namespace CallOfService.Mobile.iOS.Services
 
                 if (UIDevice.CurrentDevice.CheckSystemVersion(6, 0))
                 {
-
                     LocMgr.LocationsUpdated += (sender, e) => {
                         // fire our custom Location Updated event
                         this.LocationUpdated(this, new LocationUpdatedEventArgs(e.Locations[e.Locations.Length - 1]));
@@ -61,7 +58,6 @@ namespace CallOfService.Mobile.iOS.Services
                 }
                 else
                 {
-
                     // this won't be called on iOS 6 (deprecated). We will get a warning here when we build.
                     LocMgr.UpdatedLocation += (sender, e) => {
                         this.LocationUpdated(this, new LocationUpdatedEventArgs(e.NewLocation));

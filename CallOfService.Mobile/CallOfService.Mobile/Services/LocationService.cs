@@ -24,7 +24,7 @@ namespace CallOfService.Mobile.Services
             _logger = logger;
         }
 
-        public async Task<Position> GetCurrentLocation(double accuracy = 50, int timeoutInMillisecondsSeconds = 10000)
+        public async Task<Position> GetCurrentLocation(double accuracy = 50, int timeoutInMilliseconds = 10000)
         {
             if (PositionIsUpToDate())
                 return _lastReportedPosition;
@@ -35,7 +35,7 @@ namespace CallOfService.Mobile.Services
                 if (locator.IsGeolocationAvailable && locator.IsGeolocationEnabled)
                 {
                     locator.DesiredAccuracy = accuracy;
-                    var result = await locator.GetPositionAsync(timeoutInMillisecondsSeconds);
+                    var result = await locator.GetPositionAsync(timeoutInMilliseconds);
                     UpdateLastPosition(result);
                     return result;
                 }

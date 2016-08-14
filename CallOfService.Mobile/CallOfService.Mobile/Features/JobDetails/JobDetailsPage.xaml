@@ -11,10 +11,9 @@
     <ScrollView>
       <StackLayout Spacing="5">
         <AbsoluteLayout HeightRequest="300">
+          <maps:Map AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0.2, 1, 1" x:Name="Map" MapType="Street" IsShowingUser="True" HasScrollEnabled="True"  HeightRequest="300" />
 
-          <maps:Map AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" x:Name="Map" MapType="Street" IsShowingUser="True"  HeightRequest="200" />
-
-          <Grid Padding="10,0,10,0" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 1, 1, 0.1">
+          <Grid Padding="10,10,10,0" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 1, 1, 0.1">
             <Grid.RowDefinitions>
               <RowDefinition Height="44" />
             </Grid.RowDefinitions>
@@ -63,7 +62,7 @@
               </ContentView.GestureRecognizers>
               <customcontrols:SvgImage FileName="navigate-back" WidthRequest="10"  Margin="6,0,0,0"/>
             </ContentView>
-            <Label Grid.Row="0" Grid.Column="1" Text="{Binding PageTitle}" LineBreakMode="TailTruncation" TextColor="White" HorizontalOptions="Center" HorizontalTextAlignment="Center" HeightRequest="60" VerticalTextAlignment="Center" FontSize="18" />
+            <Label Grid.Row="0" Grid.Column="1" Text="{Binding PageTitle}" LineBreakMode="TailTruncation" TextColor="White" HorizontalOptions="Center" HorizontalTextAlignment="Center" HeightRequest="60" VerticalTextAlignment="Center" FontSize="16" />
           </Grid>
         </AbsoluteLayout>
 

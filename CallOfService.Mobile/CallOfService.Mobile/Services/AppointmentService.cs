@@ -86,19 +86,19 @@ namespace CallOfService.Mobile.Services
 
         public async Task<bool> StartJob(int jobId)
         {
-            var position = await _locationService.GetCurrentLocation(timeoutInMillisecondsSeconds: 5000);
+            var position = await _locationService.GetCurrentLocation(timeoutInMilliseconds: 5000);
             return await _appointmentProxy.StartJob(jobId, position?.Latitude, position?.Longitude);
         }
 
         public async Task<bool> FinishJob(int jobId)
         {
-            var position = await _locationService.GetCurrentLocation(timeoutInMillisecondsSeconds: 5000);
+            var position = await _locationService.GetCurrentLocation(timeoutInMilliseconds: 5000);
             return await _appointmentProxy.FinishJob(jobId, position?.Latitude, position?.Longitude);
         }
 
 		public async Task<bool> SubmitNote(int jobNumber, string newNoteText, List<byte[]> attachments, DateTime now)
         {
-            var position = await _locationService.GetCurrentLocation(timeoutInMillisecondsSeconds: 5000);
+            var position = await _locationService.GetCurrentLocation(timeoutInMilliseconds: 5000);
             return await _appointmentProxy.AddNote(jobNumber, newNoteText, attachments, now, position?.Latitude, position?.Longitude);
         }
     }

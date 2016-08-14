@@ -441,8 +441,10 @@ namespace CallOfService.Mobile.Features.JobDetails
                 CustomFields.Add(new CustomFieldViewModel { Label = field.Key, Value = field.Value });
             }
 
+            var contact = string.IsNullOrEmpty(Contact) ? CustomerName : Contact;
+
             if (GpsPoint != null && GpsPoint.IsValid)
-                this.Publish(new ShowPinOnMap(GpsPoint, Location, Contact));
+                this.Publish(new ShowPinOnMap(GpsPoint, Location, contact));
 
             PageTitle = appointment.Title;
             if (!string.IsNullOrWhiteSpace(appointment.JobType))

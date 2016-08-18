@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using CallOfService.Mobile.Services.Abstracts;
 using CallOfService.Mobile.UI;
@@ -28,13 +29,13 @@ namespace CallOfService.Mobile.Features.Jobs
                 await NavigationService.NavigateToJobDetails();
                 this.Publish(new ViewJobDetails(m.JobId));
             });
-            this.Subscribe<NewDateSelected>(m =>
+            this.Subscribe<NewDateSelected>(async m =>
             {
                 _analyticsService.Track("Date Selected");
 
-                Date = m.DateTime;
-                OnAppearing();
+                await LoadDate(m.DateTime);
             });
+
             Date = DateTime.Today;
         }
 
@@ -45,6 +46,13 @@ namespace CallOfService.Mobile.Features.Jobs
         {
             get { return _date; }
             set { SetPropertyValue(ref _date, value); }
+        }
+
+        private bool _dateInitialized;
+        public bool DateInitialized
+        {
+            get { return _dateInitialized; }
+            set { SetPropertyValue(ref _dateInitialized, value); }
         }
 
         private bool _hasAppointments;
@@ -74,11 +82,10 @@ namespace CallOfService.Mobile.Features.Jobs
         {
             get
             {
-                return new Command(() =>
+                return new Command(async () =>
                 {
                     _analyticsService.Track("Navigate to next day");
-                    Date = Date.AddDays(1);
-                    OnAppearing();
+                    await LoadDate(Date.AddDays(1));
                 });
             }
         }
@@ -87,11 +94,10 @@ namespace CallOfService.Mobile.Features.Jobs
         {
             get
             {
-                return new Command(() =>
+                return new Command(async () =>
                 {
                     _analyticsService.Track("Navigate to prev day");
-                    Date = Date.AddDays(-1);
-                    OnAppearing();
+                    await LoadDate(Date.AddDays(-1));
                 });
             }
         }
@@ -111,11 +117,41 @@ namespace CallOfService.Mobile.Features.Jobs
         {
             get
             {
-                return new Command(() =>
+                return new Command(async () =>
                 {
                     _analyticsService.Track("Refreshing Jobs");
+                    await LoadDate(Date);
                     OnAppearing();
                 });
+            }
+        }
+
+        public async Task LoadDate(DateTime date)
+        {
+            Date = date;
+            if (!IsRefreshing)
+            {
+                IsRefreshing = true;
+                var appointments = await _appointmentService.AppointmentsByDay(Date);
+                Appointments.Clear();
+                foreach (var appointment in appointments.Where(a => !a.IsCancelled).OrderBy(a => a.Start))
+                {
+                    Appointments.Add(new AppointmentModel
+                    {
+                        Title = appointment.Title,
+                        Location = appointment.Location,
+                        LocationLatitude = appointment.LocationLatitude,
+                        LocationLongitude = appointment.LocationLongitude,
+                        IsFinished = appointment.IsFinished,
+                        IsInProgress = appointment.IsInProgress,
+                        IsCancelled = appointment.IsCancelled,
+                        StartTimeEndTimeFormated = $"{appointment.Start.ToUniversalTime().ToString("hh:mm tt")} - {appointment.End.ToUniversalTime().ToString("hh:mm tt")}",
+                        JobId = appointment.JobId
+                    });
+                }
+                HasAppointments = Appointments.Any();
+                HasNoAppointments = !HasAppointments;
+                IsRefreshing = false;
             }
         }
 
@@ -126,28 +162,18 @@ namespace CallOfService.Mobile.Features.Jobs
 
         public override async void OnAppearing()
         {
-            if (IsRefreshing)
-                return;
+            base.OnAppearing();
 
-            IsRefreshing = true;
-            var appointments = await _appointmentService.AppointmentsByDay(Date);
-            Appointments.Clear();
-            foreach (var appointment in appointments.Where(a => !a.IsCancelled).OrderBy(a => a.Start))
-            {
-                Appointments.Add(new AppointmentModel
-                {
-                    Title = appointment.Title,
-                    Location = appointment.Location,
-                    IsFinished = appointment.IsFinished,
-                    IsInProgress = appointment.IsInProgress,
-                    IsCancelled = appointment.IsCancelled,
-                    StartTimeEndTimeFormated = $"{appointment.Start.ToUniversalTime().ToString("hh:mm tt")} - {appointment.End.ToUniversalTime().ToString("hh:mm tt")}",
-                    JobId = appointment.JobId
-                });
-            }
-            HasAppointments = Appointments.Any();
-            HasNoAppointments = !HasAppointments;
+            _analyticsService.Screen("Jobs");
+
             IsRefreshing = false;
+
+            if (!DateInitialized)
+            {
+                await LoadDate(DateTime.Today);
+
+                DateInitialized = true;
+            }
         }
     }
 
@@ -161,6 +187,9 @@ namespace CallOfService.Mobile.Features.Jobs
         public string Location { get; set; }
 
         public int JobId { get; set; }
+
+        public double? LocationLatitude { get; set; }
+        public double? LocationLongitude { get; set; }
 
         public bool IsFinished { get; set; }
         public bool IsInProgress { get; set; }

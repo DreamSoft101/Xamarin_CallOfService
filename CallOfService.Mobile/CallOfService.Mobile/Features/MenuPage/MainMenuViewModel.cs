@@ -51,7 +51,7 @@ namespace CallOfService.Mobile
                     var isJobDetailsLastPage = NavigationService.IsJobDetailsPresent();
                     if (isJobDetailsLastPage)
                         await NavigationService.NavigateBack();
-                    this.Publish(new NewDateSelected(DateTime.Now));
+                    this.Publish(new NewDateSelected(DateTime.Now, Source.Jobs));
                 });
             }
         }

@@ -9,6 +9,8 @@ using Xamarin.Forms;
 using PubSub;
 using CallOfService.Mobile.Core.SystemServices;
 using CallOfService.Mobile.Core;
+using CallOfService.Mobile.Core.DI;
+using CallOfService.Mobile.Features.Calendar;
 using CallOfService.Mobile.Messages;
 
 namespace CallOfService.Mobile.Features.Jobs
@@ -17,7 +19,7 @@ namespace CallOfService.Mobile.Features.Jobs
     {
         private readonly IAppointmentService _appointmentService;
         private readonly IAnalyticsService _analyticsService;
-       
+
         public JobsViewModel(IAppointmentService appointmentService, IAnalyticsService analyticsService)
         {
             _analyticsService = analyticsService;
@@ -29,11 +31,15 @@ namespace CallOfService.Mobile.Features.Jobs
                 await NavigationService.NavigateToJobDetails();
                 this.Publish(new ViewJobDetails(m.JobId));
             });
+
             this.Subscribe<NewDateSelected>(async m =>
             {
-                _analyticsService.Track("Date Selected");
-
-                await LoadDate(m.DateTime);
+                if (m.Source == Source.Jobs)
+                    await LoadDate(m.DateTime);
+                else
+                {
+                    Date = m.DateTime;
+                }
             });
 
             Date = DateTime.Today;
@@ -46,13 +52,6 @@ namespace CallOfService.Mobile.Features.Jobs
         {
             get { return _date; }
             set { SetPropertyValue(ref _date, value); }
-        }
-
-        private bool _dateInitialized;
-        public bool DateInitialized
-        {
-            get { return _dateInitialized; }
-            set { SetPropertyValue(ref _dateInitialized, value); }
         }
 
         private bool _hasAppointments;
@@ -73,7 +72,7 @@ namespace CallOfService.Mobile.Features.Jobs
         public bool IsRefreshing
         {
             get { return _isRefreshing; }
-            set { SetPropertyValue(ref _isRefreshing, value); RaisePropertyChanged("CanNavigate");}
+            set { SetPropertyValue(ref _isRefreshing, value); RaisePropertyChanged("CanNavigate"); }
         }
 
         public bool CanNavigate => !IsRefreshing;
@@ -82,10 +81,10 @@ namespace CallOfService.Mobile.Features.Jobs
         {
             get
             {
-                return new Command(async () =>
+                return new Command(() =>
                 {
                     _analyticsService.Track("Navigate to next day");
-                    await LoadDate(Date.AddDays(1));
+                    this.Publish(new NewDateSelected(Date.AddDays(1), Source.Jobs));
                 });
             }
         }
@@ -94,10 +93,10 @@ namespace CallOfService.Mobile.Features.Jobs
         {
             get
             {
-                return new Command(async () =>
+                return new Command(() =>
                 {
                     _analyticsService.Track("Navigate to prev day");
-                    await LoadDate(Date.AddDays(-1));
+                    this.Publish(new NewDateSelected(Date.AddDays(-1), Source.Jobs));
                 });
             }
         }
@@ -106,9 +105,11 @@ namespace CallOfService.Mobile.Features.Jobs
         {
             get
             {
-                return new Command(() =>
+                return new Command(async () =>
                 {
-                    this.Publish(new ShowCalendarView());
+                    var vm = DependencyResolver.Resolve<CalendarViewModel>();
+                    vm.Source = Source.Jobs;
+                    await NavigationService.ShowModal<CalendarPage, CalendarViewModel>(vm);
                 });
             }
         }
@@ -168,12 +169,7 @@ namespace CallOfService.Mobile.Features.Jobs
 
             IsRefreshing = false;
 
-            if (!DateInitialized)
-            {
-                await LoadDate(DateTime.Today);
-
-                DateInitialized = true;
-            }
+            await LoadDate(Date);
         }
     }
 

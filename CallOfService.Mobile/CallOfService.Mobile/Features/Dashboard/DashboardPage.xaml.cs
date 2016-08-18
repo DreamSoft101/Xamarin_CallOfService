@@ -1,6 +1,5 @@
 using CallOfService.Mobile.Core.DI;
 using CallOfService.Mobile.Core.SystemServices;
-using CallOfService.Mobile.Features.Calendar;
 using CallOfService.Mobile.Features.Jobs;
 using CallOfService.Mobile.Messages;
 using CallOfService.Mobile.Services.Abstracts;
@@ -9,6 +8,7 @@ using Xamarin.Forms;
 using System.Threading.Tasks;
 using Acr.UserDialogs;
 using CallOfService.Mobile.Core;
+using CallOfService.Mobile.Features.Map;
 using Plugin.Connectivity;
 using Page = Xamarin.Forms.Page;
 
@@ -18,7 +18,7 @@ namespace CallOfService.Mobile.Features.Dashboard
     {
         private bool _shouldInit;
         private Page _jobsPage;
-        private Page _calendarPage;
+        private Page _mapPage;
 
         public DashboardPage()
         {
@@ -27,18 +27,34 @@ namespace CallOfService.Mobile.Features.Dashboard
             Title = "Call of Service";
 
             _shouldInit = true;
-            this.Subscribe<NewDateSelected>(m =>
-            {
-                this.CurrentPage = _jobsPage;
-            });
 
-            this.Subscribe<ShowCalendarView>(m =>
-            {
-                this.CurrentPage = _calendarPage;
-            });
+            //this.Subscribe<NewDateSelected>(async m =>
+            //{
+            //    //if (CurrentPage is JobsPage)
+            //    //    await ((JobsViewModel)((JobsPage)CurrentPage).BindingContext).LoadDate(m.DateTime);
+            //    //else if (CurrentPage is MapPage)
+            //    //    await ((MapViewModel)((MapPage)CurrentPage).BindingContext).LoadDate(m.DateTime);
+            //    //else
+            //    //{
+            //    //    CurrentPage = _jobsPage;
+            //    //    await ((JobsViewModel)((JobsPage)CurrentPage).BindingContext).LoadDate(m.DateTime);
+            //    //}
+            //});
 
             this.Subscribe<UserUnauthorized>(async m => await RefreshToken());
         }
+
+        //protected override async void OnCurrentPageChanged()
+        //{
+        //    if (CurrentPage is JobsPage && _mapPage != null)
+        //    {
+        //        await ((JobsViewModel)((JobsPage)CurrentPage).BindingContext).LoadDate(((MapViewModel)_mapPage.BindingContext).Date);
+        //    }
+        //    else if (CurrentPage is MapPage && _jobsPage != null)
+        //    {
+        //        await ((MapViewModel)((MapPage)CurrentPage).BindingContext).LoadDate(((JobsViewModel)_jobsPage.BindingContext).Date);
+        //    }
+        //}
 
         private async Task RefreshToken()
         {
@@ -84,10 +100,10 @@ namespace CallOfService.Mobile.Features.Dashboard
             _jobsPage.Title = "JOBS";
             _jobsPage.Icon = "Jobs.png";
             Children.Add(_jobsPage);
-            _calendarPage = NavigationService.CreateAndBind<CalendarPage>(DependencyResolver.Resolve<CalendarViewModel>());
-            _calendarPage.Title = "CALENDAR";
-            _calendarPage.Icon = "Calendar.png";
-            Children.Add(_calendarPage);
+            _mapPage = NavigationService.CreateAndBind<MapPage>(DependencyResolver.Resolve<MapViewModel>());
+            _mapPage.Title = "MAP";
+            _mapPage.Icon = "Calendar.png";
+            Children.Add(_mapPage);
 
             dialog.HideLoading();
 

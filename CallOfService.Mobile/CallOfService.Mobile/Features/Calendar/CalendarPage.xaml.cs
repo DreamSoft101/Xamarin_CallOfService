@@ -1,4 +1,5 @@
 ﻿using System;
+using CallOfService.Mobile.Core.SystemServices;
 using CallOfService.Mobile.Messages;
 using CallOfService.Mobile.UI;
 using PubSub;
@@ -26,9 +27,10 @@ namespace CallOfService.Mobile.Features.Calendar
 			Calendar.MonthTitleForegroundColor = Color.FromHex("#44b6ae");
         }
 
-        private void CalendarView_OnDateSelected(object sender, DateTime e)
+        private async void CalendarView_OnDateSelected(object sender, DateTime e)
         {
-            this.Publish(new NewDateSelected(e));
+            this.Publish(new NewDateSelected(e, ((CalendarViewModel)BindingContext).Source));
+            await NavigationService.Navigation.PopModalAsync(true);
         }
     }
 }

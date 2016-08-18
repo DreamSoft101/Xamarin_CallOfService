@@ -9,6 +9,7 @@ using CallOfService.Mobile.Features.Calendar;
 using CallOfService.Mobile.Features.JobDetails;
 using CallOfService.Mobile.Features.Jobs;
 using CallOfService.Mobile.Features.Login;
+using CallOfService.Mobile.Features.Map;
 using CallOfService.Mobile.Features.Settings;
 using CallOfService.Mobile.Features.Welcome;
 using CallOfService.Mobile.Proxies;
@@ -71,6 +72,7 @@ namespace CallOfService.Mobile.Core.DI
             builder.RegisterType<JobNoteViewModel>().AsSelf().SingleInstance();
             builder.RegisterType<MainMenuViewModel>().AsSelf().SingleInstance();
             builder.RegisterType<SettingsViewModel>().AsSelf().SingleInstance();
+            builder.RegisterType<MapViewModel>().AsSelf().SingleInstance();
             builder.RegisterType<NoteModel>().AsSelf();
         }
     }

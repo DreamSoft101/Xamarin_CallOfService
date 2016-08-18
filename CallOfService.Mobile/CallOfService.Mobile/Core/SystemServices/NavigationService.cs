@@ -51,16 +51,21 @@ namespace CallOfService.Mobile.Core.SystemServices
             return Navigation.PushModalAsync(CreateAndBind<TPage>(vm));
         }
 
+        public static Task ShowModal<TPage, TViewModel>(TViewModel vm) where TPage : Page, new()
+        {
+            return Navigation.PushModalAsync(CreateAndBind<TPage>(vm));
+        }
+
         public static async Task NavigateBack()
         {
             var page = await Navigation.PopAsync();
-            (page.BindingContext as IDisposable)?.Dispose();
+            (page?.BindingContext as IDisposable)?.Dispose();
         }
 
         public static async Task Dismiss()
         {
             var page = await Navigation.PopModalAsync();
-            (page.BindingContext as IDisposable)?.Dispose();
+            (page?.BindingContext as IDisposable)?.Dispose();
         }
 
         public static Task NavigateToMainPage()

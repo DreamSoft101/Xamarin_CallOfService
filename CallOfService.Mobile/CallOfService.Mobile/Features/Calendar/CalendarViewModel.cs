@@ -1,4 +1,5 @@
 ﻿using CallOfService.Mobile.Core;
+using CallOfService.Mobile.Messages;
 using CallOfService.Mobile.UI;
 
 namespace CallOfService.Mobile.Features.Calendar
@@ -11,6 +12,8 @@ namespace CallOfService.Mobile.Features.Calendar
         {
             _analyticsService = analyticsService;
         }
+
+        public Source Source { get; set; }
 
         public override void OnAppearing()
         {

@@ -29,8 +29,8 @@ namespace CallOfService.Mobile.Features.JobDetails
             _appointmentService = appointmentService;
             _userDialogs = userDialogs;
             _analyticsService = analyticsService;
-            Notes = new ObservableCollection<NoteViewModel>();
-            CustomFields = new ObservableCollection<CustomFieldViewModel>();
+            Notes = new ObservableCollection<NoteModel>();
+            CustomFields = new ObservableCollection<CustomFieldModel>();
             PhoneNumbers = new ObservableCollection<string>();
             Emails = new ObservableCollection<string>();
             this.Subscribe<ViewJobDetails>(async m => await LoadJobeDetails(m.JobId));
@@ -173,15 +173,15 @@ namespace CallOfService.Mobile.Features.JobDetails
             set { SetPropertyValue(ref _status, value); }
         }
 
-        private ObservableCollection<NoteViewModel> _notes;
-        public ObservableCollection<NoteViewModel> Notes
+        private ObservableCollection<NoteModel> _notes;
+        public ObservableCollection<NoteModel> Notes
         {
             get { return _notes; }
             set { SetPropertyValue(ref _notes, value); RaisePropertyChanged("HasNotes");}
         }
 
-        private ObservableCollection<CustomFieldViewModel> _customFields;
-        public ObservableCollection<CustomFieldViewModel> CustomFields
+        private ObservableCollection<CustomFieldModel> _customFields;
+        public ObservableCollection<CustomFieldModel> CustomFields
         {
             get { return _customFields; }
             set { SetPropertyValue(ref _customFields, value); RaisePropertyChanged("HasCustomFields"); }
@@ -430,7 +430,7 @@ namespace CallOfService.Mobile.Features.JobDetails
             Notes.Clear();
             foreach (var note in job.Notes)
             {
-                var noteViewModel = DependencyResolver.Resolve<NoteViewModel>();
+                var noteViewModel = DependencyResolver.Resolve<NoteModel>();
                 noteViewModel.LoadNote(note);
                 Notes.Add(noteViewModel);
             }
@@ -438,7 +438,7 @@ namespace CallOfService.Mobile.Features.JobDetails
             CustomFields.Clear();
             foreach (var field in job.CustomFields)
             {
-                CustomFields.Add(new CustomFieldViewModel { Label = field.Key, Value = field.Value });
+                CustomFields.Add(new CustomFieldModel { Label = field.Key, Value = field.Value });
             }
 
             var contact = string.IsNullOrEmpty(Contact) ? CustomerName : Contact;
@@ -495,11 +495,11 @@ namespace CallOfService.Mobile.Features.JobDetails
         }
     }
 
-    public class NoteViewModel: ViewModelBase
+    public class NoteModel: ViewModelBase
     {
         private readonly IAppointmentService _appointmentService;
 
-        public NoteViewModel(IAppointmentService appointmentService)
+        public NoteModel(IAppointmentService appointmentService)
         {
             _appointmentService = appointmentService;
             ThumbnilImageSources = new ObservableCollection<ImageSource>();
@@ -543,7 +543,7 @@ namespace CallOfService.Mobile.Features.JobDetails
         }
     }
 
-    public class CustomFieldViewModel : ViewModelBase
+    public class CustomFieldModel : ViewModelBase
     {
         private string _label;
         public string Label

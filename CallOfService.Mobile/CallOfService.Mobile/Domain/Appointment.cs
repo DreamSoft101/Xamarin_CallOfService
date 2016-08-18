@@ -27,11 +27,13 @@ namespace CallOfService.Mobile.Domain
         public bool IsInProgress { get; set; }
         public string StartString { get; set; }
         public string EndString { get; set; }
+        public double? LocationLatitude { get; set; }
+        public double? LocationLongitude { get; set; }
 
         public void UpdateDates()
         {
-            StartDate = Int32.Parse(Start.ToString("yyyyMMdd"));
-            EndDate = Int32.Parse(End.ToString("yyyyMMdd"));
+            StartDate = int.Parse(Start.ToString("yyyyMMdd"));
+            EndDate = int.Parse(End.ToString("yyyyMMdd"));
         }
     }
 }

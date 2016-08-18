@@ -63,16 +63,15 @@ namespace CallOfService.Mobile.Core.DI
 
         private void RegisterViewModels(ContainerBuilder builder)
         {
-            builder.RegisterType<LoginViewModel>().AsSelf();
-            builder.RegisterType<WelcomeViewModel>().AsSelf();
+            builder.RegisterType<LoginViewModel>().AsSelf().SingleInstance();
+            builder.RegisterType<WelcomeViewModel>().AsSelf().SingleInstance();
             builder.RegisterType<JobsViewModel>().AsSelf().SingleInstance();
             builder.RegisterType<CalendarViewModel>().AsSelf().SingleInstance();
             builder.RegisterType<JobDetailsViewModel>().AsSelf().SingleInstance();
             builder.RegisterType<JobNoteViewModel>().AsSelf().SingleInstance();
-            builder.RegisterType<NoteViewModel>().AsSelf();
-            builder.RegisterType<MainMenuViewModel>().AsSelf();
-            builder.RegisterType<SettingsViewModel>().AsSelf();
-
+            builder.RegisterType<MainMenuViewModel>().AsSelf().SingleInstance();
+            builder.RegisterType<SettingsViewModel>().AsSelf().SingleInstance();
+            builder.RegisterType<NoteModel>().AsSelf();
         }
     }
 }

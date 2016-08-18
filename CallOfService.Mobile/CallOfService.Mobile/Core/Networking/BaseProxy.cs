@@ -112,7 +112,7 @@ namespace CallOfService.Mobile.Core.Networking
                 else
                 {
                     var responseString = await responseMessage.Content.ReadAsStringAsync();
-                    Logger.WriteError(responseString);
+                    Logger.WriteError($"Error response: {responseMessage.StatusCode}, Content: {responseString}");
                     return responseString;
                 }
             }
@@ -150,7 +150,7 @@ namespace CallOfService.Mobile.Core.Networking
                 else
                 {
                     var responseString = await responseMessage.Content.ReadAsStringAsync();
-                    Logger.WriteError(responseString);
+                    Logger.WriteError($"Error response: {responseMessage.StatusCode}, Content: {responseString}");
                 }
                 return false;
             }
@@ -203,7 +203,7 @@ namespace CallOfService.Mobile.Core.Networking
                         else
                         {
                             var responseString = await responseMessage.Content.ReadAsStringAsync();
-                            Logger.WriteError(responseString);
+                            Logger.WriteError($"Error response: {responseMessage.StatusCode}, Content: {responseString}");
                             return false;
                         }
                     }

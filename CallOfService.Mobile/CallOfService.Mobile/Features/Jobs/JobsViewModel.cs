@@ -22,11 +22,11 @@ namespace CallOfService.Mobile.Features.Jobs
             _analyticsService = analyticsService;
             _appointmentService = appointmentService;
 
-            Appointments = new ObservableCollection<AppointmentViewModel>();
+            Appointments = new ObservableCollection<AppointmentModel>();
             this.Subscribe<JobSelected>(async m =>
             {
                 await NavigationService.NavigateToJobDetails();
-                this.Publish(new ViewJobDetails(m.Appointment.JobId));
+                this.Publish(new ViewJobDetails(m.JobId));
             });
             this.Subscribe<NewDateSelected>(m =>
             {
@@ -38,7 +38,7 @@ namespace CallOfService.Mobile.Features.Jobs
             Date = DateTime.Today;
         }
 
-        public ObservableCollection<AppointmentViewModel> Appointments { get; set; }
+        public ObservableCollection<AppointmentModel> Appointments { get; set; }
 
         private DateTime _date;
         public DateTime Date
@@ -134,7 +134,7 @@ namespace CallOfService.Mobile.Features.Jobs
             Appointments.Clear();
             foreach (var appointment in appointments.Where(a => !a.IsCancelled).OrderBy(a => a.Start))
             {
-                Appointments.Add(new AppointmentViewModel
+                Appointments.Add(new AppointmentModel
                 {
                     Title = appointment.Title,
                     Location = appointment.Location,
@@ -152,7 +152,7 @@ namespace CallOfService.Mobile.Features.Jobs
     }
 
     //Check if you need notify property changed
-    public class AppointmentViewModel
+    public class AppointmentModel
     {
         public string Title { get; set; }
 
@@ -167,6 +167,6 @@ namespace CallOfService.Mobile.Features.Jobs
         public bool IsCancelled { get; set; }
         public bool IsScheduled => !IsFinished && !IsInProgress && !IsCancelled;
 
-        public ICommand ViewDetails { get { return new Command(() => this.Publish(new JobSelected(this))); } }
+        public ICommand ViewDetails { get { return new Command(() => this.Publish(new JobSelected(JobId))); } }
     }
 }

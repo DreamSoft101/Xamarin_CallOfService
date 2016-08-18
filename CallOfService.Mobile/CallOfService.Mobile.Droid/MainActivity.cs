@@ -1,17 +1,18 @@
 using System;
+using System.Threading.Tasks;
 using Acr.UserDialogs;
 using Android.App;
 using Android.Content.PM;
 using Android.Locations;
 using Android.OS;
-using Android.Util;
 using Android.Widget;
 using CallOfService.Mobile.Core.DI;
+using CallOfService.Mobile.Core.SystemServices;
 using CallOfService.Mobile.Droid.Core.DI;
 using CallOfService.Mobile.Droid.Services;
+using Elmah.Io.Client;
 using HockeyApp.Android;
 using TwinTechs.Droid;
-using Gcm.Client;
 
 namespace CallOfService.Mobile.Droid
 {
@@ -28,6 +29,11 @@ namespace CallOfService.Mobile.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(bundle);
+
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
+
+
             UserDialogs.Init(() => this);
             global::Xamarin.Forms.Forms.Init(this, bundle);
             global::Xamarin.FormsMaps.Init(this, bundle);
@@ -99,6 +105,37 @@ namespace CallOfService.Mobile.Droid
 
         public void HandleStatusChanged(object sender, StatusChangedEventArgs e)
         {
+        }
+
+        private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+        {
+            var newExc = new Exception("TaskSchedulerOnUnobservedTaskException", e.Exception);
+            LogUnhandledException(newExc);
+        }
+
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            var newExc = new Exception("CurrentDomainOnUnhandledException", e.ExceptionObject as Exception);
+            LogUnhandledException(newExc);
+        }
+
+        internal static void LogUnhandledException(Exception e)
+        {
+            try
+            {
+                var logger = DependencyResolver.Resolve<ILogger>();
+                logger.WriteError(e.Message, e.ToString(), e, e.ToDataList());
+            }
+            catch
+            {
+            }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            AppDomain.CurrentDomain.UnhandledException -= CurrentDomain_UnhandledException;
+            TaskScheduler.UnobservedTaskException -= TaskScheduler_UnobservedTaskException;
+            base.Dispose(disposing);
         }
     }
 }

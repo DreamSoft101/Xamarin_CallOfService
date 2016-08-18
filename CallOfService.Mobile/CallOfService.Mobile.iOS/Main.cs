@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Foundation;
+using CallOfService.Mobile.Core.DI;
+using CallOfService.Mobile.Core.SystemServices;
+using Elmah.Io.Client;
 using UIKit;
 
 namespace CallOfService.Mobile.iOS
@@ -14,7 +13,21 @@ namespace CallOfService.Mobile.iOS
         {
             // if you want to use a different Application Delegate class from "AppDelegate"
             // you can specify it here.
-            UIApplication.Main(args, null, "AppDelegate");
+            try
+            {
+                UIApplication.Main(args, null, "AppDelegate");
+            }
+            catch (Exception e)
+            {
+                try
+                {
+                    var logger = DependencyResolver.Resolve<ILogger>();
+                    logger.WriteError(e.Message, e.ToString(), e, e.ToDataList());
+                }
+                catch
+                {
+                }
+            }
         }
     }
 }

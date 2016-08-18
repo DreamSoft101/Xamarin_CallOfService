@@ -244,6 +244,14 @@
     <Reference Include="System.ObjectModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
+    <Reference Include="TK.CustomMap, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\TK.CustomMap.1.5.0\lib\MonoAndroid10\TK.CustomMap.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TK.CustomMap.Android, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\TK.CustomMap.1.5.0\lib\MonoAndroid10\TK.CustomMap.Android.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="TwinTechsForms.SvgImage, Version=1.0.5905.26720, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\TwinTechsForms.SvgImage.0.0.2\lib\MonoAndroid10\TwinTechsForms.SvgImage.dll</HintPath>
       <Private>True</Private>
@@ -322,6 +330,10 @@
     </Reference>
     <Reference Include="Xamarin.GooglePlayServices.Gcm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Xamarin.GooglePlayServices.Gcm.29.0.0.1\lib\MonoAndroid41\Xamarin.GooglePlayServices.Gcm.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.GooglePlayServices.Location, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xamarin.GooglePlayServices.Location.29.0.0.1\lib\MonoAndroid41\Xamarin.GooglePlayServices.Location.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Xamarin.GooglePlayServices.Maps, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -415,6 +427,11 @@
     <AndroidResource Include="Resources\values\colors.xml" />
     <AndroidResource Include="Resources\values\dimens.xml" />
     <AndroidResource Include="Resources\values\Strings.xml" />
+    <AndroidResource Include="Resources\drawable\Marker.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\Marker.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\Marker.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\Marker.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\Marker.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\ad16.jpg" />

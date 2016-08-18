@@ -1,8 +1,10 @@
 using System;
-
 using Android.App;
 using Android.OS;
 using Android.Runtime;
+using CallOfService.Mobile.Core.DI;
+using CallOfService.Mobile.Core.SystemServices;
+using Elmah.Io.Client;
 using Plugin.CurrentActivity;
 
 namespace CallOfService.Mobile.Droid
@@ -20,7 +22,7 @@ namespace CallOfService.Mobile.Droid
         {
             base.OnCreate();
             RegisterActivityLifecycleCallbacks(this);
-            //A great place to initialize Xamarin.Insights and Dependency Services!
+            AndroidEnvironment.UnhandledExceptionRaiser += AndroidEnvironmentOnUnhandledExceptionRaiser;
         }
 
         public override void OnTerminate()
@@ -58,6 +60,24 @@ namespace CallOfService.Mobile.Droid
 
         public void OnActivityStopped(Activity activity)
         {
+        }
+
+        private void AndroidEnvironmentOnUnhandledExceptionRaiser(object sender, RaiseThrowableEventArgs e)
+        {
+            try
+            {
+                var logger = DependencyResolver.Resolve<ILogger>();
+                logger.WriteError(e.Exception.Message, e.Exception.ToString(), e.Exception, e.Exception.ToDataList());
+            }
+            catch
+            {
+            }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            AndroidEnvironment.UnhandledExceptionRaiser -= AndroidEnvironmentOnUnhandledExceptionRaiser;
+            base.Dispose(disposing);
         }
     }
 }

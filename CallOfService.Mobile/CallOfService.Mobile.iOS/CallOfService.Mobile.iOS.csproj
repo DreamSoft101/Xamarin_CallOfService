@@ -124,6 +124,7 @@
     <ImageAsset Include="Resources\Images.xcassets\LaunchImages.launchimage\Default@2x.png">
       <InProject>false</InProject>
     </ImageAsset>
+    <None Include="app.config" />
     <None Include="Entitlements.plist" />
     <None Include="Info.plist">
       <SubType>Designer</SubType>
@@ -324,6 +325,14 @@
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
+    <Reference Include="TK.CustomMap, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\TK.CustomMap.1.5.0\lib\Xamarin.iOS10\TK.CustomMap.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TK.CustomMap.iOSUnified, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\TK.CustomMap.1.5.0\lib\Xamarin.iOS10\TK.CustomMap.iOSUnified.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="TwinTechsForms.SvgImage, Version=1.0.5905.26720, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\TwinTechsForms.SvgImage.0.0.2\lib\Xamarin.iOS10\TwinTechsForms.SvgImage.dll</HintPath>
       <Private>True</Private>

@@ -1,12 +1,14 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using CallOfService.Mobile.Core.DI;
+using CallOfService.Mobile.Core.SystemServices;
 using CallOfService.Mobile.iOS.Core.DI;
 using CallOfService.Mobile.iOS.Services;
+using Elmah.Io.Client;
 using Foundation;
 using HockeyApp.iOS;
+using TK.CustomMap.iOSUnified;
 using TwinTechs.iOS;
 using UIKit;
 
@@ -30,6 +32,9 @@ namespace CallOfService.Mobile.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
+
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls;
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
@@ -38,6 +43,8 @@ namespace CallOfService.Mobile.iOS
             manager.StartManager();
             global::Xamarin.Forms.Forms.Init();
             Xamarin.FormsMaps.Init();
+            TKCustomMapRenderer.InitMapRenderer();
+            NativePlacesApi.Init();
             DependencyResolver.Initialize(new IosModule(), new FormsModule());
             LoadApplication(new App());
             SvgImageRenderer.Init();
@@ -53,6 +60,38 @@ namespace CallOfService.Mobile.iOS
             //}
 
             return base.FinishedLaunching(app, options);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            AppDomain.CurrentDomain.UnhandledException -= CurrentDomain_UnhandledException;
+            TaskScheduler.UnobservedTaskException -= TaskScheduler_UnobservedTaskException;
+
+            base.Dispose(disposing);
+        }
+
+        private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+        {
+            var newExc = new Exception("TaskSchedulerOnUnobservedTaskException", e.Exception);
+            LogUnhandledException(newExc);
+        }
+
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            var newExc = new Exception("CurrentDomainOnUnhandledException", e.ExceptionObject as Exception);
+            LogUnhandledException(newExc);
+        }
+
+        internal static void LogUnhandledException(Exception e)
+        {
+            try
+            {
+                var logger = DependencyResolver.Resolve<ILogger>();
+                logger.WriteError(e.Message, e.ToString(), e, e.ToDataList());
+            }
+            catch
+            {
+            }
         }
     }
 }

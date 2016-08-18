@@ -1,19 +1,17 @@
-﻿using System;
-using CallOfService.Mobile.Features.Jobs;
-
-namespace CallOfService.Mobile
+﻿namespace CallOfService.Mobile
 {
 	public class JobSelected
 	{
 
-		public AppointmentViewModel Appointment {
+		public int JobId
+        {
 			get;
 			set;
 		}
 
-		public JobSelected (AppointmentViewModel appointmentViewModel)
+		public JobSelected (int jobId)
 		{
-			Appointment = appointmentViewModel;
+			JobId = jobId;
 		}
 	}
 }

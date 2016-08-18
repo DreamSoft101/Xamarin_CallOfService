@@ -88,6 +88,8 @@
     <Compile Include="Core\Security\CredentialManager.cs" />
     <Compile Include="Core\Security\ICredentialManager.cs" />
     <Compile Include="Core\SystemServices\DebugLogger.cs" />
+    <Compile Include="Core\SystemServices\ElmahLogger.cs" />
+    <Compile Include="Core\SystemServices\ILogger.cs" />
     <Compile Include="Core\SystemServices\NavigationService.cs" />
     <Compile Include="Database\DbInitializer.cs" />
     <Compile Include="Database\DbSet.cs" />
@@ -288,6 +290,10 @@
     </Reference>
     <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Net.Http.2.2.29\lib\portable-net45+win8+wpa81\System.Net.Http.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TK.CustomMap, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\TK.CustomMap.1.5.0\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10\TK.CustomMap.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="TwinTechsForms.SvgImage, Version=1.0.5905.26720, Culture=neutral, processorArchitecture=MSIL">

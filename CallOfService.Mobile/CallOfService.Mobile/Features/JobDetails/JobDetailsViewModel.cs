@@ -48,6 +48,8 @@ namespace CallOfService.Mobile.Features.JobDetails
             {
                 return new Command(async () =>
                 {
+                    //ToDo: check why one is not enough! (one return to an empty screen)
+                    await NavigationService.NavigateBack();
                     await NavigationService.NavigateBack();
                 });
             }

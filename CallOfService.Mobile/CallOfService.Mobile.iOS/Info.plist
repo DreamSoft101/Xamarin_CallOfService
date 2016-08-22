@@ -49,5 +49,9 @@
 	<string>Call Of Service</string>
 	<key>UIMainStoryboardFile~ipad</key>
 	<string>Main</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+	</array>
 </dict>
 </plist>

@@ -27,10 +27,11 @@ namespace CallOfService.Mobile.Features.Calendar
 			Calendar.MonthTitleForegroundColor = Color.FromHex("#44b6ae");
         }
 
-        private async void CalendarView_OnDateSelected(object sender, DateTime e)
+        private void CalendarView_OnDateSelected(object sender, DateTime e)
         {
-            this.Publish(new NewDateSelected(e, ((CalendarViewModel)BindingContext).Source));
-            await NavigationService.Navigation.PopModalAsync(true);
+            var vm = (CalendarViewModel) BindingContext;
+            vm.Date = e;
+            vm.SelectDate.Execute(null);
         }
     }
 }

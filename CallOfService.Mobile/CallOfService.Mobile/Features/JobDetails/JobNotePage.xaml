@@ -34,28 +34,6 @@
               </customcontrols:RepeaterView.ItemTemplate>
             </customcontrols:RepeaterView>
           </ScrollView>
-
-
-          <!--<StackLayout Spacing="10" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-           <StackLayout Orientation="Vertical">
-             <Label HorizontalOptions="FillAndExpand" Text="Note Text"/>
-             <Editor HorizontalOptions="FillAndExpand" Text="{Binding NewNoteText}" HeightRequest="120" />
-           </StackLayout> 
-            <customcontrols:SvgImage FileName="take-photo" WidthRequest="44">
-              <customcontrols:SvgImage.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding AddNewNoteImage}" />
-              </customcontrols:SvgImage.GestureRecognizers>
-            </customcontrols:SvgImage>
-          </StackLayout>
-          <ScrollView Orientation="Horizontal">
-            <customcontrols:RepeaterView Spacing="10" Orientation="Horizontal" x:TypeArguments="ImageSource" ItemsSource="{Binding Attachments}">
-              <customcontrols:RepeaterView.ItemTemplate>
-                <DataTemplate>
-                  <Image Source="{Binding}" HeightRequest="100" WidthRequest="100" />
-                </DataTemplate>
-              </customcontrols:RepeaterView.ItemTemplate>
-            </customcontrols:RepeaterView>
-          </ScrollView>-->
           <Button TextColor="White" Text="Submit Note" BackgroundColor="Navy" IsVisible="{Binding CanAddNote}" Command="{Binding AddNote}" BorderColor="Black" BorderWidth="1" />
           <Button TextColor="White" Text="Cancel" BackgroundColor="Gray" Command="{Binding NavigateBack}" BorderColor="Black" BorderWidth="1" />
         </StackLayout>

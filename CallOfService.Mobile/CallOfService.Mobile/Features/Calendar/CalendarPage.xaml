@@ -8,5 +8,6 @@
 		<ContentView Padding="20">
 			<controls:CalendarView x:Name="Calendar" DateSelected="CalendarView_OnDateSelected" HorizontalOptions="Center" VerticalOptions="Start" />
 		</ContentView>
+  <Button TextColor="White" Text="Cancel" BackgroundColor="Gray" Command="{Binding Cancel}" BorderColor="Black" BorderWidth="1" />
 	</StackLayout>
 </ui:BasePage>

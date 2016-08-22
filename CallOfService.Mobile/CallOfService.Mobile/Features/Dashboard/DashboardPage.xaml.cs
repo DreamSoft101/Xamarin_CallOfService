@@ -28,33 +28,8 @@ namespace CallOfService.Mobile.Features.Dashboard
 
             _shouldInit = true;
 
-            //this.Subscribe<NewDateSelected>(async m =>
-            //{
-            //    //if (CurrentPage is JobsPage)
-            //    //    await ((JobsViewModel)((JobsPage)CurrentPage).BindingContext).LoadDate(m.DateTime);
-            //    //else if (CurrentPage is MapPage)
-            //    //    await ((MapViewModel)((MapPage)CurrentPage).BindingContext).LoadDate(m.DateTime);
-            //    //else
-            //    //{
-            //    //    CurrentPage = _jobsPage;
-            //    //    await ((JobsViewModel)((JobsPage)CurrentPage).BindingContext).LoadDate(m.DateTime);
-            //    //}
-            //});
-
             this.Subscribe<UserUnauthorized>(async m => await RefreshToken());
         }
-
-        //protected override async void OnCurrentPageChanged()
-        //{
-        //    if (CurrentPage is JobsPage && _mapPage != null)
-        //    {
-        //        await ((JobsViewModel)((JobsPage)CurrentPage).BindingContext).LoadDate(((MapViewModel)_mapPage.BindingContext).Date);
-        //    }
-        //    else if (CurrentPage is MapPage && _jobsPage != null)
-        //    {
-        //        await ((MapViewModel)((MapPage)CurrentPage).BindingContext).LoadDate(((JobsViewModel)_jobsPage.BindingContext).Date);
-        //    }
-        //}
 
         private async Task RefreshToken()
         {

@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Polly;
+using CallOfService.Mobile.Core;
 using SQLite.Net.Async;
 
 namespace CallOfService.Mobile.Database
 {
     public class DbSet<T> : IDbSet<T> where T : class, new()
     {
+        private static readonly AsyncLock Mutex = new AsyncLock();
         private readonly SQLiteAsyncConnection _sqLiteAsyncConnection;
 
         public DbSet(ISqLiteNet connection)
@@ -16,132 +17,76 @@ namespace CallOfService.Mobile.Database
             _sqLiteAsyncConnection = connection.GetConnection();
         }
 
-        public Task CreateTable()
+        public async Task CreateTable()
         {
-            var result = Policy
-                  .Handle<Exception>()
-                  .WaitAndRetryAsync
-                  (
-                    retryCount: 3,
-                    sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(1),
-                    onRetryAsync: (exception, span, retryCount, context) => retryCount == 2 ? _sqLiteAsyncConnection.DropTableAsync<T>() : Task.Delay(1)
-                  )
-                  .ExecuteAsync(() => _sqLiteAsyncConnection.CreateTableAsync<T>());
-
-            return result;
+            using (await Mutex.LockAsync().ConfigureAwait(false))
+            {
+                await _sqLiteAsyncConnection.CreateTableAsync<T>();
+            }
         }
 
-        public Task<List<T>> GetAllAsync()
+        public async Task<List<T>> GetAllAsync()
         {
-            var result = Policy
-                 .Handle<Exception>()
-                 .WaitAndRetryAsync
-                 (
-                   retryCount: 3,
-                   sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(1)
-                 )
-                 .ExecuteAsync(() => _sqLiteAsyncConnection.Table<T>().ToListAsync());
-
-            return result;
+            using (await Mutex.LockAsync().ConfigureAwait(false))
+            {
+                return await _sqLiteAsyncConnection.Table<T>().ToListAsync();
+            }
         }
 
-        public Task<T> GetById(long primaryKey)
+        public async Task<T> GetById(long primaryKey)
         {
-            var result = Policy
-                 .Handle<Exception>()
-                 .WaitAndRetryAsync
-                 (
-                   retryCount: 3,
-                   sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(1)
-                 )
-                 .ExecuteAsync(() => _sqLiteAsyncConnection.GetAsync<T>(primaryKey));
-
-            return result;
+            using (await Mutex.LockAsync().ConfigureAwait(false))
+            {
+                return await _sqLiteAsyncConnection.GetAsync<T>(primaryKey);
+            }
         }
 
-        public Task<List<T>> Get(Expression<Func<T, bool>> predicate)
+        public async Task<List<T>> Get(Expression<Func<T, bool>> predicate)
         {
-            var result = Policy
-                 .Handle<Exception>()
-                 .WaitAndRetryAsync
-                 (
-                   retryCount: 3,
-                   sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(1)
-                 )
-                 .ExecuteAsync(() => _sqLiteAsyncConnection.Table<T>().Where(predicate).ToListAsync());
-
-            return result;
+            using (await Mutex.LockAsync().ConfigureAwait(false))
+            {
+                return await _sqLiteAsyncConnection.Table<T>().Where(predicate).ToListAsync();
+            }
         }
 
-        public Task<int> Add(T obj)
+        public async Task<int> Add(T obj)
         {
-            var result = Policy
-                 .Handle<Exception>()
-                 .WaitAndRetryAsync
-                 (
-                   retryCount: 3,
-                   sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(1)
-                 )
-                 .ExecuteAsync(() => _sqLiteAsyncConnection.InsertAsync(obj));
-
-            return result;
+            using (await Mutex.LockAsync().ConfigureAwait(false))
+            {
+                return await _sqLiteAsyncConnection.InsertAsync(obj);
+            }
         }
 
-        public Task<int> Add(List<T> objects)
+        public async Task<int> Add(List<T> objects)
         {
-            var result = Policy
-                 .Handle<Exception>()
-                 .WaitAndRetryAsync
-                 (
-                   retryCount: 3,
-                   sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(1)
-                 )
-                 .ExecuteAsync(() => _sqLiteAsyncConnection.InsertAllAsync(objects));
-
-            return result;
+            using (await Mutex.LockAsync().ConfigureAwait(false))
+            {
+                return await _sqLiteAsyncConnection.InsertAllAsync(objects);
+            }
         }
 
-        public Task<int> Update(T obj)
+        public async Task<int> Update(T obj)
         {
-            var result = Policy
-                .Handle<Exception>()
-                .WaitAndRetryAsync
-                (
-                  retryCount: 3,
-                  sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(1)
-                )
-                .ExecuteAsync(() => _sqLiteAsyncConnection.UpdateAsync(obj));
-
-            return result;
+            using (await Mutex.LockAsync().ConfigureAwait(false))
+            {
+                return await _sqLiteAsyncConnection.UpdateAsync(obj);
+            }
         }
 
-        public Task<int> Delete(long primaryKey)
+        public async Task<int> Delete(long primaryKey)
         {
-            var result = Policy
-               .Handle<Exception>()
-               .WaitAndRetryAsync
-               (
-                 retryCount: 3,
-                 sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(1)
-               )
-               .ExecuteAsync(() => _sqLiteAsyncConnection.DeleteAsync<T>(primaryKey));
-
-            return result;
+            using (await Mutex.LockAsync().ConfigureAwait(false))
+            {
+                return await _sqLiteAsyncConnection.DeleteAsync<T>(primaryKey);
+            }
         }
 
-        public Task DeleteAll()
+        public async Task DeleteAll()
         {
-            var result = Policy
-              .Handle<Exception>()
-              .WaitAndRetryAsync
-              (
-                retryCount: 3,
-                sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(1),
-                onRetryAsync: (exception, span, retryCount, context) => retryCount == 2 ? CreateTable() : Task.Delay(1)
-              )
-              .ExecuteAsync(() => _sqLiteAsyncConnection.DeleteAllAsync<T>());
-
-            return result;
+            using (await Mutex.LockAsync().ConfigureAwait(false))
+            {
+                await _sqLiteAsyncConnection.DeleteAllAsync<T>();
+            }
         }
 
         public async Task ResetTableData(List<T> objects)
@@ -151,32 +96,20 @@ namespace CallOfService.Mobile.Database
             await Add(objects);
         }
 
-        public Task<int> ResetTableIndex()
+        public async Task<int> ResetTableIndex()
         {
-            var result = Policy
-              .Handle<Exception>()
-              .WaitAndRetryAsync
-              (
-                retryCount: 3,
-                sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(1)
-              )
-              .ExecuteAsync(() => _sqLiteAsyncConnection.ExecuteAsync($"delete from sqlite_sequence where name='{TableName()}'"));
-
-            return result;
+            using (await Mutex.LockAsync().ConfigureAwait(false))
+            {
+               return  await _sqLiteAsyncConnection.ExecuteAsync($"delete from sqlite_sequence where name='{TableName()}'");
+            }
         }
 
-        public Task<int> GetTableIndex()
+        public async Task<int> GetTableIndex()
         {
-            var result = Policy
-              .Handle<Exception>()
-              .WaitAndRetryAsync
-              (
-                retryCount: 3,
-                sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(1)
-              )
-              .ExecuteAsync(() => _sqLiteAsyncConnection.ExecuteScalarAsync<int>($"Select seq from sqlite_sequence where name='{TableName()}'"));
-
-            return result;
+            using (await Mutex.LockAsync().ConfigureAwait(false))
+            {
+                return await _sqLiteAsyncConnection.ExecuteScalarAsync<int>($"Select seq from sqlite_sequence where name='{TableName()}'");
+            }
         }
 
         public string TableName()

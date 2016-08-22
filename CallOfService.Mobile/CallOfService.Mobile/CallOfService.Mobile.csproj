@@ -78,6 +78,7 @@
     <Compile Include="Controls\Repeater\TemplateSelector.cs" />
     <Compile Include="Controls\SvgImage.cs" />
     <Compile Include="Core\AnalyticsService.cs" />
+    <Compile Include="Core\AsyncLock.cs" />
     <Compile Include="Core\DI\DependencyResolver.cs" />
     <Compile Include="Core\DI\FormsModule.cs" />
     <Compile Include="Core\ListExtensions.cs" />

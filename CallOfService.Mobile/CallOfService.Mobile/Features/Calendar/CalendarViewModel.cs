@@ -18,7 +18,6 @@ namespace CallOfService.Mobile.Features.Calendar
             _analyticsService = analyticsService;
         }
 
-        public Source Source { get; set; }
         public DateTime Date { get; set; }
 
         public override void OnAppearing()
@@ -32,7 +31,7 @@ namespace CallOfService.Mobile.Features.Calendar
             {
                 return new Command(async () =>
                 {
-                    this.Publish(new NewDateSelected(Date, Source));
+                    this.Publish(new NewDateSelected(Date));
                     await NavigationService.Navigation.PopModalAsync(true);
                 });
             }

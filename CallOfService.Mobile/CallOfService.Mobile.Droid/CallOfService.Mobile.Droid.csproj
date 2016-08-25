@@ -432,6 +432,10 @@
     <AndroidResource Include="Resources\drawable-mdpi\Marker.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\Marker.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\Marker.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\Map.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\Map.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\Map.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\Map.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\ad16.jpg" />

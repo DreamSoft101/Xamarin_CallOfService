@@ -127,6 +127,7 @@
       <DependentUpon>JobsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\Jobs\JobsViewModel.cs" />
+    <Compile Include="Features\Jobs\JobsViewModelData.cs" />
     <Compile Include="Features\Login\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>

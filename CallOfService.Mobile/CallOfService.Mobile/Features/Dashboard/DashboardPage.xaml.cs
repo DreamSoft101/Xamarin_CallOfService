@@ -70,15 +70,26 @@ namespace CallOfService.Mobile.Features.Dashboard
 
             base.OnAppearing();
 
+            var dataViewModel = DependencyResolver.Resolve<JobsViewModelData>();
+            var jobsViewModel = DependencyResolver.Resolve<JobsViewModel>();
+            jobsViewModel.Model = dataViewModel;
+            var mapViewModel = DependencyResolver.Resolve<MapViewModel>();
+            mapViewModel.Model = dataViewModel;
+
             Children.Clear();
-            _jobsPage = NavigationService.CreateAndBind<JobsPage>(DependencyResolver.Resolve<JobsViewModel>());
-            _jobsPage.Title = "JOBS";
+            _jobsPage = NavigationService.CreateAndBind<JobsPage>(jobsViewModel);
+            _jobsPage.Title = "Jobs";
             _jobsPage.Icon = "Jobs.png";
             Children.Add(_jobsPage);
-            _mapPage = NavigationService.CreateAndBind<MapPage>(DependencyResolver.Resolve<MapViewModel>());
+            _mapPage = NavigationService.CreateAndBind<MapPage>(mapViewModel);
             _mapPage.Title = "MAP";
-            _mapPage.Icon = "Calendar.png";
+            _mapPage.Icon = "Map.png";
             Children.Add(_mapPage);
+
+            if (CurrentPage == null)
+            {
+                CurrentPage = _jobsPage;
+            }
 
             dialog.HideLoading();
 

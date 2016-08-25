@@ -67,8 +67,7 @@ namespace CallOfService.Mobile.Features.Login
                             await NavigationService.DismissAsync();
                         else
                         {
-                            //await _appointmentService.RetrieveAndSaveAppointments();
-                            await NavigationService.NavigateToMainPageAsync();
+                            await NavigationService.NavigateToRootAsync(); //NavigateToDashboardScreenAsync
                         }
                     }
                     else

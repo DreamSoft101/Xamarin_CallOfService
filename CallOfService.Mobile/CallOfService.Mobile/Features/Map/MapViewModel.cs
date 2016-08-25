@@ -45,7 +45,7 @@ namespace CallOfService.Mobile.Features.Map
 
             this.Subscribe<JobSelected>(async m =>
             {
-                await NavigationService.NavigateToJobDetails();
+                await NavigationService.NavigateToJobDetailsAsync();
                 this.Publish(new ViewJobDetails(m.JobId));
             });
 
@@ -127,7 +127,7 @@ namespace CallOfService.Mobile.Features.Map
                 {
                     var vm = DependencyResolver.Resolve<CalendarViewModel>();
                     vm.Source = Source.Map;
-                    await NavigationService.ShowModal<CalendarPage, CalendarViewModel>(vm);
+                    await NavigationService.ShowModalAsync<CalendarPage, CalendarViewModel>(vm);
                 });
             }
         }
@@ -138,7 +138,7 @@ namespace CallOfService.Mobile.Features.Map
             Appointments.Clear();
         }
 
-        public async Task LoadDate(DateTime date)
+        public async Task LoadDate(DateTime date, bool forceRefresh = false)
         {
             Date = date;
             if (!IsRefreshing)
@@ -146,7 +146,7 @@ namespace CallOfService.Mobile.Features.Map
                 IsRefreshing = true;
                 _userDialogs.ShowLoading("Loading...");
 
-                var appointments = await _appointmentService.AppointmentsByDay(Date);
+                var appointments = await _appointmentService.AppointmentsByDay(Date, forceRefresh);
 
                 Pins.Clear();
                 Appointments.Clear();
@@ -214,11 +214,6 @@ namespace CallOfService.Mobile.Features.Map
             IsRefreshing = false;
 
             await LoadDate(Date);
-        }
-
-        public override void OnDisappearing()
-        {
-
         }
 
         private async Task<Position> GetPosition(string address)

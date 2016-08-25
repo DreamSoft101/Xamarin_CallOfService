@@ -48,9 +48,9 @@ namespace CallOfService.Mobile.Features.JobDetails
             {
                 return new Command(async () =>
                 {
-                    await NavigationService.NavigateToRoot();
-                    //await NavigationService.NavigateBack();
-                    //await NavigationService.NavigateBack();
+                    await NavigationService.NavigateToRootAsync();
+                    //await NavigationService.NavigateBackAsync();
+                    //await NavigationService.NavigateBackAsync();
                 });
             }
         }
@@ -241,7 +241,7 @@ namespace CallOfService.Mobile.Features.JobDetails
             {
                 return new Command(async () =>
 				{
-                    await NavigationService.ShowModal<JobNotePage, JobNoteViewModel>();
+                    await NavigationService.ShowModalAsync<JobNotePage, JobNoteViewModel>();
                     this.Publish(new ViewJobNoteDetails(JobNumber));
                 });
             }
@@ -409,7 +409,7 @@ namespace CallOfService.Mobile.Features.JobDetails
             {
                 _userDialogs.HideLoading();
                 _userDialogs.ShowError("Error while loading job details");
-                await NavigationService.NavigateBack();
+                await NavigationService.NavigateBackAsync();
                 return;
             }
                

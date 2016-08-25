@@ -13,11 +13,13 @@ namespace CallOfService.Mobile.Features.Login
     {
         private readonly ILoginService _loginService;
         private readonly IUserDialogs _userDialogs;
+        private readonly IAppointmentService _appointmentService;
 
-        public LoginViewModel(ILoginService loginService, IUserDialogs userDialogs)
+        public LoginViewModel(ILoginService loginService, IUserDialogs userDialogs, IAppointmentService appointmentService)
         {
             _loginService = loginService;
             _userDialogs = userDialogs;
+            _appointmentService = appointmentService;
             Relogin = false;
         }
 
@@ -62,9 +64,12 @@ namespace CallOfService.Mobile.Features.Login
                     if (loginResult.IsSuccessful)
                     {
                         if (Relogin)
-                            await NavigationService.Dismiss();
+                            await NavigationService.DismissAsync();
                         else
-                            await NavigationService.NavigateToWelcomeScreen();
+                        {
+                            //await _appointmentService.RetrieveAndSaveAppointments();
+                            await NavigationService.NavigateToMainPageAsync();
+                        }
                     }
                     else
                         ShowErrorMessage = true;

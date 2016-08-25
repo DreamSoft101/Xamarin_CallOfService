@@ -107,14 +107,8 @@ namespace CallOfService.Mobile.Core.Networking
                  .ExecuteAsync(async () => await Client.PostAsync(url, postStringContent));
 
                 LogResponse(responseMessage, string.Empty);
-                if (responseMessage.StatusCode == HttpStatusCode.OK)
-                    return null;
-                else
-                {
-                    var responseString = await responseMessage.Content.ReadAsStringAsync();
-                    Logger.WriteError($"Error response from PostStringAsync: {responseMessage.StatusCode}, Content: {responseString}");
-                    return responseString;
-                }
+                var responseString = await responseMessage.Content.ReadAsStringAsync();
+                return responseString;
             }
             catch (Exception e)
             {

@@ -1,4 +1,6 @@
+using System;
 using System.Threading.Tasks;
+using CallOfService.Mobile.Core;
 using CallOfService.Mobile.Core.Security;
 using CallOfService.Mobile.Database.Repos.Abstracts;
 using CallOfService.Mobile.Domain;
@@ -8,8 +10,12 @@ namespace CallOfService.Mobile.Services
 {
     public class UserService : IUserService
     {
+        private static readonly AsyncLock Mutex = new AsyncLock();
+
         private readonly IUserRepo _userRepo;
         private readonly ICredentialManager _credentialManager;
+        private UserProfile _currentUserProfile;
+        private DateTime? _lastUpdated;
 
         public UserService(IUserRepo userRepo, ICredentialManager credentialManager)
         {
@@ -17,9 +23,18 @@ namespace CallOfService.Mobile.Services
             _credentialManager = credentialManager;
         }
 
-        public Task<UserProfile> GetCurrentUser()
+        public async Task<UserProfile> GetCurrentUser()
         {
-            return _userRepo.GetCurrentUserProfile();
+            using (await Mutex.LockAsync().ConfigureAwait(false))
+            {
+                if (NeedsRefresh())
+                {
+                    _currentUserProfile = await _userRepo.GetCurrentUserProfile();
+                    _lastUpdated = DateTime.UtcNow;
+                }
+
+                return _currentUserProfile;
+            }
         }
 
         public Credential GetUserCredentials()
@@ -29,6 +44,11 @@ namespace CallOfService.Mobile.Services
                 return null;
 
             return _credentialManager.Retrive();
+        }
+
+        private bool NeedsRefresh()
+        {
+            return _currentUserProfile == null || _lastUpdated == null || (DateTime.UtcNow - _lastUpdated.Value).TotalMinutes > 5;
         }
     }
 }

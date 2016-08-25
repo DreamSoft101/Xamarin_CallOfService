@@ -28,7 +28,7 @@ namespace CallOfService.Mobile.Features.Jobs
             Appointments = new ObservableCollection<AppointmentModel>();
             this.Subscribe<JobSelected>(async m =>
             {
-                await NavigationService.NavigateToJobDetails();
+                await NavigationService.NavigateToJobDetailsAsync();
                 this.Publish(new ViewJobDetails(m.JobId));
             });
 
@@ -116,7 +116,7 @@ namespace CallOfService.Mobile.Features.Jobs
                 {
                     var vm = DependencyResolver.Resolve<CalendarViewModel>();
                     vm.Source = Source.Jobs;
-                    await NavigationService.ShowModal<CalendarPage, CalendarViewModel>(vm);
+                    await NavigationService.ShowModalAsync<CalendarPage, CalendarViewModel>(vm);
                 });
             }
         }
@@ -128,19 +128,19 @@ namespace CallOfService.Mobile.Features.Jobs
                 return new Command(async () =>
                 {
                     _analyticsService.Track("Refreshing Jobs");
-                    await LoadDate(Date);
+                    await LoadDate(Date, true);
                     OnAppearing();
                 });
             }
         }
 
-        public async Task LoadDate(DateTime date)
+        public async Task LoadDate(DateTime date, bool forceRefresh = false)
         {
             Date = date;
             if (!IsRefreshing)
             {
                 IsRefreshing = true;
-                var appointments = await _appointmentService.AppointmentsByDay(Date);
+                var appointments = await _appointmentService.AppointmentsByDay(Date, forceRefresh);
                 Appointments.Clear();
                 foreach (var appointment in appointments.Where(a => !a.IsCancelled).OrderBy(a => a.Start))
                 {

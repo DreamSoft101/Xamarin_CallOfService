@@ -12,10 +12,13 @@ namespace CallOfService.Mobile.Services
 {
     public class AppointmentService : IAppointmentService
     {
+        private static readonly AsyncLock Mutex = new AsyncLock();
+
         private readonly IAppointmentProxy _appointmentProxy;
         private readonly IUserService _userService;
         private readonly IAppointmentRepo _appointmentRepo;
         private readonly ILocationService _locationService;
+        private DateTime? _lastUpdated;
 
         public AppointmentService(IAppointmentProxy appointmentProxy, IUserService userService, IAppointmentRepo appointmentRepo, ILocationService locationService)
         {
@@ -27,22 +30,34 @@ namespace CallOfService.Mobile.Services
 
         public async Task<bool> RetrieveAndSaveAppointments(DateTime? date = null)
         {
-            var currentUser = await _userService.GetCurrentUser();
-            var appointments = await _appointmentProxy.GetAppointments(currentUser.UserId, date);
-            if (appointments != null)
+            using (await Mutex.LockAsync().ConfigureAwait(false))
             {
-				appointments.ForEach(a => a.UpdateDates());
-                //ToDo: Diff and check last updated instead of delete all and re-insert
-                await _appointmentRepo.DeleteAll();
-                await _appointmentRepo.SaveAppointment(appointments);
-                return true;
+                var currentUser = await _userService.GetCurrentUser();
+                var appointments = await _appointmentProxy.GetAppointments(currentUser.UserId, date);
+                if (appointments != null)
+                {
+                    appointments.ForEach(a => a.UpdateDates());
+                    //ToDo: Diff and check last updated instead of delete all and re-insert
+                    await _appointmentRepo.DeleteAll();
+                    await _appointmentRepo.SaveAppointment(appointments);
+
+                    _lastUpdated = DateTime.UtcNow;
+                    return true;
+                }
+                return false;
             }
-            return false;
         }
 
-        public async Task<List<Appointment>> AppointmentsByDay(DateTime date)
+        public async Task<List<Appointment>> AppointmentsByDay(DateTime date, bool forceRefresh = false)
         {
-            await RetrieveAndSaveAppointments(date);
+            if (forceRefresh)
+                await RetrieveAndSaveAppointments(date);
+            else 
+            {
+                if (await NeedsRefresh())
+                    await RetrieveAndSaveAppointments(date);
+            }
+
             return await _appointmentRepo.AppointmentsByDay(date);
         }
 
@@ -54,9 +69,10 @@ namespace CallOfService.Mobile.Services
         public async Task<Job> GetJobById(int jobId)
         {
             var job = await _appointmentProxy.GetJobById(jobId);
-			if (job == null) {
-				return await _appointmentRepo.GetJobById(jobId);
-			}
+            if (job == null)
+            {
+                return await _appointmentRepo.GetJobById(jobId);
+            }
             GpsPoint point;
             if (job.Location.Latitude == null || job.Location.Longitude == null)
             {
@@ -96,10 +112,18 @@ namespace CallOfService.Mobile.Services
             return await _appointmentProxy.FinishJob(jobId, position?.Latitude, position?.Longitude);
         }
 
-		public async Task<bool> SubmitNote(int jobNumber, string newNoteText, List<byte[]> attachments, DateTime now)
+        public async Task<bool> SubmitNote(int jobNumber, string newNoteText, List<byte[]> attachments, DateTime now)
         {
             var position = await _locationService.GetCurrentLocation(timeoutInMilliseconds: 5000);
             return await _appointmentProxy.AddNote(jobNumber, newNoteText, attachments, now, position?.Latitude, position?.Longitude);
+        }
+
+        private async Task<bool> NeedsRefresh()
+        {
+            using (await Mutex.LockAsync().ConfigureAwait(false))
+            {
+                return _lastUpdated == null || (DateTime.UtcNow - _lastUpdated.Value).TotalMinutes > 1;
+            }
         }
     }
 }

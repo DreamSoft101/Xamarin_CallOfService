@@ -9,7 +9,7 @@ namespace CallOfService.Mobile.Database
 {
     public class DbSet<T> : IDbSet<T> where T : class, new()
     {
-        private static readonly AsyncLock Mutex = new AsyncLock();
+        private readonly AsyncLock mutex = new AsyncLock();
         private readonly SQLiteAsyncConnection _sqLiteAsyncConnection;
 
         public DbSet(ISqLiteNet connection)
@@ -19,7 +19,7 @@ namespace CallOfService.Mobile.Database
 
         public async Task CreateTable()
         {
-            using (await Mutex.LockAsync().ConfigureAwait(false))
+            using (await mutex.LockAsync().ConfigureAwait(false))
             {
                 await _sqLiteAsyncConnection.CreateTableAsync<T>();
             }
@@ -27,7 +27,7 @@ namespace CallOfService.Mobile.Database
 
         public async Task<List<T>> GetAllAsync()
         {
-            using (await Mutex.LockAsync().ConfigureAwait(false))
+            using (await mutex.LockAsync().ConfigureAwait(false))
             {
                 return await _sqLiteAsyncConnection.Table<T>().ToListAsync();
             }
@@ -35,7 +35,7 @@ namespace CallOfService.Mobile.Database
 
         public async Task<T> GetById(long primaryKey)
         {
-            using (await Mutex.LockAsync().ConfigureAwait(false))
+            using (await mutex.LockAsync().ConfigureAwait(false))
             {
                 return await _sqLiteAsyncConnection.GetAsync<T>(primaryKey);
             }
@@ -43,7 +43,7 @@ namespace CallOfService.Mobile.Database
 
         public async Task<List<T>> Get(Expression<Func<T, bool>> predicate)
         {
-            using (await Mutex.LockAsync().ConfigureAwait(false))
+            using (await mutex.LockAsync().ConfigureAwait(false))
             {
                 return await _sqLiteAsyncConnection.Table<T>().Where(predicate).ToListAsync();
             }
@@ -51,7 +51,7 @@ namespace CallOfService.Mobile.Database
 
         public async Task<int> Add(T obj)
         {
-            using (await Mutex.LockAsync().ConfigureAwait(false))
+            using (await mutex.LockAsync().ConfigureAwait(false))
             {
                 return await _sqLiteAsyncConnection.InsertAsync(obj);
             }
@@ -59,7 +59,7 @@ namespace CallOfService.Mobile.Database
 
         public async Task<int> Add(List<T> objects)
         {
-            using (await Mutex.LockAsync().ConfigureAwait(false))
+            using (await mutex.LockAsync().ConfigureAwait(false))
             {
                 return await _sqLiteAsyncConnection.InsertAllAsync(objects);
             }
@@ -67,7 +67,7 @@ namespace CallOfService.Mobile.Database
 
         public async Task<int> Update(T obj)
         {
-            using (await Mutex.LockAsync().ConfigureAwait(false))
+            using (await mutex.LockAsync().ConfigureAwait(false))
             {
                 return await _sqLiteAsyncConnection.UpdateAsync(obj);
             }
@@ -75,7 +75,7 @@ namespace CallOfService.Mobile.Database
 
         public async Task<int> Delete(long primaryKey)
         {
-            using (await Mutex.LockAsync().ConfigureAwait(false))
+            using (await mutex.LockAsync().ConfigureAwait(false))
             {
                 return await _sqLiteAsyncConnection.DeleteAsync<T>(primaryKey);
             }
@@ -83,7 +83,7 @@ namespace CallOfService.Mobile.Database
 
         public async Task DeleteAll()
         {
-            using (await Mutex.LockAsync().ConfigureAwait(false))
+            using (await mutex.LockAsync().ConfigureAwait(false))
             {
                 await _sqLiteAsyncConnection.DeleteAllAsync<T>();
             }
@@ -98,7 +98,7 @@ namespace CallOfService.Mobile.Database
 
         public async Task<int> ResetTableIndex()
         {
-            using (await Mutex.LockAsync().ConfigureAwait(false))
+            using (await mutex.LockAsync().ConfigureAwait(false))
             {
                return  await _sqLiteAsyncConnection.ExecuteAsync($"delete from sqlite_sequence where name='{TableName()}'");
             }
@@ -106,7 +106,7 @@ namespace CallOfService.Mobile.Database
 
         public async Task<int> GetTableIndex()
         {
-            using (await Mutex.LockAsync().ConfigureAwait(false))
+            using (await mutex.LockAsync().ConfigureAwait(false))
             {
                 return await _sqLiteAsyncConnection.ExecuteScalarAsync<int>($"Select seq from sqlite_sequence where name='{TableName()}'");
             }

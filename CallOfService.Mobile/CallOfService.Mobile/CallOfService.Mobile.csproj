@@ -144,10 +144,6 @@
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\Settings\SettingsViewModel.cs" />
-    <Compile Include="Features\Welcome\WelcomePage.xaml.cs">
-      <DependentUpon>WelcomePage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Features\Welcome\WelcomeViewModel.cs" />
     <Compile Include="Helpers\Settings.cs" />
     <Compile Include="Helpers\TaskUtils.cs" />
     <Compile Include="Messages\FinishedLoadingAppointments.cs" />
@@ -367,10 +363,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Features\MenuPage\MainMenuPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Features\Welcome\WelcomePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

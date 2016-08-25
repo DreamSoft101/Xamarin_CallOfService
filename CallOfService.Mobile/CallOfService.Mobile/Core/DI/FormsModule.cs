@@ -11,7 +11,6 @@ using CallOfService.Mobile.Features.Jobs;
 using CallOfService.Mobile.Features.Login;
 using CallOfService.Mobile.Features.Map;
 using CallOfService.Mobile.Features.Settings;
-using CallOfService.Mobile.Features.Welcome;
 using CallOfService.Mobile.Proxies;
 using CallOfService.Mobile.Proxies.Abstratcs;
 using CallOfService.Mobile.Services;
@@ -65,7 +64,7 @@ namespace CallOfService.Mobile.Core.DI
         private void RegisterViewModels(ContainerBuilder builder)
         {
             builder.RegisterType<LoginViewModel>().AsSelf().SingleInstance();
-            builder.RegisterType<WelcomeViewModel>().AsSelf().SingleInstance();
+            //builder.RegisterType<WelcomeViewModel>().AsSelf().SingleInstance();
             builder.RegisterType<JobsViewModel>().AsSelf().SingleInstance();
             builder.RegisterType<CalendarViewModel>().AsSelf().SingleInstance();
             builder.RegisterType<JobDetailsViewModel>().AsSelf().SingleInstance();

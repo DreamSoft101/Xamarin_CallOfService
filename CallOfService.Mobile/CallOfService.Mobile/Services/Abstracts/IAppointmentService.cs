@@ -8,7 +8,7 @@ namespace CallOfService.Mobile.Services.Abstracts
     public interface IAppointmentService
     {
         Task<bool> RetrieveAndSaveAppointments(DateTime? date = null);
-        Task<List<Appointment>> AppointmentsByDay(DateTime date);
+        Task<List<Appointment>> AppointmentsByDay(DateTime date, bool forceRefresh = false);
         Task<Appointment> GetAppointmentByJobId(int jobId);
         Task<Job> GetJobById(int jobId);
         Uri GetFileUri(FileReference fileReference, bool isThumbnil);

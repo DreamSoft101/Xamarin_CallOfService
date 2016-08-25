@@ -39,7 +39,7 @@ namespace CallOfService.Mobile.Features.Dashboard
             var loginResult = await loginService.Login(cred.Email, cred.Password);
             if (!loginResult.IsSuccessful)
             {
-                await NavigationService.ShowLoginPage();
+                await NavigationService.ShowLoginPageAsync();
             }
         }
 

@@ -21,13 +21,13 @@ namespace CallOfService.Mobile
             this.Subscribe<Logout>(async m =>
             {
                 NavigationService.MainNavigation = NavigationService.Navigation;
-                await NavigationService.NavigateToLoginPage();
+                await NavigationService.NavigateToLoginPageAsync();
             });
 
             this.Subscribe<NavigateToSettings>(async m =>
             {
                 NavigationService.MainNavigation = NavigationService.Navigation;
-                await NavigationService.NavigateToSettingsPage();
+                await NavigationService.NavigateToSettingsPageAsync();
             });
         }
 

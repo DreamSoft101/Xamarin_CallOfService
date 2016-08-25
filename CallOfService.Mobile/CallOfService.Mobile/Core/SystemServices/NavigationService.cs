@@ -62,6 +62,11 @@ namespace CallOfService.Mobile.Core.SystemServices
             (page?.BindingContext as IDisposable)?.Dispose();
         }
 
+        public static async Task NavigateToRoot()
+        {
+            await Navigation.PopToRootAsync();
+        }
+
         public static async Task Dismiss()
         {
             var page = await Navigation.PopModalAsync();

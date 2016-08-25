@@ -327,7 +327,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="FodyWeavers.xml" />
     <EmbeddedResource Include="Resources\Images\calendar.svg" />
     <EmbeddedResource Include="Resources\Images\call.svg" />
     <EmbeddedResource Include="Resources\Images\clock-green.svg" />

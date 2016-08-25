@@ -76,7 +76,14 @@ namespace CallOfService.Mobile.Features.Map
         public DateTime Date
         {
             get { return _date; }
-            set { SetPropertyValue(ref _date, value); }
+            set
+            {
+                if (value != Date)
+                {
+                    SetPropertyValue(ref _date, value);
+                    //this.Publish(new NewDateSelected(Date, Source.Map));
+                }
+            }
         }
 
         private bool _isRefreshing;

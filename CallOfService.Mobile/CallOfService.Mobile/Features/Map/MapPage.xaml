@@ -15,11 +15,13 @@
         <ColumnDefinition Width="50" />
       </Grid.ColumnDefinitions>
       <Button Grid.Row="0" Grid.Column="0" Text="Prev" IsEnabled="{Binding CanNavigate}" Command="{Binding GoToPrevDay}" BackgroundColor="Transparent" FontSize="10"/>
-      <Label Grid.Row="0" Grid.Column="1" Text="{Binding Date,StringFormat='{}{0:ddd} {0:dd} {0:MMMM} {0:yyyy}'}" TextColor="Blue" HorizontalTextAlignment="Center" HeightRequest="60" VerticalTextAlignment="Center" BackgroundColor="White" FontSize="16" >
+      <!--<Label Grid.Row="0" Grid.Column="1" Text="{Binding Date,StringFormat='{}{0:ddd} {0:dd} {0:MMMM} {0:yyyy}'}" TextColor="Blue" HorizontalTextAlignment="Center" HeightRequest="60" VerticalTextAlignment="Center" BackgroundColor="White" FontSize="16" >
         <Label.GestureRecognizers>
           <TapGestureRecognizer Command="{Binding ShowCalendarView}" />
         </Label.GestureRecognizers>   
-      </Label>
+      </Label>-->
+      <DatePicker Grid.Row="0" Grid.Column="1" VerticalOptions="CenterAndExpand" Date="{Binding Date}">
+      </DatePicker>
       <Button Grid.Row="0" Grid.Column="2" Text="Next" IsEnabled="{Binding CanNavigate}" Command="{Binding GoToNextDay}" BackgroundColor="Transparent" FontSize="10"/>
     </Grid>
 	  <mapcontrol:TKCustomMap x:Name="Map" MapType="Street" IsShowingUser="True" HasScrollEnabled="True" CustomPins="{Binding Pins}" MapRegion="{Binding Region}" CalloutClicked="Map_OnCalloutClicked"></mapcontrol:TKCustomMap>

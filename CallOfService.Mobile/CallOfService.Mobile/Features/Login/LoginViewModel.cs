@@ -13,13 +13,11 @@ namespace CallOfService.Mobile.Features.Login
     {
         private readonly ILoginService _loginService;
         private readonly IUserDialogs _userDialogs;
-        private readonly IAppointmentService _appointmentService;
 
-        public LoginViewModel(ILoginService loginService, IUserDialogs userDialogs, IAppointmentService appointmentService)
+        public LoginViewModel(ILoginService loginService, IUserDialogs userDialogs)
         {
             _loginService = loginService;
             _userDialogs = userDialogs;
-            _appointmentService = appointmentService;
             Relogin = false;
         }
 
@@ -67,7 +65,7 @@ namespace CallOfService.Mobile.Features.Login
                             await NavigationService.DismissAsync();
                         else
                         {
-                            await NavigationService.NavigateToRootAsync(); //NavigateToDashboardScreenAsync
+                            await NavigationService.NavigateToRootAsync();
                         }
                     }
                     else

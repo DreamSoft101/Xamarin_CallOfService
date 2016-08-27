@@ -14,11 +14,6 @@ namespace CallOfService.Mobile.Core.SystemServices
         public static INavigation Navigation { get; set; }
         public static INavigation MainNavigation { get; set; }
 
-        //public static Task NavigateToWelcomeScreenAsync()
-        //{
-        //    return MainNavigation.PushAsync(CreateAndBind<WelcomePage>(DependencyResolver.Resolve<WelcomeViewModel>()));
-        //}
-
         public static Page CreateAndBind<T>(object obj) where T : Page, new()
         {
             T page;

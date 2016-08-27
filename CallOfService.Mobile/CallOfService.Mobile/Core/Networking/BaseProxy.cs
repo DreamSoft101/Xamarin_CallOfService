@@ -225,6 +225,7 @@ namespace CallOfService.Mobile.Core.Networking
         protected void LogResponse(HttpResponseMessage responseMessage, string content, bool logSuccessfulResponse = false)
         {
             if (responseMessage.StatusCode != HttpStatusCode.Created &&
+                responseMessage.StatusCode != HttpStatusCode.Accepted &&
                 responseMessage.StatusCode != HttpStatusCode.OK)
             {
                 Logger.WriteError(

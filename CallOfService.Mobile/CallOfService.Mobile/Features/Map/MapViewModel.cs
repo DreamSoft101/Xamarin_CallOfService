@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Acr.UserDialogs;
+using CallOfService.Mobile.Core.SystemServices;
 using CallOfService.Mobile.Domain;
 using CallOfService.Mobile.Features.Jobs;
 using CallOfService.Mobile.Proxies.Abstratcs;
@@ -19,13 +20,15 @@ namespace CallOfService.Mobile.Features.Map
         private readonly IAppointmentProxy _appointmentProxy;
         private readonly ILocationService _locationService;
         private readonly IUserDialogs _userDialogs;
+        private readonly ILogger _logger;
         private readonly double _rotation = 360 / Math.Pow(2, 15);
 
-        public MapViewModel(IAppointmentProxy appointmentProxy, ILocationService locationService, IUserDialogs userDialogs)
+        public MapViewModel(IAppointmentProxy appointmentProxy, ILocationService locationService, IUserDialogs userDialogs, ILogger logger)
         {
             _appointmentProxy = appointmentProxy;
             _locationService = locationService;
             _userDialogs = userDialogs;
+            _logger = logger;
 
             Pins = new ObservableCollection<TKCustomMapPin>();
             Region = new MapSpan(new Position(34.5133, -94.1629), _rotation, _rotation);
@@ -69,6 +72,7 @@ namespace CallOfService.Mobile.Features.Map
                 }
                 catch (Exception ex)
                 {
+                    _logger.WriteError("Exception while loading data for map view", exception:ex);
                     tcs.SetException(ex);
                 }
             });
@@ -111,14 +115,17 @@ namespace CallOfService.Mobile.Features.Map
                         });
                     }
 
-                    var maxLat = Pins.Max(p => p.Position.Latitude);
-                    var maxLng = Pins.Max(p => p.Position.Longitude);
-                    var minLat = Pins.Min(p => p.Position.Latitude);
-                    var minLng = Pins.Min(p => p.Position.Longitude);
-                    var center = new Position((maxLat + minLat) / 2, (maxLng + minLng) / 2);
-                    var distance = GetDistance(minLat, minLng, maxLat, maxLng, 'K');
+                    if (Pins.Any())
+                    {
+                        var maxLat = Pins.Max(p => p.Position.Latitude);
+                        var maxLng = Pins.Max(p => p.Position.Longitude);
+                        var minLat = Pins.Min(p => p.Position.Latitude);
+                        var minLng = Pins.Min(p => p.Position.Longitude);
+                        var center = new Position((maxLat + minLat)/2, (maxLng + minLng)/2);
+                        var distance = GetDistance(minLat, minLng, maxLat, maxLng, 'K');
 
-                    Region = MapSpan.FromCenterAndRadius(center, Distance.FromKilometers(distance * 1.2));
+                        Region = MapSpan.FromCenterAndRadius(center, Distance.FromKilometers(distance*1.2));
+                    }
 
                     _userDialogs.HideLoading();
 
@@ -126,6 +133,7 @@ namespace CallOfService.Mobile.Features.Map
                 }
                 catch (Exception ex)
                 {
+                    _logger.WriteError("Exception while finishing loading data for map view", exception: ex);
                     tcs.SetException(ex);
                 }
             });

@@ -4,6 +4,7 @@ using CallOfService.Mobile.Services.Abstracts;
 using Elmah.Io.Client;
 using Elmah.Io.Client.Models;
 using Plugin.DeviceInfo;
+using Version.Plugin;
 using Xamarin.Forms;
 
 namespace CallOfService.Mobile.Core.SystemServices
@@ -55,7 +56,8 @@ namespace CallOfService.Mobile.Core.SystemServices
                     Type = exception?.GetType()?.FullName,
                     Detail = $"{details} - {exception}",
                     User = _userEmail,
-                    Data = dataList
+                    Data = dataList,
+                    Version = CrossVersion.Current.Version
                 });
             }
             catch

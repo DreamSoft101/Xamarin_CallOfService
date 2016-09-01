@@ -4,6 +4,7 @@ using CallOfService.Mobile.Core.SystemServices;
 using CallOfService.Mobile.Services.Abstracts;
 using Segment;
 using Segment.Model;
+using Version.Plugin;
 using Xamarin.Forms;
 
 namespace CallOfService.Mobile.Core
@@ -36,7 +37,8 @@ namespace CallOfService.Mobile.Core
                     {"analyticsSource", "xamarin"},
                     {"source", user.Source},
                     {"referrerUrl", user.ReferrerUrl},
-                    {"platform", Device.OS.ToString()}
+                    {"platform", Device.OS.ToString()},
+                    {"version", CrossVersion.Current.Version}
                 });
                 Analytics.Client.Group(userId, user.TenantId, new Traits
                 {
@@ -65,6 +67,7 @@ namespace CallOfService.Mobile.Core
                     properties = new Properties();
 
                 properties.Add("platform", Device.OS.ToString());
+                properties.Add("version", CrossVersion.Current.Version);
 
                 var user = await _userService.GetCurrentUser();
                 var userId = user.TenantId + "-" + user.UserId;
@@ -84,10 +87,11 @@ namespace CallOfService.Mobile.Core
                     properties = new Properties();
 
                 properties.Add("platform", Device.OS.ToString());
+                properties.Add("version", CrossVersion.Current.Version);
 
                 var user = await _userService.GetCurrentUser();
                 var userId = user.TenantId + "-" + user.UserId;
-                Analytics.Client.Screen(userId, screenName, properties, options);
+                Analytics.Client.Track(userId, $"visit {screenName}", properties, options);
             }
             catch (Exception e)
             {

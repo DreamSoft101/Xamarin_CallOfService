@@ -12,6 +12,7 @@ using CallOfService.Mobile.Droid.Core.DI;
 using CallOfService.Mobile.Droid.Services;
 using Elmah.Io.Client;
 using HockeyApp.Android;
+using Plugin.CurrentActivity;
 using TwinTechs.Droid;
 
 namespace CallOfService.Mobile.Droid
@@ -85,10 +86,13 @@ namespace CallOfService.Mobile.Droid
 
         public void HandleLocationSentToServer(object sender, LocationChangedEventArgs e)
         {
-            RunOnUiThread(() =>
+            if (CrossCurrentActivity.Current?.Activity != null && !CrossCurrentActivity.Current.Activity.IsFinishing)
             {
-                Toast.MakeText(this, "Current location sent to Call of Service", ToastLength.Long).Show();
-            });
+                RunOnUiThread(() =>
+                {
+                    Toast.MakeText(this, "Current location sent to Call of Service", ToastLength.Long).Show();
+                });
+            }
         }
 
         public void HandleLocationChanged(object sender, LocationChangedEventArgs e)

@@ -29,8 +29,6 @@
 	<string>Call Of Service</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.callofservice.mobile</string>
-	<key>CFBundleVersion</key>
-	<string>2.1</string>
 	<key>CFBundleIconFiles</key>
 	<array/>
 	<key>CFBundleShortVersionString</key>
@@ -53,5 +51,7 @@
 	<array>
 		<string>location</string>
 	</array>
+	<key>CFBundleVersion</key>
+	<string>3</string>
 </dict>
 </plist>

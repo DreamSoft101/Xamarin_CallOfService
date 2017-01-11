@@ -65,7 +65,8 @@ namespace CallOfService.Mobile.Features.Login
                             await NavigationService.DismissAsync();
                         else
                         {
-                            await NavigationService.NavigateToRootAsync();
+							//await NavigationService.NavigateToRootAsync();
+							App.ShowMainPage();
                         }
                     }
                     else

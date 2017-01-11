@@ -15,9 +15,13 @@ namespace CallOfService.Mobile
     public partial class App : Application
     {
         public static string AppName => "CallOfService.Mobile";
+		static Application app;
 
         public App()
         {
+
+			app = this;
+
             this.Subscribe<Logout>(async m =>
             {
                 NavigationService.MainNavigation = NavigationService.Navigation;
@@ -30,6 +34,13 @@ namespace CallOfService.Mobile
                 await NavigationService.NavigateToSettingsPageAsync();
             });
         }
+
+		public static void ShowMainPage()
+		{
+
+			app.MainPage = new MasterDetailMainPage();
+
+		}
 
         protected override async void OnStart()
         {
